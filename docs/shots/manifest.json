@@ -141,6 +141,16 @@
       "file": "shots/113-main-B-results.png",
       "version": "1.2.0",
       "shows": "方向 B 落地后结果页（查询 lp，24 条）：6 档字号、选中底色满行、时间与计数等宽数字"
+    },
+    {
+      "file": "shots/114-B-empty-before-after.png",
+      "version": "1.2.0",
+      "shows": "空态改前/改后并排（左 3685134 构建、右 1.2.0），两侧均 1200×872 物理；PrintWindow 离屏抓取，无输入注入"
+    },
+    {
+      "file": "shots/115-B-results-before-after.png",
+      "version": "1.2.0",
+      "shows": "结果页改前/改后并排（查询 lp，两侧同为 24 条），用于字号/行距/对比度像素对照"
     }
   ]
 }
