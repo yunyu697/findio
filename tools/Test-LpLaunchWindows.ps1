@@ -10,12 +10,18 @@
       - 所属进程、窗口类、标题、矩形；
       - IsWindowVisible 与 DWM cloaked 状态，以及每个状态的首末时刻；
       - 是否存在「已绘制（可见且未被 DWM 遮蔽、非零尺寸）→ 不可见/被遮蔽」的回退。
+    几何口径：矩形统一取 DWMWA_EXTENDED_FRAME_BOUNDS（DWM 可视外框，物理像素），
+    同时记录窗口 DPI 与 DIP 尺寸。不要用 GetWindowRect 与历史数字直接比：在 DPI 不感知
+    的宿主里 GetWindowRect 会被虚拟化（本机 200% 下 1470×872 会读成 735×436）。
     采样结束后断言：
       1. 中转进程（标准权限实例）在整个生命周期内没有创建任何顶层窗口；
-      2. 采样期间没有任何控制台窗口（ConsoleWindowClass / Windows Terminal / conhost）
-         从不可见变为已绘制；
+      2. 没有任何控制台窗口属于本次启动链（窗口 owner 是中转/提权实例，或祖先链里出现它们）。
+         其它后台程序（例如别的会话拉起 Windows Terminal）造成的控制台窗口按祖先进程链
+         判定为外部干扰，单独列出、不计入本项；无法追溯到祖先链的按「无法归属」判失败；
       3. 提权实例有且只有一个已绘制窗口（主窗口），首次绘制后不再回到不可见/被遮蔽，
-         且不存在第二个已绘制的 Pathleap 窗口、不存在零尺寸已绘制窗口。
+         且不存在第二个已绘制的 Pathleap 窗口、不存在零尺寸已绘制窗口。若回退时前台已被
+         其它进程拿走，按「失焦即隐藏」的既有设计记为外部干扰并列出；读不到前台或前台仍
+         在本进程/启动链内，仍判失败。
 
     只读枚举，不注入键鼠、不抢前台；结束后 schtasks /End 收尾并删除测试快捷方式。
 
@@ -59,6 +65,9 @@ namespace LpLaunchWatch
         public string ClassName = "";
         public string Title = "";
         public string Rect = "";
+        public string RectDip = "";
+        public string RectSource = "";
+        public int Dpi;
         public bool Baseline;
         public long FirstSeenMs;
         public long LastSeenMs;
@@ -75,6 +84,9 @@ namespace LpLaunchWatch
         public bool EverCloaked;
         public string FinalState = "";
         public string Timeline = "";
+        public string Ancestors = "";
+        public string Hides = "";
+        public int LastHideFgPid;
     }
 
     public static class LpWindowWatch
@@ -88,6 +100,10 @@ namespace LpLaunchWatch
         [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowTextW(IntPtr hwnd, StringBuilder sb, int max);
         [DllImport("user32.dll")] private static extern bool GetWindowRect(IntPtr hwnd, out RECT rect);
         [DllImport("dwmapi.dll")] private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out int val, int size);
+        [DllImport("dwmapi.dll")] private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out RECT val, int size);
+        [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
+        [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
+        [DllImport("ntdll.dll")] private static extern int NtQueryInformationProcess(IntPtr process, int cls, ref PBI info, int len, out int ret);
         [DllImport("kernel32.dll", SetLastError = true)] private static extern IntPtr OpenProcess(int access, bool inherit, uint pid);
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern bool QueryFullProcessImageNameW(IntPtr proc, int flags, StringBuilder sb, ref int size);
         [DllImport("kernel32.dll")] private static extern bool CloseHandle(IntPtr h);
@@ -97,6 +113,17 @@ namespace LpLaunchWatch
         [StructLayout(LayoutKind.Sequential)]
         private struct RECT { public int Left; public int Top; public int Right; public int Bottom; }
 
+        [StructLayout(LayoutKind.Sequential)]
+        private struct PBI
+        {
+            public IntPtr ExitStatus;
+            public IntPtr PebBaseAddress;
+            public IntPtr AffinityMask;
+            public IntPtr BasePriority;
+            public IntPtr UniqueProcessId;
+            public IntPtr InheritedFromUniqueProcessId;
+        }
+
         private sealed class LpRec
         {
             public long Hwnd;
@@ -105,6 +132,8 @@ namespace LpLaunchWatch
             public string ClassName;
             public string Title;
             public int L, T, R, B;
+            public int Dpi;
+            public string RectSource;
             public bool Baseline;
             public long FirstSeen;
             public long LastSeen;
@@ -120,6 +149,9 @@ namespace LpLaunchWatch
             public string PaintTitle = "";
             public bool EverCloaked;
             public string State;
+            public string Ancestors = "";
+            public int LastHideFgPid;
+            public List<string> Hides = new List<string>();
             public List<string> Transitions = new List<string>();
         }
 
@@ -194,6 +226,11 @@ namespace LpLaunchWatch
                     ClassName = rec.ClassName,
                     Title = rec.Title,
                     Rect = string.Format("{0},{1},{2}x{3}", rec.L, rec.T, rec.R - rec.L, rec.B - rec.T),
+                    RectDip = rec.Dpi > 0
+                        ? string.Format("{0:0.#}x{1:0.#}", (rec.R - rec.L) * 96.0 / rec.Dpi, (rec.B - rec.T) * 96.0 / rec.Dpi)
+                        : "",
+                    RectSource = rec.RectSource,
+                    Dpi = rec.Dpi,
                     Baseline = rec.Baseline,
                     FirstSeenMs = rec.FirstSeen,
                     LastSeenMs = rec.LastSeen,
@@ -209,7 +246,10 @@ namespace LpLaunchWatch
                     PaintTitle = rec.PaintTitle,
                     EverCloaked = rec.EverCloaked,
                     FinalState = rec.State ?? "",
-                    Timeline = string.Join(";", rec.Transitions)
+                    Timeline = string.Join(";", rec.Transitions),
+                    Ancestors = rec.Ancestors,
+                    Hides = string.Join(";", rec.Hides),
+                    LastHideFgPid = rec.LastHideFgPid
                 });
             }
 
@@ -267,7 +307,13 @@ namespace LpLaunchWatch
             }
 
             RECT r;
-            GetWindowRect(hwnd, out r);
+            string rectSource = "extended";
+            if (DwmGetWindowAttribute(hwnd, 9, out r, Marshal.SizeOf<RECT>()) != 0)
+            {
+                GetWindowRect(hwnd, out r);
+                rectSource = "window";
+            }
+            uint dpi = GetDpiForWindow(hwnd);
             int w = r.Right - r.Left;
             int ht = r.Bottom - r.Top;
             string state = !visible ? "H" : (cloaked != 0 ? "C" : ((w <= 0 || ht <= 0) ? "Z" : "V"));
@@ -285,9 +331,12 @@ namespace LpLaunchWatch
                         Exe = exe,
                         ClassName = cls,
                         Title = TitleOf(hwnd),
+                        Dpi = (int)dpi,
+                        RectSource = rectSource,
                         Baseline = inBaseline,
                         FirstSeen = t,
-                        State = state
+                        State = state,
+                        Ancestors = isConsole ? AncestorsOf(pid) : ""
                     };
                     rec.Transitions.Add(t + ":" + state);
                     _records[h] = rec;
@@ -304,6 +353,8 @@ namespace LpLaunchWatch
                 rec.T = r.Top;
                 rec.R = r.Right;
                 rec.B = r.Bottom;
+                rec.Dpi = (int)dpi;
+                rec.RectSource = rectSource;
 
                 if (visible)
                 {
@@ -348,6 +399,15 @@ namespace LpLaunchWatch
 
                 if (rec.State != state)
                 {
+                    // 从已绘制退回不可见/被遮蔽时，记下当时的前台进程与它的祖先链：
+                    // 据此区分「本进程自己闪了一下」和「别的程序抢了前台，主窗口按设计隐藏」。
+                    if (rec.State == "V" && state != "V")
+                    {
+                        int fgPid = ForegroundPid();
+                        rec.LastHideFgPid = fgPid;
+                        rec.Hides.Add(string.Format("{0}:{1}:fg={2}:{3}", t, state, fgPid, fgPid > 0 ? AncestorsOf((uint)fgPid) : ""));
+                    }
+
                     rec.State = state;
                     rec.StateChanges++;
                     rec.Transitions.Add(t + ":" + state);
@@ -355,6 +415,50 @@ namespace LpLaunchWatch
             }
 
             return true;
+        }
+
+        private static int ForegroundPid()
+        {
+            IntPtr fg = GetForegroundWindow();
+            if (fg == IntPtr.Zero) { return 0; }
+            uint pid;
+            GetWindowThreadProcessId(fg, out pid);
+            return (int)pid;
+        }
+
+        private static int ParentOf(int pid)
+        {
+            IntPtr proc = OpenProcess(0x1400, false, (uint)pid);
+            if (proc == IntPtr.Zero) { return -1; }
+            try
+            {
+                PBI info = new PBI();
+                int ret;
+                if (NtQueryInformationProcess(proc, 0, ref info, Marshal.SizeOf<PBI>(), out ret) != 0) { return -1; }
+                long parent = info.InheritedFromUniqueProcessId.ToInt64();
+                return parent > 0 && parent <= int.MaxValue ? (int)parent : -1;
+            }
+            finally
+            {
+                CloseHandle(proc);
+            }
+        }
+
+        // 返回「自己;父;祖父;…」的 pid 链，用于事后判定窗口归属（本次启动链 vs 外部程序）。
+        private static string AncestorsOf(uint pid)
+        {
+            var sb = new StringBuilder();
+            int cur = (int)pid;
+            for (int i = 0; i < 12 && cur > 0; i++)
+            {
+                if (sb.Length > 0) { sb.Append(';'); }
+                sb.Append(cur);
+                int parent = ParentOf(cur);
+                if (parent <= 0 || parent == cur) { break; }
+                cur = parent;
+            }
+
+            return sb.ToString();
         }
 
         private static string ExeOf(uint pid)
@@ -564,16 +668,47 @@ try {
             $_.PaintedSamples -gt 0 -and (-not $_.Baseline -or $_.FirstPaintedMs -gt 100)
         })
 
+    # 归属判定：窗口 owner 的祖先进程链里是否出现本次启动链的进程（中转/提权实例）。
+    # 启动链若有控制台，owner 会是 conhost/OpenConsole，其父即 schtasks/Pathleap.UI，能向上追到中转 pid。
+    # 外部后台程序（例如其它会话拉起 Windows Terminal）同样会被枚举到，按归属排除，但不能算通过。
+    $LpChainPids = @(@($LpMediumPid, $LpElevatedPid) | Where-Object { $_ -ne 0 })
+    $LpAttributed = @($LpConsoleFlash | ForEach-Object {
+            $LpChain = @(([string]$_.Ancestors) -split ';' | Where-Object { $_ -ne '' } | ForEach-Object { [int]$_ })
+            $LpInChain = @($LpChain | Where-Object { $LpChainPids -contains $_ }).Count -gt 0
+            [pscustomobject]@{
+                Record   = $_
+                InChain  = $LpInChain
+                Known    = $LpChain.Count -gt 0
+                FgPid    = 0
+            }
+        })
+    $LpConsoleOurs = @($LpAttributed | Where-Object { $_.InChain })
+    $LpConsoleUnknown = @($LpAttributed | Where-Object { -not $_.InChain -and -not $_.Known })
+    $LpConsoleExternal = @($LpAttributed | Where-Object { -not $_.InChain -and $_.Known })
+
     $LpMain = $LpElevatedPainted | Select-Object -First 1
     $LpMainFlash = $false
-    $LpMainAfterPainted = @()
+    $LpMainHides = @()
     if ($null -ne $LpMain) {
-        $LpStateSeq = @($LpMain.Timeline -split ';' | Where-Object { $_ -ne '' } | ForEach-Object { ($_ -split ':')[1] })
-        $LpFirstPaintedIndex = [array]::IndexOf($LpStateSeq, 'V')
-        if ($LpFirstPaintedIndex -ge 0 -and $LpFirstPaintedIndex -lt $LpStateSeq.Count - 1) {
-            $LpMainAfterPainted = @($LpStateSeq[($LpFirstPaintedIndex + 1)..($LpStateSeq.Count - 1)] | Where-Object { $_ -ne 'V' })
-        }
-        $LpMainFlash = $LpMainAfterPainted.Count -gt 0
+        $LpMainHides = @(([string]$LpMain.Hides) -split ';' | Where-Object { $_ -ne '' } | ForEach-Object {
+                $LpPart = $_ -split ':'
+                $LpFgPid = [int]($LpPart[2] -replace '^fg=', '')
+                $LpFgChain = @(([string]$LpPart[3]) -split ';' | Where-Object { $_ -ne '' } | ForEach-Object { [int]$_ })
+                $LpFgInChain = ($LpFgPid -ne 0) -and (
+                    $LpChainPids -contains $LpFgPid -or
+                    @($LpFgChain | Where-Object { $LpChainPids -contains $_ }).Count -gt 0)
+                # 前台被外部程序拿走 → 主窗口按「失焦即隐藏」设计隐藏，不算启动闪窗；
+                # 前台仍是自己/启动链，或根本读不到前台进程 → 视为自身回退。
+                [pscustomobject]@{
+                    Ms        = [int]$LpPart[0]
+                    State     = $LpPart[1]
+                    FgPid     = $LpFgPid
+                    External  = ($LpFgPid -ne 0) -and (-not $LpFgInChain)
+                    Suspicious = ($LpFgPid -eq 0) -or $LpFgInChain
+                }
+            })
+
+        $LpMainFlash = @($LpMainHides | Where-Object { $_.Suspicious }).Count -gt 0
     }
 
     $LpMediumDetail = if ($LpMediumPid -ne 0) {
@@ -584,13 +719,29 @@ try {
         "未捕获中转 pid；非提权 Pathleap 进程窗口 $($LpNonElevatedPathleap.Count) 个"
     }
 
+    $LpFgNames = @{}
+    foreach ($LpRec in $LpRecords) {
+        $LpPidKey = [int]$LpRec.Pid
+        if (-not $LpFgNames.ContainsKey($LpPidKey) -and $LpRec.Exe -ne '') { $LpFgNames[$LpPidKey] = $LpRec.Exe }
+    }
+
+    $LpConsoleOursText = @($LpConsoleOurs | ForEach-Object { "$($_.Record.ClassName)[$($_.Record.Exe)] 祖先进程 $($_.Record.Ancestors)" }) -join ' | '
+    $LpConsoleUnknownText = @($LpConsoleUnknown | ForEach-Object { "$($_.Record.ClassName)[$($_.Record.Exe)] pid=$($_.Record.Pid)" }) -join ' | '
+    $LpConsoleExternalText = @($LpConsoleExternal | ForEach-Object {
+            "$($_.Record.ClassName)[$($_.Record.Exe)] pid=$($_.Record.Pid) 祖先进程 $($_.Record.Ancestors)"
+        }) -join ' | '
+    $LpMainHideText = @($LpMainHides | ForEach-Object {
+            $LpFgLabel = if ($_.FgPid -eq 0) { '读不到前台' } elseif ($LpFgNames.ContainsKey($_.FgPid)) { $LpFgNames[$_.FgPid] } else { 'pid=' + $_.FgPid }
+            "{0}ms {1}（前台 {2} {3}）" -f $_.Ms, $_.State, $_.FgPid, $LpFgLabel
+        }) -join '；'
+
     Add-LpCheck -LpName '中转进程没有创建任何顶层窗口' -LpPassed ($LpNonElevatedPathleap.Count -eq 0) -LpDetail $LpMediumDetail
-    Add-LpCheck -LpName '全程没有控制台窗口变为可见' -LpPassed ($LpConsoleFlash.Count -eq 0) -LpDetail ("本次新增控制台类窗口 {0} 个；基线已有 {1} 个（均保持隐藏）；采样期间变为可见 {2} 个：{3}" -f $LpConsoleNew.Count, ($LpConsoleRecords.Count - $LpConsoleNew.Count), $LpConsoleFlash.Count, ((@($LpConsoleFlash | ForEach-Object { "$($_.ClassName)[$($_.Exe)]" })) -join ', '))
+    Add-LpCheck -LpName '启动链没有控制台窗口变为可见' -LpPassed ($LpConsoleOurs.Count -eq 0 -and $LpConsoleUnknown.Count -eq 0) -LpDetail ("启动链内的控制台窗口 {0} 个{1}；无法归属 {2} 个{3}；外部程序本次新增并变为可见 {4} 个{5}；本次新增控制台类窗口共 {6} 个" -f $LpConsoleOurs.Count, ($(if ($LpConsoleOursText -ne '') { "：$LpConsoleOursText" } else { '' })), $LpConsoleUnknown.Count, ($(if ($LpConsoleUnknownText -ne '') { "：$LpConsoleUnknownText" } else { '' })), $LpConsoleExternal.Count, ($(if ($LpConsoleExternalText -ne '') { "（不计入本项，按外部干扰记录）：$LpConsoleExternalText" } else { '' })), $LpConsoleNew.Count)
     Add-LpCheck -LpName '提权实例只有主窗口这一扇已绘制窗口' -LpPassed ($LpElevatedPainted.Count -eq 1) -LpDetail ("已绘制 {0} 个：{1}" -f $LpElevatedPainted.Count, ((@($LpElevatedPainted | ForEach-Object { "$($_.ClassName)'$($_.Title)' $($_.Rect)" })) -join ' | '))
-    Add-LpCheck -LpName '主窗口首次绘制后未再隐藏或被遮蔽' -LpPassed ($null -ne $LpMain -and -not $LpMainFlash) -LpDetail ($(if ($null -ne $LpMain) { "首次绘制 {0}ms；之后状态 {1}；状态序列 {2}" -f $LpMain.FirstPaintedMs, ($(if ($LpMainFlash) { '出现回退' } else { '保持已绘制' })), ($LpMain.Timeline) } else { '未出现已绘制窗口' }))
+    Add-LpCheck -LpName '主窗口首次绘制后未再隐藏或被遮蔽' -LpPassed ($null -ne $LpMain -and -not $LpMainFlash) -LpDetail ($(if ($null -ne $LpMain) { "首次绘制 {0}ms；回退 {1} 次{2}；状态序列 {3}" -f $LpMain.FirstPaintedMs, $LpMainHides.Count, ($(if ($LpMainHideText -ne '') { "（$LpMainHideText）" } else { '' })), $LpMain.Timeline } else { '未出现已绘制窗口' }))
     Add-LpCheck -LpName '不存在第二个已绘制的 Pathleap 窗口' -LpPassed ($LpPathleapPainted.Count -eq 1) -LpDetail ("已绘制 Pathleap 窗口 {0} 个" -f $LpPathleapPainted.Count)
     Add-LpCheck -LpName '已绘制窗口均为非零尺寸' -LpPassed (@($LpPathleapPainted | Where-Object { $_.FirstPaintedRect -match ',0x0$' }).Count -eq 0) -LpDetail ((@($LpPathleapPainted | ForEach-Object { $_.FirstPaintedRect })) -join ', ')
-    Add-LpCheck -LpName '主窗口首次绘制后未改变几何' -LpPassed ($null -ne $LpMain -and $LpMain.RectChangesPainted -eq 0) -LpDetail ($(if ($null -ne $LpMain) { "几何变化 {0} 次；首绘 {1}；最终 {2}" -f $LpMain.RectChangesPainted, $LpMain.FirstPaintedRect, $LpMain.Rect } else { '无主窗口' }))
+    Add-LpCheck -LpName '主窗口首次绘制后未改变几何' -LpPassed ($null -ne $LpMain -and $LpMain.RectChangesPainted -eq 0) -LpDetail ($(if ($null -ne $LpMain) { "几何变化 {0} 次；首绘 {1}；最终 {2}；DPI={3}；DIP={4}；口径={5}" -f $LpMain.RectChangesPainted, $LpMain.FirstPaintedRect, $LpMain.Rect, $LpMain.Dpi, $LpMain.RectDip, $LpMain.RectSource } else { '无主窗口' }))
     Add-LpCheck -LpName '主窗口类名与标题可核对' -LpPassed ($null -ne $LpMain -and $LpMain.ClassName -eq 'WinUIDesktopWin32WindowClass' -and $LpMain.Title -like '*Pathleap*') -LpDetail ($(if ($null -ne $LpMain) { "class=$($LpMain.ClassName) title='$($LpMain.Title)' 首绘标题='$($LpMain.PaintTitle)'" } else { '无主窗口' }))
 
     [pscustomobject]@{
@@ -603,7 +754,12 @@ try {
         SampleHz      = if ($LpWindowMs -gt 0) { [Math]::Round($LpSamplesTaken * 1000.0 / $LpWindowMs, 1) } else { 0 }
         MediumPid     = $LpMediumPid
         ElevatedPid   = $LpElevatedPid
-        ConsoleFlash  = $LpConsoleFlash.Count
+        ConsoleOurs   = $LpConsoleOurs.Count
+        ConsoleUnknown = $LpConsoleUnknown.Count
+        ConsoleExternal = $LpConsoleExternal.Count
+        ConsoleFlash  = $LpConsoleOurs.Count
+        MainHides     = $LpMainHides.Count
+        MainHideExternal = @($LpMainHides | Where-Object { $_.External }).Count
         Records       = $LpRecords
     } | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $LpEvidence -Encoding utf8
 
