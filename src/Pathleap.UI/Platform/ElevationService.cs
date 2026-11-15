@@ -35,7 +35,7 @@ public static class ElevationService
     private const int SEE_MASK_NOCLOSEPROCESS = 0x00000040;
     private const uint INFINITE = 0xFFFFFFFF;
 
-    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern bool ShellExecuteExW(ref ShellExecuteInfo lpExecInfo);
 
     [DllImport("kernel32.dll", SetLastError = true)]
