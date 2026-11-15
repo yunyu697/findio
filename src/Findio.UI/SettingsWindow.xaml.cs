@@ -256,13 +256,13 @@ public sealed partial class SettingsWindow : Window
             var lpTitle = new TextBlock
             {
                 Text = lpPreset.Title,
-                FontSize = 12.5,
+                FontSize = 12,
                 Foreground = _lpTheme.Text1Brush
             };
             var lpTag = new TextBlock
             {
                 Text = lpPreset.Tag,
-                FontSize = 9,
+                FontSize = 10,
                 Foreground = _lpTheme.Text3Brush,
                 VerticalAlignment = VerticalAlignment.Center
             };
@@ -289,7 +289,7 @@ public sealed partial class SettingsWindow : Window
                 Background = _lpTheme.TransparentBrush,
                 BorderBrush = _lpTheme.Border1Brush,
                 BorderThickness = new Thickness(1),
-                CornerRadius = new CornerRadius(7),
+                CornerRadius = new CornerRadius(8),
                 Padding = new Thickness(11, 8, 11, 9),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 HorizontalContentAlignment = HorizontalAlignment.Stretch,
@@ -633,7 +633,7 @@ public sealed partial class SettingsWindow : Window
             NetworkLocationPanel.Children.Add(new TextBlock
             {
                 Text = "尚未添加共享路径",
-                FontSize = 10.5,
+                FontSize = 10,
                 Foreground = _lpTheme.Text3Brush
             });
             return;
@@ -650,7 +650,7 @@ public sealed partial class SettingsWindow : Window
         var lpText = new TextBlock
         {
             Text = location,
-            FontSize = 11,
+            FontSize = 12,
             Foreground = _lpTheme.Text1Brush,
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center
@@ -685,7 +685,7 @@ public sealed partial class SettingsWindow : Window
             Background = _lpTheme.Surface2Brush,
             BorderBrush = _lpTheme.Border1Brush,
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(6),
+            CornerRadius = new CornerRadius(8),
             Padding = new Thickness(10, 4, 4, 4),
             Child = lpRow
         };
@@ -788,7 +788,7 @@ public sealed partial class SettingsWindow : Window
         var lpText = new TextBlock
         {
             Text = directory,
-            FontSize = 11,
+            FontSize = 12,
             Foreground = _lpTheme.Text1Brush,
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center
@@ -823,7 +823,7 @@ public sealed partial class SettingsWindow : Window
             Background = _lpTheme.Surface2Brush,
             BorderBrush = _lpTheme.Border1Brush,
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(6),
+            CornerRadius = new CornerRadius(8),
             Padding = new Thickness(10, 4, 4, 4),
             Child = lpRow
         };
@@ -1438,7 +1438,7 @@ public sealed partial class SettingsWindow : Window
             ExcludeRulePanel.Children.Add(new TextBlock
             {
                 Text = "尚未添加排除规则",
-                FontSize = 10.5,
+                FontSize = 10,
                 Foreground = _lpTheme.Text3Brush
             });
             return;
@@ -1455,7 +1455,7 @@ public sealed partial class SettingsWindow : Window
         var lpText = new TextBlock
         {
             Text = rule,
-            FontSize = 11,
+            FontSize = 12,
             Foreground = _lpTheme.Text1Brush,
             TextTrimming = TextTrimming.CharacterEllipsis,
             VerticalAlignment = VerticalAlignment.Center
@@ -1490,7 +1490,7 @@ public sealed partial class SettingsWindow : Window
             Background = _lpTheme.Surface2Brush,
             BorderBrush = _lpTheme.Border1Brush,
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(6),
+            CornerRadius = new CornerRadius(8),
             Padding = new Thickness(10, 4, 4, 4),
             Child = lpRow
         };
@@ -1571,13 +1571,13 @@ public sealed partial class SettingsWindow : Window
         var lpIcon = new FontIcon
         {
             Glyph = glyph,
-            FontSize = 11,
+            FontSize = 12,
             Foreground = _lpTheme.Text2Brush
         };
         var lpText = new TextBlock
         {
             Text = text,
-            FontSize = 10.5,
+            FontSize = 10,
             Foreground = _lpTheme.Text2Brush
         };
         var lpPanel = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 5 };
@@ -1589,7 +1589,7 @@ public sealed partial class SettingsWindow : Window
             Background = _lpTheme.TransparentBrush,
             BorderBrush = dashed ? _lpTheme.TrackOffBorderBrush : _lpTheme.Border1Brush,
             BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(6),
+            CornerRadius = new CornerRadius(8),
             Padding = new Thickness(9, 5, 9, 5),
             Child = lpPanel,
             Opacity = dashed ? 0.75 : 1.0

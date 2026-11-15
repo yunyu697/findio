@@ -1472,7 +1472,7 @@ public sealed partial class QuickSwitchWindow : Window
         {
             Height = 28,
             Padding = new Thickness(7, 0, 7, 0),
-            CornerRadius = new CornerRadius(7),
+            CornerRadius = new CornerRadius(8),
             Background = lpSelected ? ThemeService.Instance.SelectionBrush : ThemeService.Instance.TransparentBrush,
             BorderBrush = lpSelected ? ThemeService.Instance.SelectionBorderBrush : ThemeService.Instance.TransparentBrush,
             BorderThickness = new Thickness(1),
@@ -1507,7 +1507,7 @@ public sealed partial class QuickSwitchWindow : Window
         var lpName = new TextBlock
         {
             Text = hit.Name,
-            FontSize = 10.5,
+            FontSize = 10,
             FontWeight = lpSelected ? Microsoft.UI.Text.FontWeights.SemiBold : Microsoft.UI.Text.FontWeights.Normal,
             Foreground = ThemeService.Instance.Text1Brush,
             TextTrimming = TextTrimming.CharacterEllipsis,
@@ -1518,7 +1518,7 @@ public sealed partial class QuickSwitchWindow : Window
         var lpTag = new TextBlock
         {
             Text = hit.IsDirectory ? "文件夹" : (lpIsProgram ? "程序" : "文件"),
-            FontSize = 9,
+            FontSize = 10,
             Foreground = ThemeService.Instance.Text3Brush,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -1586,7 +1586,7 @@ public sealed partial class QuickSwitchWindow : Window
         {
             Height = 28,
             Padding = new Thickness(7, 0, 7, 0),
-            CornerRadius = new CornerRadius(7),
+            CornerRadius = new CornerRadius(8),
             Background = lpSelected ? ThemeService.Instance.SelectionBrush : ThemeService.Instance.TransparentBrush,
             BorderBrush = lpSelected ? ThemeService.Instance.SelectionBorderBrush : ThemeService.Instance.TransparentBrush,
             BorderThickness = new Thickness(1),
@@ -1613,7 +1613,7 @@ public sealed partial class QuickSwitchWindow : Window
             {
                 // 裸数字必须留给搜索框，直选统一 Alt+数字，键帽提示与行为保持一致。
                 Text = $"Alt{index + 1}",
-                FontSize = 8,
+                FontSize = 10,
                 FontFamily = new FontFamily("Consolas"),
                 FontWeight = lpSelected ? Microsoft.UI.Text.FontWeights.SemiBold : Microsoft.UI.Text.FontWeights.Normal,
                 Foreground = lpSelected ? ThemeService.Instance.AccentInkBrush : ThemeService.Instance.Text3Brush,
@@ -1643,7 +1643,7 @@ public sealed partial class QuickSwitchWindow : Window
         lpNamePanel.Children.Add(new TextBlock
         {
             Text = folder.Name,
-            FontSize = 10.5,
+            FontSize = 10,
             FontWeight = lpSelected ? Microsoft.UI.Text.FontWeights.SemiBold : Microsoft.UI.Text.FontWeights.Normal,
             Foreground = ThemeService.Instance.Text1Brush,
             TextTrimming = TextTrimming.CharacterEllipsis,

@@ -11,12 +11,12 @@
           PointerMoved="OnPointerMoved"
           PointerReleased="OnPointerReleased">
         <Border Height="3"
-                CornerRadius="2"
+                CornerRadius="4"
                 Background="{ThemeResource Surface4Brush}"
                 VerticalAlignment="Center" />
         <Border x:Name="Fill"
                 Height="3"
-                CornerRadius="2"
+                CornerRadius="4"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center" />
         <Ellipse x:Name="Thumb"

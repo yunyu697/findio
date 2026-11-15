@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "note": "界面令牌基线：冻结首轮存量偏差。新增出现会失败；改完存量后请重跑 -LpUpdateBaseline。理由规则见 docs/界面设计规范.md §5。",
-  "generatedAt": "2026-11-15 10:18:36",
+  "generatedAt": "2026-11-15 18:18:24",
   "entries": [
     {
       "file": "AboutWindow.xaml",
@@ -15,55 +15,10 @@
     {
       "file": "AboutWindow.xaml",
       "property": "CornerRadius",
-      "value": "11",
-      "category": "Radius",
-      "severity": "error",
-      "count": 1,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "AboutWindow.xaml",
-      "property": "CornerRadius",
-      "value": "7",
+      "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "AboutWindow.xaml",
-      "property": "FontSize",
-      "value": "10.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "AboutWindow.xaml",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 6,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "AboutWindow.xaml",
-      "property": "FontSize",
-      "value": "11.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "AboutWindow.xaml",
-      "property": "FontSize",
-      "value": "16",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
+      "count": 3,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -168,11 +123,11 @@
     {
       "file": "Controls\\LpSlider.xaml",
       "property": "CornerRadius",
-      "value": "2",
+      "value": "4",
       "category": "Radius",
-      "severity": "error",
+      "severity": "warn",
       "count": 2,
-      "reason": "圆角偏离阶梯，待归并"
+      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "Controls\\LpSlider.xaml",
@@ -249,7 +204,7 @@
     {
       "file": "Controls\\LpSwitch.xaml",
       "property": "CornerRadius",
-      "value": "10",
+      "value": "8",
       "category": "Radius",
       "severity": "warn",
       "count": 1,
@@ -348,43 +303,7 @@
     {
       "file": "MainWindow.xaml",
       "property": "CornerRadius",
-      "value": "12",
-      "category": "Radius",
-      "severity": "error",
-      "count": 1,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "CornerRadius",
       "value": "4",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "CornerRadius",
-      "value": "5",
-      "category": "Radius",
-      "severity": "error",
-      "count": 1,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "CornerRadius",
-      "value": "6",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "CornerRadius",
-      "value": "7",
       "category": "Radius",
       "severity": "warn",
       "count": 2,
@@ -396,106 +315,7 @@
       "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "10",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 4,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "10.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 5,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 5,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "12",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 4,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "13",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "14",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "15",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "16",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "19",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "20",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "MainWindow.xaml",
-      "property": "FontSize",
-      "value": "9.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 6,
+      "count": 8,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -560,6 +380,15 @@
       "severity": "error",
       "count": 1,
       "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Margin",
+      "value": "0,0,0,2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "MainWindow.xaml",
@@ -654,7 +483,7 @@
     {
       "file": "MainWindow.xaml",
       "property": "Padding",
-      "value": "2,4,2,0",
+      "value": "2,6,2,0",
       "category": "Spacing",
       "severity": "warn",
       "count": 3,
@@ -663,7 +492,7 @@
     {
       "file": "MainWindow.xaml",
       "property": "Padding",
-      "value": "20,13,20,5",
+      "value": "20,20,20,6",
       "category": "Spacing",
       "severity": "warn",
       "count": 4,
@@ -879,16 +708,7 @@
     {
       "file": "QuickSwitchWindow.xaml",
       "property": "CornerRadius",
-      "value": "5",
-      "category": "Radius",
-      "severity": "error",
-      "count": 1,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "CornerRadius",
-      "value": "6",
+      "value": "4",
       "category": "Radius",
       "severity": "warn",
       "count": 1,
@@ -900,52 +720,7 @@
       "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 3,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "FontSize",
-      "value": "10.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 3,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "FontSize",
-      "value": "14",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "FontSize",
-      "value": "9",
-      "category": "Typography",
-      "severity": "error",
       "count": 4,
-      "reason": "字号偏离阶梯，待归并"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml",
-      "property": "FontSize",
-      "value": "9.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -1086,7 +861,7 @@
     {
       "file": "QuickSwitchWindow.xaml.cs",
       "property": "CornerRadius",
-      "value": "7",
+      "value": "8",
       "category": "Radius",
       "severity": "warn",
       "count": 2,
@@ -1098,26 +873,8 @@
       "value": "10",
       "category": "Typography",
       "severity": "warn",
-      "count": 1,
+      "count": 5,
       "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "10.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "9",
-      "category": "Typography",
-      "severity": "error",
-      "count": 2,
-      "reason": "字号偏离阶梯，待归并"
     },
     {
       "file": "QuickSwitchWindow.xaml.cs",
@@ -1157,21 +914,12 @@
     },
     {
       "file": "QuickSwitchWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "8",
-      "category": "Typography",
-      "severity": "error",
-      "count": 1,
-      "reason": "Alt+数字键帽徽标：17px 高、要装下 3 个字符并留内边距，等宽字体下只能取 8px；换大字号会撑破 17px 徽标"
-    },
-    {
-      "file": "QuickSwitchWindow.xaml.cs",
       "property": "Thickness",
       "value": "3, 0, 3, 0",
       "category": "Spacing",
       "severity": "error",
       "count": 2,
-      "reason": "同上键帽徽标的左右内边距：徽标宽随内容走，3px 是 3 字符不贴边的最小值，阶梯里没有更小的档"
+      "reason": "间距偏离阶梯，待归并"
     },
     {
       "file": "QuickSwitchWindow.xaml.cs",
@@ -1455,28 +1203,10 @@
     {
       "file": "SettingsWindow.xaml",
       "property": "CornerRadius",
-      "value": "10",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 3,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "CornerRadius",
-      "value": "2",
-      "category": "Radius",
-      "severity": "error",
-      "count": 20,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "CornerRadius",
       "value": "4",
       "category": "Radius",
       "severity": "warn",
-      "count": 2,
+      "count": 32,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -1485,26 +1215,8 @@
       "value": "5",
       "category": "Radius",
       "severity": "error",
-      "count": 11,
+      "count": 1,
       "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "CornerRadius",
-      "value": "6",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 3,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "CornerRadius",
-      "value": "7",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 7,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "SettingsWindow.xaml",
@@ -1512,7 +1224,7 @@
       "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 3,
+      "count": 16,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -1541,123 +1253,6 @@
       "severity": "error",
       "count": 2,
       "reason": "颜色字面量，应改用 Themes.xaml 画刷"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "10",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 21,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "10.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 27,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 15,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "11.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 13,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "12",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 27,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "12.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 18,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "13",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 7,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "14",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 7,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "15",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "16",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 3,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "20",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 8,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "9",
-      "category": "Typography",
-      "severity": "error",
-      "count": 1,
-      "reason": "字号偏离阶梯，待归并"
-    },
-    {
-      "file": "SettingsWindow.xaml",
-      "property": "FontSize",
-      "value": "9.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 16,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "SettingsWindow.xaml",
@@ -2535,19 +2130,10 @@
     {
       "file": "SettingsWindow.xaml.cs",
       "property": "CornerRadius",
-      "value": "6",
+      "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 4,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml.cs",
-      "property": "CornerRadius",
-      "value": "7",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 1,
+      "count": 5,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -2556,44 +2142,17 @@
       "value": "10",
       "category": "Typography",
       "severity": "warn",
-      "count": 4,
+      "count": 8,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "SettingsWindow.xaml.cs",
       "property": "FontSize",
-      "value": "10.5",
+      "value": "12",
       "category": "Typography",
       "severity": "warn",
-      "count": 3,
+      "count": 5,
       "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 4,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "12.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "SettingsWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "9",
-      "category": "Typography",
-      "severity": "error",
-      "count": 1,
-      "reason": "字号偏离阶梯，待归并"
     },
     {
       "file": "SettingsWindow.xaml.cs",
@@ -2688,16 +2247,25 @@
     {
       "file": "TrayMenuWindow.xaml.cs",
       "property": "CornerRadius",
-      "value": "5",
+      "value": "4",
       "category": "Radius",
-      "severity": "error",
+      "severity": "warn",
       "count": 1,
-      "reason": "圆角偏离阶梯，待归并"
+      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "TrayMenuWindow.xaml.cs",
       "property": "FontSize",
-      "value": "11.5",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "12",
       "category": "Typography",
       "severity": "warn",
       "count": 1,
@@ -2711,15 +2279,6 @@
       "severity": "error",
       "count": 1,
       "reason": "字号偏离阶梯，待归并"
-    },
-    {
-      "file": "TrayMenuWindow.xaml.cs",
-      "property": "FontSize",
-      "value": "9.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
       "file": "TrayMenuWindow.xaml.cs",
@@ -2796,37 +2355,10 @@
     {
       "file": "UpdateWindow.xaml",
       "property": "CornerRadius",
-      "value": "10",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "CornerRadius",
-      "value": "11",
-      "category": "Radius",
-      "severity": "error",
-      "count": 2,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "CornerRadius",
-      "value": "3",
-      "category": "Radius",
-      "severity": "error",
-      "count": 2,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "CornerRadius",
       "value": "4",
       "category": "Radius",
       "severity": "warn",
-      "count": 1,
+      "count": 4,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -2835,26 +2367,8 @@
       "value": "5",
       "category": "Radius",
       "severity": "error",
-      "count": 3,
-      "reason": "圆角偏离阶梯，待归并"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "CornerRadius",
-      "value": "6",
-      "category": "Radius",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "CornerRadius",
-      "value": "7",
-      "category": "Radius",
-      "severity": "warn",
       "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
+      "reason": "圆角偏离阶梯，待归并"
     },
     {
       "file": "UpdateWindow.xaml",
@@ -2862,7 +2376,7 @@
       "value": "8",
       "category": "Radius",
       "severity": "warn",
-      "count": 2,
+      "count": 8,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {
@@ -2872,96 +2386,6 @@
       "category": "Radius",
       "severity": "warn",
       "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "10",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 5,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "11",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "12",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "13",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "14",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 2,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "17",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "19",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 1,
-      "reason": "值在阶梯内但内联，待改为令牌引用"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "8.5",
-      "category": "Typography",
-      "severity": "error",
-      "count": 7,
-      "reason": "字号偏离阶梯，待归并"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "9",
-      "category": "Typography",
-      "severity": "error",
-      "count": 2,
-      "reason": "字号偏离阶梯，待归并"
-    },
-    {
-      "file": "UpdateWindow.xaml",
-      "property": "FontSize",
-      "value": "9.5",
-      "category": "Typography",
-      "severity": "warn",
-      "count": 4,
       "reason": "值在阶梯内但内联，待改为令牌引用"
     },
     {

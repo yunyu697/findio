@@ -131,7 +131,7 @@ public sealed partial class TrayMenuWindow : Window
         var lpText = new TextBlock
         {
             Text = text,
-            FontSize = 11.5,
+            FontSize = 12,
             Foreground = lpForeground,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -143,7 +143,7 @@ public sealed partial class TrayMenuWindow : Window
             var lpShortcut = new TextBlock
             {
                 Text = shortcut,
-                FontSize = 9.5,
+                FontSize = 10,
                 Foreground = ThemeService.Instance.Text2Brush,
                 VerticalAlignment = VerticalAlignment.Center
             };
@@ -155,7 +155,7 @@ public sealed partial class TrayMenuWindow : Window
         {
             Height = ItemHeight,
             Padding = new Thickness(10, 0, 10, 0),
-            CornerRadius = new CornerRadius(5),
+            CornerRadius = new CornerRadius(4),
             Background = ThemeService.Instance.TransparentBrush,
             Child = lpPanel
         };

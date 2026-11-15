@@ -8,6 +8,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Hosting;
+using System.Numerics;
 using Findio.Shared;
 using Windows.ApplicationModel.DataTransfer;
 using Findio.Shared.Config;
@@ -43,6 +45,7 @@ public sealed partial class MainWindow : Window
     private readonly IntPtr _lpHwnd;
     private readonly Microsoft.UI.Dispatching.DispatcherQueue _lpDispatcher;
     private readonly ObservableCollection<LpResultRow> _lpRows = new();
+    private readonly Dictionary<LpResultRow, Border> _lpRowRoots = new();
     private readonly ThemeService _lpTheme = ThemeService.Instance;
     private Microsoft.UI.Dispatching.DispatcherQueueTimer? _lpSearchTimer;
     private int _lpQueryGeneration;
@@ -248,6 +251,7 @@ public sealed partial class MainWindow : Window
         _lpVisible = true;
         _lpVisibleSession++;
         _lpShownTick = Stopwatch.GetTimestamp();
+        PlayWakeMotion();
         Activate();
         NativeMethods.SetForegroundWindow(_lpHwnd);
         SearchBox.Focus(FocusState.Programmatic);
@@ -820,13 +824,25 @@ public sealed partial class MainWindow : Window
     {
         if (_lpRows.Count > 0)
         {
+            var lpWasEmpty = EmptyPanel.Visibility == Visibility.Visible;
             EmptyPanel.Visibility = Visibility.Collapsed;
             ResultsScroller.Visibility = Visibility.Visible;
+            if (lpWasEmpty)
+            {
+                // 分组切换（空态 ↔ 结果）：140ms 淡入，不触发布局。
+                LpFadeIn(ResultsScroller, 140);
+            }
+
             return;
         }
 
+        var lpWasResults = ResultsScroller.Visibility == Visibility.Visible;
         ResultsScroller.Visibility = Visibility.Collapsed;
         EmptyPanel.Visibility = Visibility.Visible;
+        if (lpWasResults)
+        {
+            LpFadeIn(EmptyPanel, 140);
+        }
         if (_lpHomeMode)
         {
             ShowEmpty("\uE81C", "还没有最近访问", "打开任意搜索结果后，会出现在这里");
@@ -846,6 +862,13 @@ public sealed partial class MainWindow : Window
         ResultsScroller.Visibility = Visibility.Collapsed;
     }
 
+    /// <summary>140ms 淡入，用于空态与结果列表之间的切换。</summary>
+    private static void LpFadeIn(UIElement lpElement, int lpMs)
+    {
+        ElementCompositionPreview.GetElementVisual(lpElement).Opacity = 0f;
+        LpAnimateOpacity(lpElement, 1, lpMs, easeOut: true);
+    }
+
     private void MoveSelection(int lpDelta)
     {
         if (_lpRows.Count == 0)
@@ -862,7 +885,16 @@ public sealed partial class MainWindow : Window
     {
         for (var lpIndex = 0; lpIndex < _lpRows.Count; lpIndex++)
         {
-            _lpRows[lpIndex].IsSelected = lpIndex == _lpSelectedIndex;
+            var lpRow = _lpRows[lpIndex];
+            lpRow.IsSelected = lpIndex == _lpSelectedIndex;
+
+            if (_lpRowRoots.TryGetValue(lpRow, out var lpRoot) &&
+                lpRoot.Child is Grid lpGrid && lpGrid.Children.Count > 0 &&
+                lpGrid.Children[0] is Border lpSelection)
+            {
+                // 选中态 140ms 淡入/淡出；只动不透明度，不触发布局。
+                LpAnimateOpacity(lpSelection, lpRow.IsSelected ? 1 : 0, 140, easeOut: true);
+            }
         }
     }
 
@@ -880,18 +912,81 @@ public sealed partial class MainWindow : Window
 
     private void OnRowPointerEntered(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is FrameworkElement lpElement && lpElement.DataContext is LpResultRow lpRow)
+        if (sender is Border lpBorder)
         {
-            lpRow.IsHovered = true;
+            AnimateRowLayer(lpBorder, 1, 120, easeOut: true);
         }
     }
 
     private void OnRowPointerExited(object sender, PointerRoutedEventArgs e)
     {
-        if (sender is FrameworkElement lpElement && lpElement.DataContext is LpResultRow lpRow)
+        if (sender is Border lpBorder)
         {
-            lpRow.IsHovered = false;
+            AnimateRowLayer(lpBorder, 0, 140, easeOut: false);
         }
+    }
+
+    private void OnRowLoaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is Border lpBorder && lpBorder.DataContext is LpResultRow lpRow)
+        {
+            _lpRowRoots[lpRow] = lpBorder;
+        }
+    }
+
+    private void OnRowUnloaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is Border lpBorder && lpBorder.DataContext is LpResultRow lpRow)
+        {
+            _lpRowRoots.Remove(lpRow);
+        }
+    }
+
+    /// <summary>HoverLayer 是行内第 2 层，透明度过渡只跑在合成线程上。</summary>
+    private static void AnimateRowLayer(Border lpBorder, double lpTo, int lpMs, bool easeOut)
+    {
+        if (lpBorder.Child is not Grid lpGrid || lpGrid.Children.Count < 2 ||
+            lpGrid.Children[1] is not Border lpHover)
+        {
+            return;
+        }
+
+        LpAnimateOpacity(lpHover, lpTo, lpMs, easeOut);
+    }
+
+    private static void LpAnimateOpacity(UIElement lpElement, double lpTo, int lpMs, bool easeOut)
+    {
+        var lpVisual = ElementCompositionPreview.GetElementVisual(lpElement);
+        var lpCompositor = lpVisual.Compositor;
+        var lpEase = lpCompositor.CreateCubicBezierEasingFunction(
+            easeOut ? new Vector2(0.2f, 0f) : new Vector2(0.4f, 0f),
+            easeOut ? new Vector2(0f, 1f) : new Vector2(1f, 1f));
+        var lpAnimation = lpCompositor.CreateScalarKeyFrameAnimation();
+        lpAnimation.InsertKeyFrame(1f, (float)lpTo, lpEase);
+        lpAnimation.Duration = TimeSpan.FromMilliseconds(lpMs);
+        lpVisual.StartAnimation("Opacity", lpAnimation);
+    }
+
+    /// <summary>窗口唤出：150ms，位移 8→0 DIP + 淡入，曲线 cubic-bezier(0.2, 0, 0, 1)。</summary>
+    private void PlayWakeMotion()
+    {
+        var lpVisual = ElementCompositionPreview.GetElementVisual(RootGrid);
+        var lpCompositor = lpVisual.Compositor;
+        var lpEase = lpCompositor.CreateCubicBezierEasingFunction(
+            new Vector2(0.2f, 0f), new Vector2(0f, 1f));
+
+        var lpFade = lpCompositor.CreateScalarKeyFrameAnimation();
+        lpFade.InsertKeyFrame(0f, 0f);
+        lpFade.InsertKeyFrame(1f, 1f, lpEase);
+        lpFade.Duration = TimeSpan.FromMilliseconds(150);
+        lpVisual.StartAnimation("Opacity", lpFade);
+
+        var lpOffset = lpCompositor.CreateVector3KeyFrameAnimation();
+        var lpTarget = lpVisual.Offset;
+        lpOffset.InsertKeyFrame(0f, new Vector3(lpTarget.X, lpTarget.Y + 8f, lpTarget.Z));
+        lpOffset.InsertKeyFrame(1f, lpTarget, lpEase);
+        lpOffset.Duration = TimeSpan.FromMilliseconds(150);
+        lpVisual.StartAnimation("Offset", lpOffset);
     }
 
     private void OnRowTapped(object sender, TappedRoutedEventArgs e)
@@ -1226,7 +1321,6 @@ public sealed class LpResultRow : INotifyPropertyChanged
     private static readonly Color BrowserColor = Color.FromArgb(255, 63, 174, 149);
 
     private bool _lpIsSelected;
-    private bool _lpIsHovered;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -1272,20 +1366,9 @@ public sealed class LpResultRow : INotifyPropertyChanged
         }
     }
 
-    public bool IsHovered
-    {
-        get => _lpIsHovered;
-        set
-        {
-            if (_lpIsHovered == value)
-            {
-                return;
-            }
+    public Brush SelectionBrush => ThemeService.Instance.SelectionBrush;
 
-            _lpIsHovered = value;
-            Raise(nameof(RowBackground));
-        }
-    }
+    public double SelectionOpacity => IsSelected ? 1 : 0;
 
     public double RowHeight => ThemeService.Instance.RowHeight;
 
@@ -1300,11 +1383,6 @@ public sealed class LpResultRow : INotifyPropertyChanged
     public Visibility TagVisibility => string.IsNullOrEmpty(TimeText) ? Visibility.Visible : Visibility.Collapsed;
 
     public Visibility TimeVisibility => string.IsNullOrEmpty(TimeText) ? Visibility.Collapsed : Visibility.Visible;
-
-    public Brush RowBackground =>
-        IsSelected ? ThemeService.Instance.SelectionBrush :
-        IsHovered ? ThemeService.Instance.RowHoverBrush :
-        ThemeService.Instance.TransparentBrush;
 
     public Brush RowBorderBrush =>
         IsSelected ? ThemeService.Instance.SelectionBorderBrush : ThemeService.Instance.TransparentBrush;
@@ -1388,7 +1466,7 @@ public sealed class LpResultRow : INotifyPropertyChanged
 
     public void RefreshVisuals()
     {
-        Raise(nameof(RowBackground));
+        Raise(nameof(SelectionOpacity));
         Raise(nameof(RowBorderBrush));
         Raise(nameof(RowHeight));
         Raise(nameof(NameFontSize));

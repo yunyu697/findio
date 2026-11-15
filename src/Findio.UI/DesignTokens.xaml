@@ -27,32 +27,27 @@
     <x:Double x:Key="LpSpaceSection">22</x:Double>
     <x:Double x:Key="LpSpaceDialog">26</x:Double>
 
-    <!-- ========== 字号阶梯 ========== -->
-    <x:Double x:Key="LpTextCaption">9.5</x:Double>
-    <x:Double x:Key="LpTextLabel">10</x:Double>
-    <x:Double x:Key="LpTextBodySmall">10.5</x:Double>
-    <x:Double x:Key="LpTextBody">11</x:Double>
-    <x:Double x:Key="LpTextButton">11.5</x:Double>
-    <x:Double x:Key="LpTextNav">12</x:Double>
-    <x:Double x:Key="LpTextBase">12.5</x:Double>
-    <x:Double x:Key="LpTextMenu">13</x:Double>
-    <x:Double x:Key="LpTextSubtitle">14</x:Double>
-    <x:Double x:Key="LpTextSectionTitle">16</x:Double>
-    <x:Double x:Key="LpTextTitle">20</x:Double>
+    <!-- ========== 字号阶梯：6 档，相邻差 2/2/3/4/5 DIP ========== -->
+    <x:Double x:Key="LpTextMeta">10</x:Double>
+    <x:Double x:Key="LpTextBody">12</x:Double>
+    <x:Double x:Key="LpTextEmphasis">14</x:Double>
+    <x:Double x:Key="LpTextHeading">17</x:Double>
+    <x:Double x:Key="LpTextTitle">21</x:Double>
+    <x:Double x:Key="LpTextDisplay">26</x:Double>
 
     <!-- ========== 行高 ========== -->
     <x:Double x:Key="LpLineTight">15</x:Double>
     <x:Double x:Key="LpLineBase">17</x:Double>
     <x:Double x:Key="LpLineRelaxed">19</x:Double>
 
-    <!-- ========== 圆角 ========== -->
+    <!-- ========== 圆角：4 / 8 / 999 三档，窗口 8 与 DWM 8 DIP 一致 ========== -->
     <CornerRadius x:Key="LpRadiusNone">0</CornerRadius>
     <CornerRadius x:Key="LpRadiusKbd">4</CornerRadius>
-    <CornerRadius x:Key="LpRadiusControl">6</CornerRadius>
-    <CornerRadius x:Key="LpRadiusButton">7</CornerRadius>
+    <CornerRadius x:Key="LpRadiusControl">8</CornerRadius>
+    <CornerRadius x:Key="LpRadiusButton">8</CornerRadius>
     <CornerRadius x:Key="LpRadiusCard">8</CornerRadius>
     <CornerRadius x:Key="LpRadiusWindow">8</CornerRadius>
-    <CornerRadius x:Key="LpRadiusLarge">10</CornerRadius>
+    <CornerRadius x:Key="LpRadiusLarge">8</CornerRadius>
     <CornerRadius x:Key="LpRadiusPill">999</CornerRadius>
 
     <!-- ========== 描边 ========== -->

@@ -21,25 +21,25 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border x:Name="BrandDot" Width="40" Height="40" CornerRadius="11" VerticalAlignment="Center" />
+                    <Border x:Name="BrandDot" Width="40" Height="40" CornerRadius="8" VerticalAlignment="Center" />
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
-                        <TextBlock x:Name="ProductNameText" Text="Findio" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource Text1Brush}" />
-                        <TextBlock x:Name="ProductSubText" Text="Windows 快速定位工具" FontSize="10.5" Foreground="{ThemeResource Text3Brush}" />
+                        <TextBlock x:Name="ProductNameText" Text="Findio" FontSize="{StaticResource LpTextHeading}" FontWeight="SemiBold" Foreground="{ThemeResource Text1Brush}" />
+                        <TextBlock x:Name="ProductSubText" Text="Windows 快速定位工具" FontSize="{StaticResource LpTextMeta}" Foreground="{ThemeResource Text3Brush}" />
                     </StackPanel>
                 </Grid>
 
                 <StackPanel Grid.Row="1" Padding="20,16,20,0" Spacing="7">
                     <Grid>
-                        <TextBlock Text="版本" FontSize="11" Foreground="{ThemeResource Text3Brush}" />
-                        <TextBlock x:Name="VersionText" Text="1.0.1" FontSize="11" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
+                        <TextBlock Text="版本" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text3Brush}" />
+                        <TextBlock x:Name="VersionText" Text="1.0.1" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
                     </Grid>
                     <Grid>
-                        <TextBlock Text="运行时" FontSize="11" Foreground="{ThemeResource Text3Brush}" />
-                        <TextBlock Text=".NET 8 · Windows App SDK" FontSize="11" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
+                        <TextBlock Text="运行时" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text3Brush}" />
+                        <TextBlock Text=".NET 8 · Windows App SDK" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
                     </Grid>
                     <Grid>
-                        <TextBlock Text="索引" FontSize="11" Foreground="{ThemeResource Text3Brush}" />
-                        <TextBlock x:Name="IndexStateText" Text="由后台服务提供" FontSize="11" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
+                        <TextBlock Text="索引" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text3Brush}" />
+                        <TextBlock x:Name="IndexStateText" Text="由后台服务提供" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text2Brush}" HorizontalAlignment="Right" />
                     </Grid>
                 </StackPanel>
 
@@ -50,18 +50,18 @@
                             Background="Transparent"
                             BorderBrush="{ThemeResource Border2Brush}"
                             BorderThickness="1"
-                            CornerRadius="7"
+                            CornerRadius="8"
                             Height="30"
                             Padding="13,0"
-                            FontSize="11.5"
+                            FontSize="{StaticResource LpTextBody}"
                             Foreground="{ThemeResource Text2Brush}"
                             Click="OnHomeClick" />
                     <Button Content="关闭"
                             HorizontalAlignment="Right"
-                            CornerRadius="7"
+                            CornerRadius="8"
                             Height="30"
                             Padding="16,0"
-                            FontSize="11.5"
+                            FontSize="{StaticResource LpTextBody}"
                             Click="OnCloseClick" />
                 </Grid>
             </Grid>

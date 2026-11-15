@@ -14,7 +14,7 @@
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Height" Value="{StaticResource LpSizeTool}" />
                 <Setter Property="Padding" Value="12,0" />
-                <Setter Property="FontSize" Value="{StaticResource LpTextBodySmall}" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextMeta}" />
                 <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
             </Style>
             <Style x:Key="LpPrimaryButtonStyle" TargetType="Button">
@@ -23,7 +23,7 @@
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Height" Value="{StaticResource LpSizeTool}" />
                 <Setter Property="Padding" Value="12,0" />
-                <Setter Property="FontSize" Value="{StaticResource LpTextBodySmall}" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextMeta}" />
                 <Setter Property="Foreground" Value="{ThemeResource AccentInkBrush}" />
             </Style>
         </Grid.Resources>
@@ -50,10 +50,10 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Border x:Name="CaptionDot" Width="15" Height="15" CornerRadius="5" />
+                        <Border x:Name="CaptionDot" Width="15" Height="15" CornerRadius="4" />
                         <TextBlock Grid.Column="1"
                                    Text="检查更新"
-                                   FontSize="12"
+                                   FontSize="{StaticResource LpTextBody}"
                                    FontWeight="Medium"
                                    Foreground="{ThemeResource Text2Brush}"
                                    VerticalAlignment="Center" />
@@ -61,12 +61,12 @@
                         <Border x:Name="PreviewBadge"
                                 Grid.Column="3"
                                 Background="{ThemeResource Surface3Brush}"
-                                CornerRadius="10"
+                                CornerRadius="8"
                                 Padding="7,2"
                                 VerticalAlignment="Center"
                                 Visibility="Collapsed">
                             <TextBlock Text="预览 · 测试注入"
-                                       FontSize="9"
+                                       FontSize="{StaticResource LpTextMeta}"
                                        Foreground="{ThemeResource WarnBrush}" />
                         </Border>
                     </Grid>
@@ -97,21 +97,21 @@
                                 VerticalAlignment="Center"
                                 Spacing="9"
                                 HorizontalAlignment="Center">
-                        <Border x:Name="IdleMark" Width="40" Height="40" CornerRadius="11" HorizontalAlignment="Center" />
+                        <Border x:Name="IdleMark" Width="40" Height="40" CornerRadius="8" HorizontalAlignment="Center" />
                         <TextBlock x:Name="IdleProductText"
                                    Text="Findio"
-                                   FontSize="14"
+                                   FontSize="{StaticResource LpTextEmphasis}"
                                    FontWeight="SemiBold"
                                    Foreground="{ThemeResource Text1Brush}"
                                    HorizontalAlignment="Center" />
                         <TextBlock x:Name="IdleVersionText"
                                    Text="当前版本 1.0.1"
-                                   FontSize="10"
+                                   FontSize="{StaticResource LpTextMeta}"
                                    Foreground="{ThemeResource Text3Brush}"
                                    HorizontalAlignment="Center" />
                         <TextBlock x:Name="IdleLastText"
                                    Text="上次检查：尚未检查"
-                                   FontSize="9"
+                                   FontSize="{StaticResource LpTextMeta}"
                                    Foreground="{ThemeResource Text4Brush}"
                                    TextAlignment="Center"
                                    TextWrapping="Wrap"
@@ -135,7 +135,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Border x:Name="FoundMark" Width="26" Height="26" CornerRadius="7" VerticalAlignment="Top" />
+                            <Border x:Name="FoundMark" Width="26" Height="26" CornerRadius="8" VerticalAlignment="Top" />
                             <StackPanel Grid.Column="1" Spacing="5">
                                 <Border Background="{ThemeResource AccentSoftBrush}"
                                         BorderBrush="{ThemeResource AccentSoft2Brush}"
@@ -145,18 +145,18 @@
                                         HorizontalAlignment="Left">
                                     <StackPanel Orientation="Horizontal" Spacing="4">
                                         <Ellipse Width="4" Height="4" Fill="{ThemeResource AccentBrush}" VerticalAlignment="Center" />
-                                        <TextBlock Text="发现新版本" FontSize="8.5" Foreground="{ThemeResource AccentBrush}" CharacterSpacing="30" />
+                                        <TextBlock Text="发现新版本" FontSize="{StaticResource LpTextMeta}" Foreground="{ThemeResource AccentBrush}" CharacterSpacing="30" />
                                     </StackPanel>
                                 </Border>
                                 <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
                                     <TextBlock x:Name="FoundVersionText"
                                                Text="1.0.2"
-                                               FontSize="17"
+                                               FontSize="{StaticResource LpTextHeading}"
                                                FontWeight="SemiBold"
                                                Foreground="{ThemeResource Text1Brush}" />
                                     <TextBlock x:Name="FoundOldText"
                                                Text="1.0.1"
-                                               FontSize="9.5"
+                                               FontSize="{StaticResource LpTextMeta}"
                                                Foreground="{ThemeResource Text4Brush}"
                                                TextDecorations="Strikethrough"
                                                VerticalAlignment="Bottom"
@@ -168,7 +168,7 @@
                                             VerticalAlignment="Center">
                                         <TextBlock x:Name="FoundChannelText"
                                                    Text="稳定通道"
-                                                   FontSize="8.5"
+                                                   FontSize="{StaticResource LpTextMeta}"
                                                    Foreground="{ThemeResource Text3Brush}" />
                                     </Border>
                                 </StackPanel>
@@ -180,7 +180,7 @@
                                 Background="{ThemeResource Surface2Brush}"
                                 BorderBrush="{ThemeResource Border1Brush}"
                                 BorderThickness="1"
-                                CornerRadius="7"
+                                CornerRadius="8"
                                 Padding="9,8"
                                 Margin="0,10,0,0"
                                 Visibility="Collapsed">
@@ -190,7 +190,7 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="更新说明"
-                                           FontSize="8.5"
+                                           FontSize="{StaticResource LpTextMeta}"
                                            FontWeight="SemiBold"
                                            CharacterSpacing="100"
                                            Foreground="{ThemeResource Text3Brush}" />
@@ -199,7 +199,7 @@
                                               Margin="0,5,0,0"
                                               VerticalScrollBarVisibility="Auto">
                                     <TextBlock x:Name="NotesText"
-                                               FontSize="9.5"
+                                               FontSize="{StaticResource LpTextMeta}"
                                                LineHeight="15"
                                                Foreground="{ThemeResource Text2Brush}"
                                                TextWrapping="Wrap" />
@@ -217,11 +217,11 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <FontIcon Glyph="&#xE896;" FontSize="12" Foreground="{ThemeResource Text3Brush}" VerticalAlignment="Center" />
+                            <FontIcon Glyph="&#xE896;" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource Text3Brush}" VerticalAlignment="Center" />
                             <TextBlock x:Name="MirrorLabelText"
                                        Grid.Column="1"
                                        Text="下载源"
-                                       FontSize="9.5"
+                                       FontSize="{StaticResource LpTextMeta}"
                                        Foreground="{ThemeResource Text2Brush}"
                                        VerticalAlignment="Center" />
                             <!-- 不再保留点了没效果的镜像下拉：只有 github.com 直链才显示「官方直链」，
@@ -229,14 +229,14 @@
                             <TextBlock x:Name="MirrorStatusText"
                                        Grid.Column="2"
                                        Text="GitHub 官方直链"
-                                       FontSize="9.5"
+                                       FontSize="{StaticResource LpTextMeta}"
                                        Foreground="{ThemeResource Text3Brush}"
                                        VerticalAlignment="Center" />
                         </Grid>
 
                         <TextBlock x:Name="AssetInfoText"
                                    Grid.Row="3"
-                                   FontSize="8.5"
+                                   FontSize="{StaticResource LpTextMeta}"
                                    Foreground="{ThemeResource Text4Brush}"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Bottom"
@@ -257,25 +257,25 @@
                             <StackPanel Spacing="0">
                                 <Grid ColumnSpacing="7">
                                     <StackPanel Orientation="Horizontal" Spacing="7">
-                                        <FontIcon Glyph="&#xE896;" FontSize="13" Foreground="{ThemeResource AccentBrush}" VerticalAlignment="Center" />
+                                        <FontIcon Glyph="&#xE896;" FontSize="{StaticResource LpTextEmphasis}" Foreground="{ThemeResource AccentBrush}" VerticalAlignment="Center" />
                                         <TextBlock x:Name="DownloadTitleText"
                                                    Text="正在下载 1.0.2"
-                                                   FontSize="10"
+                                                   FontSize="{StaticResource LpTextMeta}"
                                                    Foreground="{ThemeResource Text2Brush}"
                                                    VerticalAlignment="Center" />
                                     </StackPanel>
                                     <TextBlock x:Name="ProgressText"
                                                Text="0%"
-                                               FontSize="10"
+                                               FontSize="{StaticResource LpTextMeta}"
                                                FontWeight="SemiBold"
                                                FontFamily="Consolas"
                                                Foreground="{ThemeResource Text1Brush}"
                                                HorizontalAlignment="Right" />
                                 </Grid>
-                                <Border Height="5" CornerRadius="3" Background="{ThemeResource Surface4Brush}" Margin="0,8,0,7">
-                                    <Border x:Name="ProgressFill" Height="5" CornerRadius="3" Background="{ThemeResource AccentBrush}" HorizontalAlignment="Left" Width="0" />
+                                <Border Height="5" CornerRadius="4" Background="{ThemeResource Surface4Brush}" Margin="0,8,0,7">
+                                    <Border x:Name="ProgressFill" Height="5" CornerRadius="4" Background="{ThemeResource AccentBrush}" HorizontalAlignment="Left" Width="0" />
                                 </Border>
-                                <TextBlock x:Name="ProgressDetailText" Text="" FontSize="8.5" Foreground="{ThemeResource Text3Brush}" />
+                                <TextBlock x:Name="ProgressDetailText" Text="" FontSize="{StaticResource LpTextMeta}" Foreground="{ThemeResource Text3Brush}" />
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -287,18 +287,18 @@
                                 Spacing="13"
                                 Visibility="Collapsed">
                         <StackPanel Orientation="Horizontal" Spacing="11">
-                            <Border x:Name="DownloadedMark" Width="40" Height="40" CornerRadius="11">
-                                <FontIcon Glyph="&#xE73E;" FontSize="19" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Border x:Name="DownloadedMark" Width="40" Height="40" CornerRadius="8">
+                                <FontIcon Glyph="&#xE73E;" FontSize="{StaticResource LpTextTitle}" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                             <StackPanel VerticalAlignment="Center" Spacing="3">
                                 <TextBlock x:Name="DownloadedTitleText"
                                            Text="1.0.2 已下载完成"
-                                           FontSize="14"
+                                           FontSize="{StaticResource LpTextEmphasis}"
                                            FontWeight="SemiBold"
                                            Foreground="{ThemeResource Text1Brush}" />
                                 <TextBlock x:Name="DownloadedSubText"
                                            Text="仅下载模式，未执行安装"
-                                           FontSize="10"
+                                           FontSize="{StaticResource LpTextMeta}"
                                            Foreground="{ThemeResource Text3Brush}" />
                             </StackPanel>
                         </StackPanel>
@@ -314,25 +314,25 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Border Width="26" Height="26" CornerRadius="6" Background="#1F3FAE95">
-                                    <FontIcon Glyph="&#xE896;" FontSize="13" Foreground="#3FAE95" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Border Width="26" Height="26" CornerRadius="8" Background="#1F3FAE95">
+                                    <FontIcon Glyph="&#xE896;" FontSize="{StaticResource LpTextEmphasis}" Foreground="#3FAE95" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
                                     <TextBlock x:Name="DownloadedFileName"
                                                Text="Findio-1.0.2-setup.exe"
-                                               FontSize="10"
+                                               FontSize="{StaticResource LpTextMeta}"
                                                FontWeight="Medium"
                                                Foreground="{ThemeResource Text1Brush}"
                                                TextTrimming="CharacterEllipsis" />
                                     <TextBlock x:Name="DownloadedFileDetail"
                                                Text=""
-                                               FontSize="8.5"
+                                               FontSize="{StaticResource LpTextMeta}"
                                                Foreground="{ThemeResource Text3Brush}"
                                                TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="3" VerticalAlignment="Center">
-                                    <FontIcon Glyph="&#xE73E;" FontSize="11" Foreground="{ThemeResource OkBrush}" />
-                                    <TextBlock Text="已完成" FontSize="8.5" Foreground="{ThemeResource OkBrush}" />
+                                    <FontIcon Glyph="&#xE73E;" FontSize="{StaticResource LpTextBody}" Foreground="{ThemeResource OkBrush}" />
+                                    <TextBlock Text="已完成" FontSize="{StaticResource LpTextMeta}" Foreground="{ThemeResource OkBrush}" />
                                 </StackPanel>
                             </Grid>
                         </Border>

@@ -152,9 +152,9 @@ public sealed class ThemeService
 
     public double RowNameFontSize => Density switch
     {
-        LpDensity.Compact => 12.5,
-        LpDensity.Comfortable => 14.5,
-        _ => 13.5
+        LpDensity.Compact => 12,
+        LpDensity.Comfortable => 17,
+        _ => 14
     };
 
     public string DensityLabel => Density switch

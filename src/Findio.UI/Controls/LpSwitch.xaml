@@ -6,7 +6,7 @@
     <Border x:Name="Track"
             Width="36"
             Height="20"
-            CornerRadius="10"
+            CornerRadius="8"
             Background="{ThemeResource Surface4Brush}"
             BorderBrush="{ThemeResource Border2Brush}"
             BorderThickness="1"
