@@ -86,6 +86,41 @@
       "file": "shots/90-main-scale200-results.png",
       "version": "1.1.3",
       "shows": "480 DIP 宽下的结果页：名称完整、路径省略后仍保留父目录，用于确认不需要抬下限（200%）"
+    },
+    {
+      "file": "shots/91-main-scale200-empty.png",
+      "version": "1.1.3",
+      "shows": "观感诊断基线：无历史时的空态主窗（200%，960×872）"
+    },
+    {
+      "file": "shots/93-dirA-neutral-empty.png",
+      "version": "1.1.3",
+      "shows": "观感方向 A「静默中性」空态：中性石墨灰 + 低饱和强调色（临时配色构建，已还原）"
+    },
+    {
+      "file": "shots/94-dirA-neutral-results.png",
+      "version": "1.1.3",
+      "shows": "观感方向 A「静默中性」结果页（查询 lp，200%）"
+    },
+    {
+      "file": "shots/95-dirB-layered-empty.png",
+      "version": "1.1.3",
+      "shows": "观感方向 B「层次与材质」空态：更深底色 + 更强表面阶梯（临时配色构建，已还原）"
+    },
+    {
+      "file": "shots/96-dirB-layered-results.png",
+      "version": "1.1.3",
+      "shows": "观感方向 B「层次与材质」结果页（查询 lp，200%）"
+    },
+    {
+      "file": "shots/97-dirC-editorial-empty.png",
+      "version": "1.1.3",
+      "shows": "观感方向 C「清晰编辑感」空态：暖中性 + 琥珀强调，宽松密度（临时构建与配置，已还原）"
+    },
+    {
+      "file": "shots/98-dirC-editorial-results.png",
+      "version": "1.1.3",
+      "shows": "观感方向 C「清晰编辑感」结果页（查询 lp，行高 56 DIP，200%）"
     }
   ]
 }
