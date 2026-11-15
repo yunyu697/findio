@@ -3,13 +3,13 @@
 .SYNOPSIS
   校验每套颜色主题在亮/暗两种变体下的对比度。
 .DESCRIPTION
-  读取 src\Pathleap.UI\Theme\ColorThemes.json（与运行期同一份数据），
+  读取 src\Findio.UI\Theme\ColorThemes.json（与运行期同一份数据），
   按 WCAG 相对亮度计算：正文/背景、次级文字/背景、按钮文字/按钮底色、状态色/背景。
   不满足阈值的项会逐条列出并以退出码 1 结束。
 #>
 [CmdletBinding()]
 param(
-    [string]$LpThemeFile = (Join-Path (Split-Path -Parent $PSScriptRoot) 'src\Pathleap.UI\Theme\ColorThemes.json')
+    [string]$LpThemeFile = (Join-Path (Split-Path -Parent $PSScriptRoot) 'src\Findio.UI\Theme\ColorThemes.json')
 )
 
 Set-StrictMode -Version Latest

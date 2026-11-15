@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-  快速切换栏数字键「真实按键」验收：打开 6 个真实资源管理器窗口 → 拉起 Pathleap.UI（托盘）→
+  快速切换栏数字键「真实按键」验收：打开 6 个真实资源管理器窗口 → 拉起 Findio.UI（托盘）→
   拉起真实 #32770 文件对话框 → 送 Ctrl+G 打开快速切换栏 → 用 SendInput 按数字键 1–6，
   读日志里的注入结果，核对每个数字都命中一个互不相同的文件夹，且都来自这 6 个已打开窗口。
 
@@ -31,12 +31,12 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
-$LpHost = Join-Path $env:TEMP 'pathleap-scaling\DialogHost.exe'
-$LpLog = Join-Path $env:LOCALAPPDATA ('Pathleap\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
+$LpHost = Join-Path $env:TEMP 'findio-scaling\DialogHost.exe'
+$LpLog = Join-Path $env:LOCALAPPDATA ('Findio\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
 $LpRoot = Join-Path $env:TEMP ('lp-qs-keys-{0}' -f (Get-Date -Format 'yyyyMMddHHmmss'))
-$LpDialogTitle = '打开（Pathleap 验收）'
-$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Pathleap\config.json'
+$LpDialogTitle = '打开（Findio 验收）'
+$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Findio\config.json'
 $LpConfigBackup = Join-Path $env:TEMP ('lp-qs-keys-config-{0}.json' -f (Get-Date -Format 'yyyyMMddHHmmss'))
 
 Add-Type -Namespace 'LpKeys' -Name 'Native' -MemberDefinition @'
@@ -213,7 +213,7 @@ try {
     $LpConfig.autoCheckUpdates = $false
     $LpConfig | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $LpConfigPath -Encoding UTF8
 
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Get-Process DialogHost -ErrorAction SilentlyContinue | Stop-Process -Force
 
     foreach ($LpDir in $LpDirs) { New-Item -ItemType Directory -Force -Path $LpDir | Out-Null }
@@ -322,7 +322,7 @@ try {
 
     Add-LpCheck -LpName '快速切换栏挂到真实文件对话框' -LpPassed $LpDialogLogged -LpDetail '日志出现「快速切换栏已挂到对话框」'
     Add-LpCheck -LpName '快速切换栏列出 6 个文件夹' -LpPassed ($LpFoldersSeen -eq 6) -LpDetail ("日志 folders={0}" -f $LpFoldersSeen)
-    Add-LpCheck -LpName 'Ctrl+G 后栏取得前台（键盘焦点）' -LpPassed ($LpBarActiveRounds -eq 6) -LpDetail ("{0}/6 轮前台进程是 Pathleap.UI" -f $LpBarActiveRounds)
+    Add-LpCheck -LpName 'Ctrl+G 后栏取得前台（键盘焦点）' -LpPassed ($LpBarActiveRounds -eq 6) -LpDetail ("{0}/6 轮前台进程是 Findio.UI" -f $LpBarActiveRounds)
 
     # ---------- 输入态：裸数字必须进搜索框，直选改用 Alt+数字 ----------
     $LpTypeHost = Start-Process -FilePath $LpHost -PassThru
@@ -445,7 +445,7 @@ catch {
 }
 finally {
     Get-Process DialogHost -ErrorAction SilentlyContinue | Stop-Process -Force
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 300
     if (Test-Path -LiteralPath $LpConfigBackup) {
         Copy-Item -LiteralPath $LpConfigBackup -Destination $LpConfigPath -Force

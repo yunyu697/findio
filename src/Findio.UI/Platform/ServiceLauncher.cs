@@ -1,0 +1,145 @@
+using System.Diagnostics;
+using Findio.Shared;
+using Findio.Shared.Diagnostics;
+using Findio.Shared.Ipc;
+
+namespace Findio.UI.Platform;
+
+/// <summary>
+/// M1 的服务进程拉起器：优先使用已运行的 SCM / 控制台服务，否则从 UI 目录启动
+/// Findio.Service.exe --console（无窗口）。只负责“两个进程分离”的骨架，不做索引。
+/// </summary>
+internal sealed class ServiceLauncher : IDisposable
+{
+    private Process? _lpOwnedProcess;
+    private bool _lpDisposed;
+
+    public bool Connected { get; private set; }
+
+    public string StatusText { get; private set; } = "服务未连接";
+
+    public async Task EnsureRunningAsync(bool startIfMissing, TimeSpan startupTimeout)
+    {
+        if (await TryConnectAsync(TimeSpan.FromMilliseconds(800)).ConfigureAwait(false))
+        {
+            return;
+        }
+
+        StatusText = "服务未连接";
+        if (!startIfMissing)
+        {
+            return;
+        }
+
+        var lpExePath = Path.Combine(AppContext.BaseDirectory, "Findio.Service.exe");
+        if (!File.Exists(lpExePath))
+        {
+            AppLog.Warn($"服务可执行文件不存在: {lpExePath}（UI 仍可独立运行）");
+            StatusText = "服务未安装";
+            return;
+        }
+
+        try
+        {
+            AppLog.Info($"拉起服务控制台进程: {lpExePath}");
+            _lpOwnedProcess = Process.Start(new ProcessStartInfo
+            {
+                FileName = lpExePath,
+                Arguments = "--console",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = AppContext.BaseDirectory
+            });
+
+            var lpDeadline = DateTime.UtcNow + startupTimeout;
+            while (DateTime.UtcNow < lpDeadline)
+            {
+                if (await TryConnectAsync(TimeSpan.FromMilliseconds(250)).ConfigureAwait(false))
+                {
+                    return;
+                }
+
+                await Task.Delay(200).ConfigureAwait(false);
+            }
+
+            AppLog.Warn("服务进程已启动，但在超时内未响应管道。");
+            StatusText = "服务启动中";
+        }
+        catch (Exception ex)
+        {
+            AppLog.Error("服务进程启动失败", ex);
+            StatusText = "服务启动失败";
+        }
+    }
+
+    private async Task<bool> TryConnectAsync(TimeSpan timeout)
+    {
+        try
+        {
+            var lpReply = await PipeClient.SendAsync(
+                Branding.ServicePipeName,
+                new IpcRequest { Command = "STATUS" },
+                timeout).ConfigureAwait(false);
+            if (!lpReply.Ok || lpReply.Status is null)
+            {
+                return false;
+            }
+
+            Connected = true;
+            StatusText = lpReply.Index is { Loaded: true }
+                ? $"索引就绪 · {lpReply.Index.EntryCount:N0} 条 · {DescribeSource(lpReply.Index.Source)}"
+                : "服务已连接 · 索引未构建";
+            AppLog.Info($"服务连接成功: mode={lpReply.Status.Mode}, pid={lpReply.Status.Pid}, uptime={lpReply.Status.UptimeMs}ms");
+            return true;
+        }
+        catch
+        {
+            Connected = false;
+            return false;
+        }
+    }
+
+    private static string DescribeSource(string source) => source switch
+    {
+        "" => "来源未知",
+        _ when source.Equals("usn", StringComparison.OrdinalIgnoreCase)
+              || source.StartsWith("usn:", StringComparison.OrdinalIgnoreCase) => "USN 全量索引",
+        _ when source.Equals("walk", StringComparison.OrdinalIgnoreCase)
+              || source.StartsWith("walk:", StringComparison.OrdinalIgnoreCase) => "目录遍历索引",
+        _ when source.StartsWith("synthetic", StringComparison.OrdinalIgnoreCase) => "合成索引（性能测试数据）",
+        _ => source
+    };
+
+    public void Dispose()
+    {
+        if (_lpDisposed)
+        {
+            return;
+        }
+
+        _lpDisposed = true;
+        if (_lpOwnedProcess is null)
+        {
+            return;
+        }
+
+        try
+        {
+            if (!_lpOwnedProcess.HasExited)
+            {
+                AppLog.Info($"停止 UI 拉起的服务进程 PID={_lpOwnedProcess.Id}");
+                _lpOwnedProcess.Kill(entireProcessTree: true);
+                _lpOwnedProcess.WaitForExit(2000);
+            }
+        }
+        catch (Exception ex)
+        {
+            AppLog.Warn($"停止服务进程失败: {ex.Message}");
+        }
+        finally
+        {
+            _lpOwnedProcess.Dispose();
+            _lpOwnedProcess = null;
+        }
+    }
+}

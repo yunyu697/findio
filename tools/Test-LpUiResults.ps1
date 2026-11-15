@@ -23,8 +23,8 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
-$LpUiExe = Join-Path $LpRepoRoot "src\Pathleap.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Pathleap.UI.exe"
-$LpServiceExe = Join-Path $LpRepoRoot "src\Pathleap.Service\bin\x64\$LpConfiguration\net8.0-windows\Pathleap.Service.exe"
+$LpUiExe = Join-Path $LpRepoRoot "src\Findio.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Findio.UI.exe"
+$LpServiceExe = Join-Path $LpRepoRoot "src\Findio.Service\bin\x64\$LpConfiguration\net8.0-windows\Findio.Service.exe"
 
 $LpResults = [System.Collections.Generic.List[object]]::new()
 
@@ -41,7 +41,7 @@ function Invoke-LpUiRequest {
     )
 
     $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new(
-        '.', 'Pathleap.UI', [System.IO.Pipes.PipeDirection]::InOut)
+        '.', 'Findio.UI', [System.IO.Pipes.PipeDirection]::InOut)
     try {
         $LpClient.Connect($LpTimeoutMs)
         $LpWriter = [System.IO.StreamWriter]::new($LpClient, [System.Text.Encoding]::UTF8, 1024, $true)
@@ -85,7 +85,7 @@ if (-not (Test-Path -LiteralPath $LpUiExe)) {
 }
 
 # 1. 后台实例：服务与 UI 都不显示窗口。
-$LpUiRunning = @(Get-Process -Name 'Pathleap.UI' -ErrorAction SilentlyContinue)
+$LpUiRunning = @(Get-Process -Name 'Findio.UI' -ErrorAction SilentlyContinue)
 if ($LpUiRunning.Count -eq 0) {
     Write-Host '启动服务（--console，无窗口）…' -ForegroundColor Cyan
     Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{

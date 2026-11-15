@@ -20,12 +20,12 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 $LpShotsDir = Join-Path $LpRepo 'docs\shots'
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpCsc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$LpWindowTitle = 'Pathleap 快速切换'
-$LpLogDir = Join-Path $env:LOCALAPPDATA 'Pathleap\logs'
+$LpWindowTitle = 'Findio 快速切换'
+$LpLogDir = Join-Path $env:LOCALAPPDATA 'Findio\logs'
 New-Item -ItemType Directory -Force -Path $LpShotsDir, $LpWork | Out-Null
 
 Add-Type -Namespace 'LpQuickNative' -Name 'Win32' -MemberDefinition @'
@@ -138,7 +138,7 @@ function Save-LpCornerZoom {
 }
 
 # ---------- 主流程 ----------
-Get-Process | Where-Object { $_.ProcessName -eq 'Pathleap.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process | Where-Object { $_.ProcessName -eq 'Findio.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 700
 
 $LpArgs = @('--screen=quick')

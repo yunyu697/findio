@@ -19,10 +19,10 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
-$LpServiceExe = Join-Path $LpRepo 'src\Pathleap.Service\bin\x64\Debug\net8.0-windows\Pathleap.Service.exe'
-$LpLog = Join-Path $env:LOCALAPPDATA ('Pathleap\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
-$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Pathleap\config.json'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
+$LpServiceExe = Join-Path $LpRepo 'src\Findio.Service\bin\x64\Debug\net8.0-windows\Findio.Service.exe'
+$LpLog = Join-Path $env:LOCALAPPDATA ('Findio\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
+$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Findio\config.json'
 $LpConfigBackup = Join-Path $env:TEMP ('lp-tray-config-{0}.json' -f (Get-Date -Format 'yyyyMMddHHmmss'))
 $LpShot = Join-Path $LpRepo 'docs\shots\85-tray-failure-balloon.png'
 $LpProxyKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
@@ -103,7 +103,7 @@ try {
     $LpConfig.lastUpdateCheck = (Get-Date).AddHours(-25).ToString('O')
     $LpConfig | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $LpConfigPath -Encoding UTF8
 
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 500
     Start-Process -FilePath $LpServiceExe -ArgumentList '--console' | Out-Null
 
@@ -148,7 +148,7 @@ finally {
             Set-ItemProperty -LiteralPath $LpProxyKey -Name ProxyServer -Value $LpProxyServerSnapshot -Type String
         }
     }
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 300
     if (Test-Path -LiteralPath $LpConfigBackup) {
         Copy-Item -LiteralPath $LpConfigBackup -Destination $LpConfigPath -Force

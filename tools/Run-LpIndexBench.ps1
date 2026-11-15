@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-  索引与查询基准：触发 INDEX_BUILD（可选）后对 Pathleap.Service 连续发 SEARCH，统计服务端查询耗时与管道往返。
+  索引与查询基准：触发 INDEX_BUILD（可选）后对 Findio.Service 连续发 SEARCH，统计服务端查询耗时与管道往返。
 
 .DESCRIPTION
   只读操作：不改索引文件、不删除任何内容。结果写入指定 JSON 文件（默认放在 perf 目录）。
@@ -25,11 +25,11 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$LpServicePipe = 'Pathleap.Service'
+$LpServicePipe = 'Findio.Service'
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
 $LpCandidates = @(
-    (Join-Path $LpRepoRoot 'src\Pathleap.Service\bin\x64\Debug\net8.0-windows\Pathleap.Service.exe'),
-    (Join-Path $LpRepoRoot 'src\Pathleap.Service\bin\x64\Release\net8.0-windows\Pathleap.Service.exe')
+    (Join-Path $LpRepoRoot 'src\Findio.Service\bin\x64\Debug\net8.0-windows\Findio.Service.exe'),
+    (Join-Path $LpRepoRoot 'src\Findio.Service\bin\x64\Release\net8.0-windows\Findio.Service.exe')
 ) | Where-Object { Test-Path -LiteralPath $_ }
 
 # 取最新编译的那个：避免跑到旧 Release 产物上测到过时行为。

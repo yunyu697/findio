@@ -10,7 +10,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>Pathleap.IconGen</AssemblyName>
-    <RootNamespace>Pathleap.IconGen</RootNamespace>
+    <AssemblyName>Findio.IconGen</AssemblyName>
+    <RootNamespace>Findio.IconGen</RootNamespace>
   </PropertyGroup>
 </Project>

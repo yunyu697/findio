@@ -18,11 +18,11 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 $LpShotsDir = Join-Path $LpRepo 'docs\shots'
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpCaptureExe = Join-Path $LpWork 'CaptureLp.exe'
-$LpWindowTitle = '设置 · Pathleap'
+$LpWindowTitle = '设置 · Findio'
 New-Item -ItemType Directory -Force -Path $LpShotsDir | Out-Null
 if (-not (Test-Path -LiteralPath $LpCaptureExe)) { throw '缺少抓取助手，请先运行 Test-LpShotOnce.ps1 编译 CaptureLp' }
 
@@ -113,7 +113,7 @@ Write-Host ("光标已移至 ({0},{1})（副屏 work 物理中心）" -f $LpCurX
 Start-Sleep -Milliseconds 300
 
 $script:LpFound = [IntPtr]::Zero
-Get-Process | Where-Object { $_.ProcessName -eq 'Pathleap.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process | Where-Object { $_.ProcessName -eq 'Findio.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 600
 $LpProc = Start-Process -FilePath $LpExe -ArgumentList '--screen=settings' -PassThru
 $LpDeadline = (Get-Date).AddSeconds(25)

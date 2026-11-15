@@ -1,0 +1,175 @@
+using System.Diagnostics;
+using Findio.Shared.Diagnostics;
+
+namespace Findio.Shared.Index;
+
+/// <summary>
+/// 降级索引源：目录遍历。用于非 NTFS 卷、无卷句柄权限（非管理员）等拿不到 USN 的场景。
+/// 相比 USN 慢且要真实 stat，但不需要特权；遍历时跳过重解析点，避免符号链接成环。
+/// </summary>
+public static class DirectoryIndexSource
+{
+    public static IndexBuildResult Build(
+        string rootPath,
+        string outputPath,
+        Action<IndexBuildProgress>? progress,
+        CancellationToken cancellationToken,
+        int progressStep = 50_000)
+    {
+        return BuildMany(new[] { rootPath }, outputPath, progress, cancellationToken, progressStep);
+    }
+
+    /// <summary>
+    /// 多根遍历：每个根各自补一条祖先链（共享同一个根节点时复用），再统一广度优先扫完。
+    /// 附加索引（网络位置 / 附加目录）用它把多个根写进同一个快照，查询侧只需一个 SearchEngine。
+    /// </summary>
+    public static IndexBuildResult BuildMany(
+        IReadOnlyList<string> rootPaths,
+        string outputPath,
+        Action<IndexBuildProgress>? progress,
+        CancellationToken cancellationToken,
+        int progressStep = 50_000)
+    {
+        var lpStarted = Stopwatch.GetTimestamp();
+        var lpBuilder = new IndexBuilder();
+        var lpSkipped = 0;
+        var lpQueue = new Queue<(string Path, int Index, int Depth)>(1024);
+        var lpRootNodes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        var lpLabels = new List<string>();
+
+        foreach (var lpRootPath in rootPaths)
+        {
+            string lpRootFull;
+            try
+            {
+                lpRootFull = Path.GetFullPath(lpRootPath);
+            }
+            catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+            {
+                lpSkipped++;
+                AppLog.Warn($"附加索引根无效，跳过: {lpRootPath} ({ex.Message})");
+                continue;
+            }
+
+            if (!Directory.Exists(lpRootFull))
+            {
+                lpSkipped++;
+                AppLog.Warn($"附加索引根不可访问，跳过: {lpRootFull}");
+                continue;
+            }
+
+            // 必须保留根路径的尾部分隔符：卷根 "C:\" 裁成 "C:" 会变成「盘符相对路径」，
+            // 由构建子进程的工作目录决定实际目录；安装目录在 C: 时会把整卷误扫成安装目录（只得到几十条）。
+            var lpPathRoot = Path.GetPathRoot(lpRootFull) ?? lpRootFull;
+            var lpVolumeLabel = lpPathRoot.TrimEnd(Path.DirectorySeparatorChar);
+
+            if (!lpRootNodes.TryGetValue(lpVolumeLabel, out var lpParentIndex))
+            {
+                lpParentIndex = lpBuilder.Add(new IndexNode(lpVolumeLabel, IndexFormat.NoParent, 0, IndexFormat.FlagDirectory, 0, 0));
+                lpRootNodes[lpVolumeLabel] = lpParentIndex;
+            }
+
+            var lpDepth = 0;
+            var lpRelative = lpRootFull.Substring(lpPathRoot.Length);
+            foreach (var lpSegment in lpRelative.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries))
+            {
+                lpDepth++;
+                lpParentIndex = lpBuilder.Add(
+                    new IndexNode(lpSegment, lpParentIndex, lpDepth, IndexFormat.FlagDirectory, 0, 0));
+            }
+
+            lpQueue.Enqueue((lpRootFull, lpParentIndex, lpDepth));
+            lpLabels.Add(lpRootFull.TrimEnd(Path.DirectorySeparatorChar));
+        }
+
+        while (lpQueue.Count > 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var (lpPath, lpIndex, lpCurrentDepth) = lpQueue.Dequeue();
+
+            IEnumerable<FileSystemInfo> lpChildren;
+            try
+            {
+                lpChildren = new DirectoryInfo(lpPath).EnumerateFileSystemInfos("*", new EnumerationOptions
+                {
+                    IgnoreInaccessible = true,
+                    RecurseSubdirectories = false,
+                    AttributesToSkip = 0,
+                    ReturnSpecialDirectories = false
+                });
+            }
+            catch (Exception ex)
+            {
+                lpSkipped++;
+                AppLog.Debug($"目录不可枚举，跳过: {lpPath} ({ex.GetType().Name})");
+                continue;
+            }
+
+            foreach (var lpChild in lpChildren)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                try
+                {
+                    var lpIsDirectory = (lpChild.Attributes & FileAttributes.Directory) != 0;
+                    var lpIsReparse = (lpChild.Attributes & FileAttributes.ReparsePoint) != 0;
+                    if (lpIsReparse)
+                    {
+                        // 重解析点不入索引，避免链接/挂载点造成环路与重复。
+                        lpSkipped++;
+                        continue;
+                    }
+
+                    var lpFlags = lpIsDirectory ? IndexFormat.FlagDirectory : (byte)0;
+                    if ((lpChild.Attributes & FileAttributes.Hidden) != 0)
+                    {
+                        lpFlags |= IndexFormat.FlagHidden;
+                    }
+
+                    if ((lpChild.Attributes & FileAttributes.System) != 0)
+                    {
+                        lpFlags |= IndexFormat.FlagSystem;
+                    }
+
+                    var lpSize = 0L;
+                    var lpModified = 0L;
+                    if (lpChild is FileInfo lpFile)
+                    {
+                        lpSize = lpFile.Length;
+                        lpModified = lpFile.LastWriteTimeUtc.ToFileTimeUtc();
+                    }
+                    else if (lpChild is DirectoryInfo lpDir)
+                    {
+                        lpModified = lpDir.LastWriteTimeUtc.ToFileTimeUtc();
+                    }
+
+                    var lpChildIndex = lpBuilder.Add(new IndexNode(lpChild.Name, lpIndex, lpCurrentDepth + 1, lpFlags, lpSize, lpModified));
+                    if (lpIsDirectory)
+                    {
+                        lpQueue.Enqueue((lpChild.FullName, lpChildIndex, lpCurrentDepth + 1));
+                    }
+
+                    if (lpBuilder.Count % progressStep == 0)
+                    {
+                        progress?.Invoke(new IndexBuildProgress { Phase = "scan", Scanned = lpBuilder.Count });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lpSkipped++;
+                    AppLog.Debug($"条目读取失败，跳过: {lpChild.FullName} ({ex.GetType().Name})");
+                }
+            }
+        }
+
+        progress?.Invoke(new IndexBuildProgress { Phase = "scan", Scanned = lpBuilder.Count });
+        var lpBuildMs = (Stopwatch.GetTimestamp() - lpStarted) * 1000.0 / Stopwatch.Frequency;
+        var lpSource = lpLabels.Count == 1
+            ? $"walk:{lpLabels[0]}"
+            : $"walk-extra:{string.Join("|", lpLabels)}";
+        AppLog.Info($"目录遍历完成：{lpBuilder.Count} 条，跳过 {lpSkipped}，根 {lpLabels.Count} 个，耗时 {lpBuildMs:0}ms");
+
+        // 落盘阶段（排序 + 序列化 + 写盘）不再有逐条进度，只报总量与阶段，便于 UI 说明「正在写入索引」。
+        progress?.Invoke(new IndexBuildProgress { Phase = "write", Scanned = lpBuilder.Count });
+        return lpBuilder.Save(outputPath, lpSource, lpSkipped, lpBuildMs);
+    }
+}

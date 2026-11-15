@@ -4,9 +4,9 @@
   把 UI / Service 的构建产物打包成可分发 zip（不入库）。
 .DESCRIPTION
   只做复制与压缩，不做任何删除。产物布局：
-    Pathleap-win-x64/
-      Pathleap.UI.exe + WinUI 运行时依赖
-      Pathleap.Service.exe + 依赖（UI 会在同目录拉起它）
+    Findio-win-x64/
+      Findio.UI.exe + WinUI 运行时依赖
+      Findio.Service.exe + 依赖（UI 会在同目录拉起它）
       README.md
 .EXAMPLE
   pwsh -File .\tools\Package-Lp.ps1 -LpConfiguration Release
@@ -23,15 +23,15 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
-$LpUiDir = Join-Path $LpRepoRoot "src\Pathleap.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0"
-$LpServiceDir = Join-Path $LpRepoRoot "src\Pathleap.Service\bin\x64\$LpConfiguration\net8.0-windows"
+$LpUiDir = Join-Path $LpRepoRoot "src\Findio.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0"
+$LpServiceDir = Join-Path $LpRepoRoot "src\Findio.Service\bin\x64\$LpConfiguration\net8.0-windows"
 
 if ([string]::IsNullOrWhiteSpace($LpOutputRoot)) {
     $LpOutputRoot = Join-Path $LpRepoRoot 'dist'
 }
 
-$LpUiExe = Join-Path $LpUiDir 'Pathleap.UI.exe'
-$LpServiceExe = Join-Path $LpServiceDir 'Pathleap.Service.exe'
+$LpUiExe = Join-Path $LpUiDir 'Findio.UI.exe'
+$LpServiceExe = Join-Path $LpServiceDir 'Findio.Service.exe'
 
 if (-not (Test-Path -LiteralPath $LpUiExe)) {
     throw "UI 尚未编译: $LpUiExe。"
@@ -41,7 +41,7 @@ if (-not (Test-Path -LiteralPath $LpServiceExe)) {
     throw "服务尚未编译: $LpServiceExe。"
 }
 
-$LpStageDir = Join-Path $LpOutputRoot 'Pathleap-win-x64'
+$LpStageDir = Join-Path $LpOutputRoot 'Findio-win-x64'
 
 # 版本号取自程序集（源头是 Directory.Build.props，构建时可能被 CI 的 tag 覆盖），不在脚本里另写。
 $LpProductVersion = (Get-Item -LiteralPath $LpUiExe).VersionInfo.ProductVersion
@@ -49,7 +49,7 @@ if ([string]::IsNullOrWhiteSpace($LpProductVersion)) {
     throw "无法从 $LpUiExe 读取 ProductVersion。"
 }
 
-$LpZipPath = Join-Path $LpOutputRoot "Pathleap-$LpProductVersion-win-x64.zip"
+$LpZipPath = Join-Path $LpOutputRoot "Findio-$LpProductVersion-win-x64.zip"
 
 New-Item -ItemType Directory -Path $LpOutputRoot -Force | Out-Null
 New-Item -ItemType Directory -Path $LpStageDir -Force | Out-Null
@@ -81,7 +81,7 @@ foreach ($LpFile in $LpUiFiles) {
 }
 
 $LpServiceFiles = Get-ChildItem -LiteralPath $LpServiceDir -File |
-    Where-Object { $_.Extension -notin @('.pdb', '.xml') -and $_.Name -like 'Pathleap.Service.*' }
+    Where-Object { $_.Extension -notin @('.pdb', '.xml') -and $_.Name -like 'Findio.Service.*' }
 foreach ($LpFile in $LpServiceFiles) {
     Copy-Item -LiteralPath $LpFile.FullName -Destination (Join-Path $LpStageDir $LpFile.Name) -Force
 }

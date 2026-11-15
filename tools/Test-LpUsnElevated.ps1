@@ -33,7 +33,7 @@ Start-Transcript -Path (Join-Path $LpPerfDir 'usn-elevated-console.txt') -Force 
 
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
 if ([string]::IsNullOrWhiteSpace($LpServiceExe)) {
-    $LpServiceExe = Join-Path $LpRepoRoot 'src\Pathleap.Service\bin\x64\Release\net8.0-windows\Pathleap.Service.exe'
+    $LpServiceExe = Join-Path $LpRepoRoot 'src\Findio.Service\bin\x64\Release\net8.0-windows\Findio.Service.exe'
 }
 
 if ([string]::IsNullOrWhiteSpace($LpOutputJson)) {
@@ -72,7 +72,7 @@ function Invoke-LpServiceRequest {
         [int]$LpTimeoutMs = 5000
     )
 
-    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Pathleap.Service', [System.IO.Pipes.PipeDirection]::InOut)
+    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Findio.Service', [System.IO.Pipes.PipeDirection]::InOut)
     try {
         $LpClient.Connect(3000)
         $LpWriter = [System.IO.StreamWriter]::new($LpClient, [System.Text.Encoding]::UTF8, 1024, $true)
@@ -115,7 +115,7 @@ if ($LpVolumeOpenOk) {
 Write-Host ("管理员身份: True；卷句柄打开: {0}（Win32 错误码 {1}）" -f $LpVolumeOpenOk, $LpVolumeError) -ForegroundColor Cyan
 
 # 1. 清掉非管理员服务实例，换成当前提权身份启动。
-Get-Process -Name 'Pathleap.Service' -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-Process -Name 'Findio.Service' -ErrorAction SilentlyContinue | Stop-Process -Force
 Start-Sleep -Seconds 2
 
 $LpServiceProcess = Start-Process -FilePath $LpServiceExe -ArgumentList '--console' -PassThru -WindowStyle Hidden

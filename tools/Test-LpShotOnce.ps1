@@ -18,11 +18,11 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 $LpShotsDir = Join-Path $LpRepo 'docs\shots'
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpCsc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$LpWindowTitle = '设置 · Pathleap'
+$LpWindowTitle = '设置 · Findio'
 New-Item -ItemType Directory -Force -Path $LpShotsDir, $LpWork | Out-Null
 
 # ---------- 原生：EnumWindows 找窗（FindWindowW 在本会话被 hook，恒返 0，弃用） ----------
@@ -217,7 +217,7 @@ if ([Math]::Abs($LpProbed - $LpScale) -gt 0.02) {
     throw ("当前缩放 {0} 与期望 {1} 不符，未拍摄" -f $LpProbed, $LpScale)
 }
 
-Get-Process | Where-Object { $_.ProcessName -eq 'Pathleap.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process | Where-Object { $_.ProcessName -eq 'Findio.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 600
 $LpProc = Start-Process -FilePath $LpExe -ArgumentList '--screen=settings' -PassThru
 $LpHwnd = [IntPtr]::Zero

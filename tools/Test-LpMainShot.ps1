@@ -21,11 +21,11 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo ("src\Pathleap.UI\bin\x64\{0}\net8.0-windows10.0.22621.0\Pathleap.UI.exe" -f $LpConfiguration)
+$LpExe = Join-Path $LpRepo ("src\Findio.UI\bin\x64\{0}\net8.0-windows10.0.22621.0\Findio.UI.exe" -f $LpConfiguration)
 $LpShotsDir = Join-Path $LpRepo 'docs\shots'
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpCaptureExe = Join-Path $LpWork 'CaptureLp.exe'
-$LpWindowTitle = 'Pathleap · 跃径'
+$LpWindowTitle = 'Findio'
 New-Item -ItemType Directory -Force -Path $LpShotsDir | Out-Null
 if (-not (Test-Path -LiteralPath $LpCaptureExe)) { throw '缺少抓取助手 CaptureLp.exe，请先运行 Test-LpShotOnce.ps1' }
 
@@ -87,7 +87,7 @@ $LpExpectHeight = [int][Math]::Round(436 * $LpScale)
 $LpExpectLeft = [int]$LpWorkRect.left + [int][Math]::Floor(($LpWorkRect.width - $LpExpectWidth) / 2.0)
 
 # ---------- 拉主窗 → 抓 → 核对 → 杀 ----------
-Get-Process | Where-Object { $_.ProcessName -eq 'Pathleap.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process | Where-Object { $_.ProcessName -eq 'Findio.UI' } | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 600
 $LpArgs = @("--screen=$LpMode")
 if (-not [string]::IsNullOrWhiteSpace($LpQuery)) { $LpArgs += "--query=$LpQuery" }

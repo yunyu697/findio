@@ -23,13 +23,13 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
-$LpServiceExe = Join-Path $LpRepo 'src\Pathleap.Service\bin\x64\Debug\net8.0-windows\Pathleap.Service.exe'
-$LpLog = Join-Path $env:LOCALAPPDATA ('Pathleap\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
+$LpServiceExe = Join-Path $LpRepo 'src\Findio.Service\bin\x64\Debug\net8.0-windows\Findio.Service.exe'
+$LpLog = Join-Path $env:LOCALAPPDATA ('Findio\logs\ui-{0}.log' -f (Get-Date -Format 'yyyyMMdd'))
 $LpShots = Join-Path $LpRepo 'docs\shots'
-$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Pathleap\config.json'
+$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Findio\config.json'
 $LpConfigBackup = Join-Path $env:TEMP ('lp-main-keys-config-{0}.json' -f (Get-Date -Format 'yyyyMMddHHmmss'))
-$LpWindowTitle = 'Pathleap · 跃径'
+$LpWindowTitle = 'Findio'
 
 Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
 Add-Type -AssemblyName System.Drawing
@@ -103,7 +103,7 @@ function Add-LpCheck {
 function Send-LpIpc {
     param([Parameter(Mandatory)][hashtable]$LpPayload, [int]$LpTimeoutMs = 8000)
 
-    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Pathleap.UI', [System.IO.Pipes.PipeDirection]::InOut)
+    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Findio.UI', [System.IO.Pipes.PipeDirection]::InOut)
     try {
         $LpClient.Connect($LpTimeoutMs)
         $LpWriter = [System.IO.StreamWriter]::new($LpClient, [System.Text.Encoding]::UTF8, 1024, $true)
@@ -271,7 +271,7 @@ try {
     $LpConfig.logLevel = 'Debug'
     $LpConfig | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $LpConfigPath -Encoding UTF8
 
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 500
 
     $LpService = Start-Process -FilePath $LpServiceExe -ArgumentList '--console' -PassThru
@@ -428,7 +428,7 @@ catch {
     Add-LpCheck -LpName '执行过程无异常' -LpPassed $false -LpDetail $_.Exception.Message
 }
 finally {
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 300
     if (Test-Path -LiteralPath $LpConfigBackup) {
         Copy-Item -LiteralPath $LpConfigBackup -Destination $LpConfigPath -Force

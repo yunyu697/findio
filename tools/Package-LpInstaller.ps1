@@ -3,9 +3,9 @@
 .SYNOPSIS
   用 Inno Setup 生成 Windows 安装包（.exe），输出到 dist。
 .DESCRIPTION
-  输入是 Package-Lp.ps1 生成的 dist\Pathleap-win-x64 目录；版本号只从 UI 程序的
+  输入是 Package-Lp.ps1 生成的 dist\Findio-win-x64 目录；版本号只从 UI 程序的
   ProductVersion 读取（源头仍是 Directory.Build.props），不在脚本里另写。
-  产物名：Pathleap-<版本>-win-x64-setup.exe
+  产物名：Findio-<版本>-win-x64-setup.exe
 .EXAMPLE
   pwsh -File .\tools\Package-Lp.ps1
   pwsh -File .\tools\Package-LpInstaller.ps1
@@ -23,10 +23,10 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
-$LpUiExe = Join-Path $LpRepoRoot "src\Pathleap.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Pathleap.UI.exe"
+$LpUiExe = Join-Path $LpRepoRoot "src\Findio.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Findio.UI.exe"
 $LpOutputRoot = Join-Path $LpRepoRoot 'dist'
-$LpStageDir = Join-Path $LpOutputRoot 'Pathleap-win-x64'
-$LpIssFile = Join-Path $LpRepoRoot 'installer\Pathleap.iss'
+$LpStageDir = Join-Path $LpOutputRoot 'Findio-win-x64'
+$LpIssFile = Join-Path $LpRepoRoot 'installer\Findio.iss'
 
 if (-not (Test-Path -LiteralPath $LpUiExe)) {
     throw "UI 尚未编译: $LpUiExe。请先运行 Build-Lp.ps1。"
@@ -86,7 +86,7 @@ if ([string]::IsNullOrWhiteSpace($LpIscc) -or -not (Test-Path -LiteralPath $LpIs
     throw '未找到 ISCC.exe。请安装 Inno Setup 6（CI 用 choco install innosetup），或用 -LpIsccPath 指定。'
 }
 
-$LpOutputName = "Pathleap-$LpProductVersion-win-x64-setup"
+$LpOutputName = "Findio-$LpProductVersion-win-x64-setup"
 $LpSetupPath = Join-Path $LpOutputRoot "$LpOutputName.exe"
 
 Write-Host "生成安装包: $LpProductVersion（文件版本 $LpNumericVersion4）" -ForegroundColor Cyan

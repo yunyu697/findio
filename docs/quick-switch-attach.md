@@ -64,13 +64,13 @@
 
 - 鼠标点击第 2 格：对话框日志 `文件对话框注入已发送: path=...\# Packaging Data 2026-11-02`，对话框随即进入该目录，焦点未离开对话框；
 - `Ctrl+G`：仅前台对话框对应的栏进入键盘模式（边框转强调色、右侧提示变 `1–6 · ↵ · Esc`）；
-- 键盘模式下按 `1`：注入 `...\Pathleap\docs`；`Esc` 退出键盘模式并把按键交还对话框（普通输入不受影响）；
+- 键盘模式下按 `1`：注入 `...\Findio\docs`；`Esc` 退出键盘模式并把按键交还对话框（普通输入不受影响）；
 - 钩子回调里只做「判断 + 投递到 UI 线程」，无耗时操作；原生消息线程每 15 秒自检并重装钩子，防系统静默摘钩。
 
 ## 非整数缩放（125% / 150%）的核对
 
 本机固定 200%，改 Windows 显示缩放会重排整个桌面并影响正在使用的会话，因此没有真机切缩放，
-改用**离屏探针**：`Pathleap.UI.exe --layout-probe=<文件>` 在创建窗口之前调用与运行时**完全相同**的
+改用**离屏探针**：`Findio.UI.exe --layout-probe=<文件>` 在创建窗口之前调用与运行时**完全相同**的
 `QuickSwitchLayout.Attach`（几何计算已抽成纯函数），把本机真实工作区（2880×1704 物理 / 1440×852 DIP）
 按 100%、125%、150%、200% 换算成物理像素，再逐项核对半宽、间距、居中、工作区边界、列数阈值。
 探针不建窗口、不开管道、不抢前台，写完 JSON 直接退出。
@@ -183,7 +183,7 @@
 > 这是单条栏、单一缩放语义的有意取舍，不是渲染错误。
 
 **运行时可见性（200% 单屏真机复测）**：真实 WinForms 文件夹对话框，栏用
-`GetWindow(GW_OWNER) == 对话框` 且进程为 `Pathleap.UI` 枚举，逐次读 `IsWindowVisible`：
+`GetWindow(GW_OWNER) == 对话框` 且进程为 `Findio.UI` 枚举，逐次读 `IsWindowVisible`：
 
 | 时点 | 对话框状态 | 栏可见 |
 | --- | --- | --- |
@@ -264,7 +264,7 @@
 ### 栏与对话框同层：z 序实测
 
 口径：栏是对话框的 **owned 窗口**（`GWLP_HWNDPARENT`），不是 `SetParent` 子窗、不是 topmost。
-采样脚本 `tools/Test-LpQuickBarProbe.ps1`，原始输出 `%TEMP%\pathleap-scaling\qs-probe-final4.txt`。
+采样脚本 `tools/Test-LpQuickBarProbe.ps1`，原始输出 `%TEMP%\findio-scaling\qs-probe-final4.txt`。
 读取项：`GetWindow(GW_HWNDPREV/NEXT)` 逐条枚举 z 序、`IsWindowVisible`、`GetWindowRect` 的相邻偏移、以及遮挡窗下的像素采样。
 
 | 场景 | 采样结果 | 判定 |
@@ -323,7 +323,7 @@
 
 - 环境：本机 200% 缩放单屏，工作区 2880×1704 物理像素；
 - 采样器：`QsProbeLp.exe`（.NET Framework 独立进程，1ms 级采样），脚本 `tools/Test-LpQuickBarProbe.ps1`；
-- 原始输出：修复前 `%TEMP%\pathleap-scaling\qs-probe-base109.txt`（1.0.9 二进制）、修复后 `qs-probe-final4.txt`；
+- 原始输出：修复前 `%TEMP%\findio-scaling\qs-probe-base109.txt`（1.0.9 二进制）、修复后 `qs-probe-final4.txt`；
   翻上方核对 `qs-probe-flip.txt`；缩放几何 `scale-gap-check.json`（`--layout-probe` 离屏）；
 - 所有 z 序数据都是 `GetWindow(GW_HWNDPREV/NEXT)` 逐条枚举 + `IsWindowVisible` 真实读取，**不是**「代码里调过 `SetWindowPos`」的自证。
 
@@ -548,7 +548,7 @@
   期间注入 0 次；继续按 `0`、`2`、`4` 组成 `2024`，日志 `输入: "2024"`、`q=2024 hits=6`，期间注入 0 次；
 - `Esc` 清空后再按 `Alt+2`，注入 `Downloads`，与栏日志第 2 项一致。
 
-实测注入顺序与路径：`d5` → `Downloads` → `Videos` → `lp-drop-test` → `Videos` → `%LOCALAPPDATA%\Pathleap`。
+实测注入顺序与路径：`d5` → `Downloads` → `Videos` → `lp-drop-test` → `Videos` → `%LOCALAPPDATA%\Findio`。
 栏取 `Shell.Application.Windows()` 的前 6 个（不是 z 序，置顶也改不了顺序），本机同时还有历史资源管理器窗口，
 所以列表里混有测试目录之外的窗口；断言因此只要求「第 i 个组合 ↔ 栏日志第 i 项」逐项对应、路径来自已打开窗口，
 不要求命中本轮新建的 6 个目录。

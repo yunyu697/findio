@@ -9,7 +9,7 @@
 
 .EXAMPLE
   pwsh -NoProfile -File tools\Test-LpQuickBarProbe.ps1 -LpTag new
-  pwsh -NoProfile -File tools\Test-LpQuickBarProbe.ps1 -LpTag baseline -LpExe "$env:TEMP\pathleap-baseline\Pathleap.UI.exe"
+  pwsh -NoProfile -File tools\Test-LpQuickBarProbe.ps1 -LpTag baseline -LpExe "$env:TEMP\findio-baseline\Findio.UI.exe"
 #>
 [CmdletBinding()]
 param(
@@ -25,9 +25,9 @@ $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
 if ($LpExe.Length -eq 0) {
-    $LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+    $LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 }
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpProbe = Join-Path $LpWork 'QsProbeLp.exe'
 $LpHost = Join-Path $LpWork 'DialogHost.exe'
 $LpReport = Join-Path $LpWork ("qs-probe-{0}.txt" -f $LpTag)
@@ -172,7 +172,7 @@ function Find-LpBarFor {
     $LpDeadline = (Get-Date).AddSeconds(15)
     $LpSeen = 0
     while ((Get-Date) -lt $LpDeadline) {
-        $LpBars = @(Get-LpWindows | Where-Object { $_.Title -eq 'Pathleap 快速切换' })
+        $LpBars = @(Get-LpWindows | Where-Object { $_.Title -eq 'Findio 快速切换' })
         $LpSeen = [Math]::Max($LpSeen, $LpBars.Count)
         foreach ($LpBar in $LpBars) {
             if ((Get-LpOwner $LpBar.Handle) -eq $LpDialog) { return $LpBar.Handle }
@@ -190,7 +190,7 @@ function Close-LpWindow {
 
 # ---------- 清场 ----------
 $LpForegroundBefore = [LpProbeNative.W]::GetForegroundWindow()
-Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-Process Findio.UI -ErrorAction SilentlyContinue | Stop-Process -Force
 Get-Process DialogHost -ErrorAction SilentlyContinue | Stop-Process -Force
 Start-Sleep -Milliseconds 600
 
@@ -202,7 +202,7 @@ $LpApp = Start-Process -FilePath $LpExe -PassThru
 Start-Sleep -Seconds 5
 
 # ---------- 宿主对话框 1 ----------
-$LpHost1 = Start-Process -FilePath $LpHost -ArgumentList @('打开（Pathleap 验收）') -PassThru
+$LpHost1 = Start-Process -FilePath $LpHost -ArgumentList @('打开（Findio 验收）') -PassThru
 $LpDlg1 = Wait-LpWindow -LpWhat '文件对话框 1' -LpMatch { param($LpWin) $LpWin.Class -eq '#32770' -and $LpWin.Pid -eq $LpHost1.Id }
 Set-LpForeground $LpDlg1
 Start-Sleep -Milliseconds 1500
@@ -465,7 +465,7 @@ Write-Lp '--- [9] 拖动后：贴边间隙 + 四角像素 ---'
 Invoke-LpSeamCapture 'post'
 
 # ---------- 10. 多对话框 ----------
-$LpHost2 = Start-Process -FilePath $LpHost -ArgumentList @('打开（Pathleap 验收 2）') -PassThru
+$LpHost2 = Start-Process -FilePath $LpHost -ArgumentList @('打开（Findio 验收 2）') -PassThru
 $LpDlg2 = Wait-LpWindow -LpWhat '文件对话框 2' -LpMatch { param($LpWin) $LpWin.Class -eq '#32770' -and $LpWin.Pid -eq $LpHost2.Id }
 Set-LpForeground $LpDlg2
 Start-Sleep -Milliseconds 1500
@@ -494,7 +494,7 @@ Close-LpWindow $LpDlg1
 Close-LpWindow $LpCoverH
 Close-LpWindow $LpDlg2
 Get-Process DialogHost -ErrorAction SilentlyContinue | Stop-Process -Force
-Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-Process Findio.UI -ErrorAction SilentlyContinue | Stop-Process -Force
 if ($LpForegroundBefore -ne [IntPtr]::Zero) { [void](Set-LpForeground $LpForegroundBefore) }
 
 $script:LpLines | Set-Content -LiteralPath $LpReport -Encoding UTF8

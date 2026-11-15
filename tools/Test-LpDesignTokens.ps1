@@ -39,7 +39,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepoRoot = if ([string]::IsNullOrWhiteSpace($LpRoot)) { Split-Path -Parent $PSScriptRoot } else { $LpRoot }
-$LpUiRoot = Join-Path $LpRepoRoot 'src\Pathleap.UI'
+$LpUiRoot = Join-Path $LpRepoRoot 'src\Findio.UI'
 $LpTokenFile = Join-Path $LpUiRoot 'DesignTokens.xaml'
 if ([string]::IsNullOrWhiteSpace($LpBaseline)) {
     $LpBaseline = Join-Path $PSScriptRoot 'design-token-baseline.json'

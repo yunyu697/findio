@@ -26,11 +26,11 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 $LpShotsDir = Join-Path $LpRepo 'docs\shots'
-$LpWork = Join-Path $env:TEMP 'pathleap-scaling'
+$LpWork = Join-Path $env:TEMP 'findio-scaling'
 $LpCsc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$LpWindowTitle = '设置 · Pathleap'
+$LpWindowTitle = '设置 · Findio'
 $LpShotNumbers = @{ 1.0 = 39; 1.25 = 40; 1.5 = 41; 2.0 = 42 }
 $LpScaleTag = @{ 1.0 = '100'; 1.25 = '125'; 1.5 = '150'; 2.0 = '200' }
 
@@ -394,4 +394,4 @@ finally {
 Write-Host ''
 $LpResults | Format-List | Out-String -Width 200 | Write-Host
 $LpResults | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $LpWork 'scaling-results.json') -Encoding UTF8
-Write-Host '明细已存 %TEMP%\pathleap-scaling\scaling-results.json'
+Write-Host '明细已存 %TEMP%\findio-scaling\scaling-results.json'

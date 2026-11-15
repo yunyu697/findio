@@ -1,0 +1,87 @@
+namespace Findio.Shared.Update;
+
+/// <summary>
+/// 更新源的唯一来源。仓库已公开，客户端直接读主仓库的最新 Release，零令牌。
+/// Release 资产由 tag 流水线构建并上传，包含安装包、便携包、latest.json 与 latest.json.sig。
+/// </summary>
+public static class ReleaseFeed
+{
+    public const string Owner = "yunyu697";
+
+    public const string RepoName = "findio";
+
+    public const string Repository = Owner + "/" + RepoName;
+
+    public const string HomeUrl = "https://github.com/" + Repository;
+
+    /// <summary>最新正式版 Release 的固定下载地址（GitHub 302 到资源 CDN，无需认证）。</summary>
+    public const string ManifestUrl =
+        "https://github.com/" + Repository + "/releases/latest/download/latest.json";
+
+    /// <summary>分离签名文件名；清单内的 signature 字段供客户端直接验签。</summary>
+    public const string SignatureFile = "latest.json.sig";
+
+    /// <summary>清单资产名；稳定版与预览版都用这个名字。</summary>
+    public const string ManifestAssetName = "latest.json";
+
+    /// <summary>预览通道的独立清单源：GitHub API 的 Release 列表，取最新的 prerelease。</summary>
+    public const string PreviewReleasesApiUrl =
+        "https://api.github.com/repos/" + Repository + "/releases?per_page=30";
+
+    public const string ChannelStable = "stable";
+
+    public const string ChannelPreview = "preview";
+
+    /// <summary>配置里的通道值只认 <c>preview</c>，其余一律按稳定版处理。</summary>
+    public static string NormalizeChannel(string? channel) =>
+        string.Equals(channel?.Trim(), ChannelPreview, StringComparison.OrdinalIgnoreCase)
+            ? ChannelPreview
+            : ChannelStable;
+
+    public const string AssetInstaller = "installer";
+
+    public const string AssetPortable = "portable";
+
+    public static readonly string[] AssetOrder = [AssetInstaller, AssetPortable];
+
+    /// <summary>
+    /// GitHub Release 加速镜像前缀，按顺序尝试；全部失败后回退官方地址。
+    /// 只影响公开资产的下载，不换取任何令牌，也不改动签名校验。
+    /// </summary>
+    private static readonly string[] DefaultMirrorPrefixes =
+    [
+        "https://gh-proxy.com/",
+        "https://ghfast.top/"
+    ];
+
+    /// <summary>环境变量：设为 <c>off</c> 关闭镜像；设为其它前缀值则只试该前缀后回退官方（便于诊断）。</summary>
+    public const string MirrorEnvironmentVariable = "FINDIO_UPDATE_MIRROR";
+
+    /// <summary>把同一个资源地址按「镜像 → 官方」展开，供调用方逐个尝试。</summary>
+    public static IEnumerable<string> ExpandSources(string url)
+    {
+        var lpOverride = Environment.GetEnvironmentVariable(MirrorEnvironmentVariable)?.Trim();
+        if (string.Equals(lpOverride, "off", StringComparison.OrdinalIgnoreCase) || lpOverride == "0")
+        {
+            yield return url;
+            yield break;
+        }
+
+        IEnumerable<string> lpPrefixes = string.IsNullOrEmpty(lpOverride)
+            ? DefaultMirrorPrefixes
+            : [lpOverride.EndsWith('/') ? lpOverride : lpOverride + "/"];
+
+        foreach (var lpPrefix in lpPrefixes)
+        {
+            if (Uri.TryCreate(lpPrefix + url, UriKind.Absolute, out var lpMirror) && lpMirror.Host.Length > 0)
+            {
+                yield return lpMirror.ToString();
+            }
+        }
+
+        yield return url;
+    }
+
+    /// <summary>判断一个源是否是官方地址（用于日志与界面说明）。</summary>
+    public static bool IsOfficialSource(string url) => url.StartsWith("https://github.com/", StringComparison.OrdinalIgnoreCase);
+}

@@ -32,11 +32,11 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepo = Split-Path -Parent $PSScriptRoot
-$LpExe = Join-Path $LpRepo 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
-$LpServiceExe = Join-Path $LpRepo 'src\Pathleap.Service\bin\x64\Debug\net8.0-windows\Pathleap.Service.exe'
-$LpLogDir = Join-Path $env:LOCALAPPDATA 'Pathleap\logs'
+$LpExe = Join-Path $LpRepo 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
+$LpServiceExe = Join-Path $LpRepo 'src\Findio.Service\bin\x64\Debug\net8.0-windows\Findio.Service.exe'
+$LpLogDir = Join-Path $env:LOCALAPPDATA 'Findio\logs'
 $LpShots = Join-Path $LpRepo 'docs\shots'
-$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Pathleap\config.json'
+$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Findio\config.json'
 $LpConfigBackup = Join-Path $env:TEMP ('lp-uipi-config-{0}.json' -f (Get-Date -Format 'yyyyMMddHHmmss'))
 $LpRunTag = Get-Date -Format 'HHmmss'
 $LpRoot = Join-Path $env:TEMP ("lp-uipi-{0}" -f $LpRunTag)
@@ -310,7 +310,7 @@ function Add-LpCheck {
 function Send-LpIpc {
     param([Parameter(Mandatory)][hashtable]$LpPayload, [int]$LpTimeoutMs = 8000)
 
-    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Pathleap.UI', [System.IO.Pipes.PipeDirection]::InOut)
+    $LpClient = [System.IO.Pipes.NamedPipeClientStream]::new('.', 'Findio.UI', [System.IO.Pipes.PipeDirection]::InOut)
     try {
         $LpClient.Connect($LpTimeoutMs)
         $LpWriter = [System.IO.StreamWriter]::new($LpClient, [System.Text.Encoding]::UTF8, 1024, $true)
@@ -351,7 +351,7 @@ function Read-LpLogSince {
 
 function Get-LpWindow {
     # FindWindowW 按标题匹配在本机拿不到 WinUI 窗口（返回 0），改用进程主窗口句柄。
-    foreach ($LpProc in @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue)) {
+    foreach ($LpProc in @(Get-Process Findio.UI -ErrorAction SilentlyContinue)) {
         $LpHwnd = $LpProc.MainWindowHandle
         if ($LpHwnd -ne [IntPtr]::Zero -and [LpUipi.Native]::IsWindowVisible($LpHwnd)) { return $LpHwnd }
     }
@@ -662,7 +662,7 @@ function Set-LpSourceLayout {
 function Start-LpStack {
     param([string]$LpArgs = '--tray')
 
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 600
 
     $LpService = Start-Process -FilePath $LpServiceExe -ArgumentList '--console' -PassThru -WindowStyle Hidden
@@ -683,7 +683,7 @@ function Start-LpStack {
 
 function Get-LpUiProcessInfo {
     $LpList = @()
-    foreach ($LpProc in @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue)) {
+    foreach ($LpProc in @(Get-Process Findio.UI -ErrorAction SilentlyContinue)) {
         $LpList += [pscustomobject]@{ Pid = $LpProc.Id; Info = [LpUipiToken]::Describe($LpProc.Id) }
     }
     return $LpList
@@ -784,7 +784,7 @@ try {
             throw '提权阶段必须由提权后的验收进程执行：Windows 不允许普通权限进程向提权前台窗口注入输入，拖拽根本起不来'
         }
 
-        Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+        Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
         Start-Sleep -Milliseconds 600
 
         # 先摆好拖放源（资源管理器仍是标准权限），再启动提权实例——它启动即显示主窗并抢回前台。
@@ -904,9 +904,9 @@ catch {
     Add-LpCheck -LpName '执行过程无异常' -LpPassed $false -LpDetail $_.Exception.Message
 }
 finally {
-    Get-Process Pathleap.UI, Pathleap.Service -ErrorAction SilentlyContinue | Stop-Process -Force
+    Get-Process Findio.UI, Findio.Service -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Milliseconds 500
-    $LpLeftover = @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue)
+    $LpLeftover = @(Get-Process Findio.UI -ErrorAction SilentlyContinue)
     if ($LpLeftover.Count -gt 0) {
         Write-Host ("  注意：仍有 {0} 个 UI 进程未结束（{1}）" -f $LpLeftover.Count, (($LpLeftover | ForEach-Object { $_.Id }) -join ',')) -ForegroundColor Yellow
     }

@@ -1,9 +1,9 @@
-# Pathleap / 跃径
+# Findio
 
 Windows 桌面快速定位工具：全局热键唤出、输入即搜、结果列表键盘直达。
 UI 是常驻托盘进程，索引与查询放在独立的长驻服务进程，两者只通过命名管道通信。
 
-> 当前版本：`1.1.3`（源码 HEAD，版本来自 [Directory.Build.props](Directory.Build.props)）。
+> 当前版本：`1.2.0`（源码 HEAD，版本来自 [Directory.Build.props](Directory.Build.props)）。
 > 本 README 以**仓库里实际存在的代码**为准：已实测的写「已实测」，只有本地 dry-run 的写「本地验证」，
 > 没验证的写「未验证」，不把计划中的发布写成已达成。数字出处见每节引用与 [文档索引](#9-文档索引)。
 >
@@ -21,7 +21,7 @@ UI 是常驻托盘进程，索引与查询放在独立的长驻服务进程，�
 - UI 只负责窗口、热键、列表与键盘交互；索引构建、装载与查询全部在服务进程，避免大索引拖慢 UI 线程。
 - 索引是单个只读 mmap 文件，查询零拷贝；构建放到短生命周期子进程，构建期的 GB 级临时内存不留在常驻服务里。
 - 优先走 USN/MFT 主路径；拿不到卷句柄时降级目录遍历，保证功能可用。
-- 更新只读**公开主仓库**（`yunyu697/pathleap`）最新 Release 的签名清单（无令牌）；tag 触发 CI
+- 更新只读**公开主仓库**（`yunyu697/findio`）最新 Release 的签名清单（无令牌）；tag 触发 CI
   构建 zip 与安装包，并连同 `latest.json`、`latest.json.sig` 一起发布到该 tag 的 Release。
 
 ### 已实现能力
@@ -39,7 +39,7 @@ UI 是常驻托盘进程，索引与查询放在独立的长驻服务进程，�
 | 安装范围二选一（仅当前用户 / 所有用户），设置页显示当前安装模式、维护者与目录 | 已实测 | [1.0.2-发布说明](docs/1.0.2-发布说明.md) §2、`docs/shots/18-21` |
 | 「始终以管理员身份运行」开关（无触发器计划任务，不用 Run 项） | 已实测命名管道/单实例/托盘；开关点击链路未自动化 | [1.0.2-发布说明](docs/1.0.2-发布说明.md) §3 |
 | 启动自检并自动构建索引（缺失/过期即后台开始，界面显示进度，构建期旧索引可搜，失败有明确提示） | 已实测（清空索引冷启动；降级与失败场景；干净用户首启 33.6 s / 121 万条） | [1.0.4-发布说明](docs/1.0.4-发布说明.md) §1、§2、[新用户验收](docs/1.0.5-新用户端到端验收.md) |
-| 默认双击 `Ctrl` 唤醒，设置页 9 种预置唤醒方式（含鼠标中键/侧键）选中即生效 | 已实测（热键注册、双击判定、鼠标钩子、运行期切换） | [1.0.4-发布说明](docs/1.0.4-发布说明.md) §3、`src/Pathleap.UI/Platform/HotkeySpec.cs` |
+| 默认双击 `Ctrl` 唤醒，设置页 9 种预置唤醒方式（含鼠标中键/侧键）选中即生效 | 已实测（热键注册、双击判定、鼠标钩子、运行期切换） | [1.0.4-发布说明](docs/1.0.4-发布说明.md) §3、`src/Findio.UI/Platform/HotkeySpec.cs` |
 | 应用图标：纯图形符号（深色圆角底 + 放大镜 + 闪电），覆盖 exe、窗口、托盘与安装包 | 已实测（窗口/托盘/ICO 同一来源；安装包 exe 图标像素哈希一致，任务栏独立按钮未取证、向导首屏未拍） | [1.0.7-发布说明](docs/1.0.7-发布说明.md) §1、§8、§11 |
 | 5 套颜色主题（`indigo`/`violet`/`aurora`/`forest`/`ember`，深浅各一套 token） | 已实测（亮/暗 × 5 配色，设置窗与更新窗右上角 20 张） | [1.0.7-发布说明](docs/1.0.7-发布说明.md) §2、§5、§6 |
 | 标题栏三按钮统一几何（12×12 DIP、1 DIP 平头笔画、关闭红独立 token） | 已实测修复（按下态此前被 `Button` 基类吞掉，提交 `2d5a725`） | [1.0.7-发布说明](docs/1.0.7-发布说明.md) §3 |
@@ -54,7 +54,7 @@ UI 是常驻托盘进程，索引与查询放在独立的长驻服务进程，�
 | 全局 `Ctrl+G` 任意位置唤出快速切换浮层 | 已实测（注册、真实按键、对话框识别；1.0.7 复测 16/16、100 秒、无重复窗） | `docs/shots/23`、[1.0.3-发布说明](docs/1.0.3-发布说明.md) §2、[1.0.7-发布说明](docs/1.0.7-发布说明.md) §9 |
 | 文件对话框注入：标准「打开 / 另存为 / 选择文件夹」对话框内直接跳转 | 已实测（WinForms 标准对话框：路径写回并跳转到目标目录） | `docs/shots/22`、[1.0.3-发布说明](docs/1.0.3-发布说明.md) §3 |
 | 更新检查：稳定通道读公开主仓库最新 Release 的 `latest.json`，预览通道读 API 里最新预发布 Release 的同一清单（均无令牌）、Ed25519 验签、下载后 SHA256 校验、清单与安装包均「镜像→官方」自动回退；无清单时明确报 404 | 已实测（真实 Release 拉取+验签通过；镜像成功 1 轮、强制镜像失败回退官方 1 轮，共 6/6；预览通道 alpha 端到端 8/8；含篡改拒装） | [更新源与签名](docs/更新源与签名.md) §7.3 |
-| 发布工具（`Pathleap.ReleaseTool`）：`gen-key` / `create` / `verify` / `selftest` | 本地验证（自检 22 项通过） | [更新源与签名](docs/更新源与签名.md) §7 |
+| 发布工具（`Findio.ReleaseTool`）：`gen-key` / `create` / `verify` / `selftest` | 本地验证（自检 22 项通过） | [更新源与签名](docs/更新源与签名.md) §7 |
 | 界面五屏（主窗、快速切换、设置七页、检查更新四态、托盘） | 主窗/快速切换/设置既有五页/检查更新/托盘已按设计稿还原；常规与关于两页按真实可用项自定（设计稿无内容） | [界面对照](docs/界面对照.html)、[验收报告](docs/界面验收报告.md)；两页见 `docs/功能状态清单.md` §9 |
 
 ### 未完成项（明确不做已完成表述）
@@ -100,39 +100,39 @@ tag 触发时由 CI 构建并上传到该 tag 的 Release；本机同样可以�
 
 | 产物 | 形式 | 适用场景 | 与另一种的差异 |
 | --- | --- | --- | --- |
-| `Pathleap-<版本>-win-x64.zip` | 便携版 | 解压即用、绿色部署、放到 U 盘或受控目录 | 不写注册表、不建快捷方式、不产生卸载项；升级/删除需手动覆盖或删目录 |
-| `Pathleap-<版本>-win-x64-setup.exe` | 安装包（Inno Setup） | 需要快捷方式/卸载项的用户 | 安装范围二选一（见下表）；可选择安装目录；创建开始菜单快捷方式，桌面快捷方式为可选任务；按范围写入用户级或机器级卸载项 |
+| `Findio-<版本>-win-x64.zip` | 便携版 | 解压即用、绿色部署、放到 U 盘或受控目录 | 不写注册表、不建快捷方式、不产生卸载项；升级/删除需手动覆盖或删目录 |
+| `Findio-<版本>-win-x64-setup.exe` | 安装包（Inno Setup） | 需要快捷方式/卸载项的用户 | 安装范围二选一（见下表）；可选择安装目录；创建开始菜单快捷方式，桌面快捷方式为可选任务；按范围写入用户级或机器级卸载项 |
 
 安装包在向导第一步显式选择安装范围，**默认「仅为我安装」**（推荐），也可以选「为所有用户安装」：
 
 | 项 | 仅当前用户（默认） | 为所有用户安装 |
 | --- | --- | --- |
-| 安装目录 | `%LOCALAPPDATA%\Programs\Pathleap`（可改） | `C:\Program Files\Pathleap`（可改） |
+| 安装目录 | `%LOCALAPPDATA%\Programs\Findio`（可改） | `C:\Program Files\Findio`（可改） |
 | 权限 | 不需要 UAC | 需要管理员权限，安装前弹 UAC |
 | 开始菜单 | 当前用户开始菜单 | 公共开始菜单（All Users） |
 | 卸载项 | `HKCU\...\Uninstall` | `HKLM\...\Uninstall` |
-| 数据 / 日志 / 索引 | `%LOCALAPPDATA%\Pathleap`（当前用户） | 仍然按用户隔离，各用户各自一份 |
+| 数据 / 日志 / 索引 | `%LOCALAPPDATA%\Findio`（当前用户） | 仍然按用户隔离，各用户各自一份 |
 | 开机自启 | 无（当前版本没有自启功能，不写 Run 项） | 无（同上，不写机器级 Run 项） |
 | 服务 | 由 UI 拉起同目录子进程 | 同左，**不注册 SCM 服务** |
 
 默认值取「仅当前用户」的理由：不需要提权，也不会把程序写进机器级目录，降低误装与被替换的风险；只有多人共用同一台机器时才需要「所有用户」。
 数据不跟随安装范围：索引反映每个用户自己可见的文件，机器级共用会泄露他人的文件列表，所以两种模式的数据、日志、索引都按用户隔离。
-安装范围写入 `HKLM\Software\Pathleap` 或 `HKCU\Software\Pathleap` 的 `InstallScope` 值（64 位视图），设置界面据此显示当前模式。
-实现见 [Pathleap.iss](installer/Pathleap.iss)（`PrivilegesRequired=lowest` + `dialog commandline`）。
+安装范围写入 `HKLM\Software\Findio` 或 `HKCU\Software\Findio` 的 `InstallScope` 值（64 位视图），设置界面据此显示当前模式。
+实现见 [Findio.iss](installer/Findio.iss)（`PrivilegesRequired=lowest` + `dialog commandline`）。
 
 安装完成可选择立即启动 UI（以原用户身份启动，不继承安装时的提权）；UI 会按配置 `startServiceWithUi` 自动拉起同目录的
-`Pathleap.Service.exe --console`，不需要单独启动服务。
+`Findio.Service.exe --console`，不需要单独启动服务。
 
-**静默安装/卸载**：`Pathleap-<版本>-win-x64-setup.exe /VERYSILENT /ALLUSERS` 或 `/CURRENTUSER`；卸载用安装目录下的
+**静默安装/卸载**：`Findio-<版本>-win-x64-setup.exe /VERYSILENT /ALLUSERS` 或 `/CURRENTUSER`；卸载用安装目录下的
 `unins000.exe /VERYSILENT`。所有用户模式的卸载需要提权。
 
 **卸载与用户数据取舍**：
 
 - 程序文件、开始菜单/桌面快捷方式、卸载注册项一律清除；安装范围注册值一并删除。
-- 配置、日志、索引缓存（`%LOCALAPPDATA%\Pathleap`）**默认保留**：升级或重装后可以直接沿用索引与配置。
+- 配置、日志、索引缓存（`%LOCALAPPDATA%\Findio`）**默认保留**：升级或重装后可以直接沿用索引与配置。
 - 交互式卸载会询问「是否同时删除当前用户的配置、日志与索引缓存」；选「是」才删除该目录。静默卸载默认保留。
 - 「所有用户」模式只删除**执行卸载的这位用户**的数据，其他用户的数据保留。
-- 需要彻底清理时，请先退出 Pathleap，再删除各用户的 `%LOCALAPPDATA%\Pathleap` 即可。
+- 需要彻底清理时，请先退出 Findio，再删除各用户的 `%LOCALAPPDATA%\Findio` 即可。
 
 ### 2.2 运行前提
 
@@ -147,7 +147,7 @@ tag 触发时由 CI 构建并上传到该 tag 的 Release；本机同样可以�
 ### 2.3 首次使用：启动后自动建索引
 
 服务启动即自检索引文件，**不存在或构建时间超过 7 天**就在后台自动开始构建，不需要用户操作，
-也不阻塞 UI 连接管道。索引文件落在 `%LOCALAPPDATA%\Pathleap\service\index\<卷>.plidx`。
+也不阻塞 UI 连接管道。索引文件落在 `%LOCALAPPDATA%\Findio\service\index\<卷>.fidx`。
 
 - **进度可见**：主窗空态与底栏显示「索引构建中 · 已扫描 N 条」，设置页同步显示阶段、条目数与警告；UI 每秒轮询服务状态。
 - **构建期间可搜**：重建时保留上一次索引，查询继续可用，结果页与底栏注明「结果来自上一次索引（N 条）」；
@@ -179,7 +179,7 @@ tag 触发时由 CI 构建并上传到该 tag 的 Release；本机同样可以�
 索引 34.5 MB；完成后查询 `explorer` 24 条、0.3 ms；索引未过期时重启直接 `ready` 并跳过构建。
 来源：[1.0.4-发布说明](docs/1.0.4-发布说明.md) §2。
 
-需要单独为某个目录建索引时仍可用基准脚本（会覆盖同卷 `.plidx`，先备份）：
+需要单独为某个目录建索引时仍可用基准脚本（会覆盖同卷 `.fidx`，先备份）：
 
 ```powershell
 pwsh -File .\tools\Run-LpIndexBench.ps1 -LpBuild -LpMode walk -LpRoot 'C:\Windows' -LpIterations 1
@@ -206,7 +206,7 @@ pwsh -File .\tools\Run-LpIndexBench.ps1 -LpBuild -LpMode walk -LpRoot 'C:\Window
 
 钩子被安全软件拦截时，状态行与托盘会提示；原生消息线程每 15 秒自检并重装钩子，防系统静默摘钩。
 鼠标钩子只在选用鼠标方式时安装，平时不常驻。
-来源：[1.0.4-发布说明](docs/1.0.4-发布说明.md) §3、[HotkeySpec.cs](src/Pathleap.UI/Platform/HotkeySpec.cs)。
+来源：[1.0.4-发布说明](docs/1.0.4-发布说明.md) §3、[HotkeySpec.cs](src/Findio.UI/Platform/HotkeySpec.cs)。
 
 搜索窗失焦自动隐藏，`Esc` 隐藏并清空查询，`Enter` 打开选中项（目录用资源管理器、文件用系统默认程序）。
 
@@ -215,7 +215,7 @@ pwsh -File .\tools\Run-LpIndexBench.ps1 -LpBuild -LpMode walk -LpRoot 'C:\Window
 设置 → 更新 →「安装与权限」卡片里可以开启「始终以管理员身份运行」，也可以查看当前安装模式
 （仅当前用户 / 所有用户 / 便携版）、维护者与安装目录。安装范围切换需要重新运行安装包，卡片里已写明。
 
-实现方式：开关打开时注册一个**无触发器的计划任务**（`Pathleap-Elevated-<用户SID>`，`RunLevel=HighestAvailable`），
+实现方式：开关打开时注册一个**无触发器的计划任务**（`Findio-Elevated-<用户SID>`，`RunLevel=HighestAvailable`），
 之后每次启动由未提权的启动器写交接文件、用 `schtasks /Run` 拉起该任务，再以 `--elevated-launch` 恢复原参数。
 **不使用 `HKCU\...\Run` 注册表项**，因此不会出现「登录后静默提权」的行为。注册/取消任务各需要一次 UAC。
 
@@ -223,7 +223,7 @@ pwsh -File .\tools\Run-LpIndexBench.ps1 -LpBuild -LpMode walk -LpRoot 'C:\Window
 
 - **UIPI**：提权后的窗口完整性级别更高，资源管理器（未提权）无法把文件/文件夹拖进提权窗口。
   普通权限运行时拖放可用（文件夹用资源管理器打开、文件交给默认程序），需要拖放时请关闭该开关。
-  这是 Windows 的跨完整性级别限制，不是 Pathleap 自身的 bug。
+  这是 Windows 的跨完整性级别限制，不是 Findio 自身的 bug。
 - 计划任务按用户隔离；同一台机器上的其他用户需要各自开启。
 - 便携版同样可用，但由于没有安装范围注册值，设置卡片会显示「便携版」。
 
@@ -304,7 +304,7 @@ USN 实测（管理员，整卷 `C:\`）：1,110,379 条、构建 10,822 ms、�
 - 体积实测：`C:\` 全卷 30.88 B/条；`C:\Windows` 43.68 B/条；`C:\Windows\WinSxS` 48.72 B/条；
   5M 合成 25.46 B/条。按真实名字分布外推 5M 约 154 MB。来源：[M2-索引与搜索报告](docs/M2-索引与搜索报告.md) §10.2。
 
-实现：`src/Pathleap.Shared/Index/IndexSnapshot.cs`（格式与装载）、`IndexBuilder.cs`（构建）、`DirectoryIndexSource.cs`（遍历源）。
+实现：`src/Findio.Shared/Index/IndexSnapshot.cs`（格式与装载）、`IndexBuilder.cs`（构建）、`DirectoryIndexSource.cs`（遍历源）。
 
 ### 3.3 查询
 
@@ -313,7 +313,7 @@ USN 实测（管理员，整卷 `C:\`）：1,110,379 条、构建 10,822 ms、�
 - 结果直接按 `(tier, 深度)` 分桶，不做全量排序；前缀命中已够填满结果集时跳过整段子串扫描。
 - junction 命中按前缀块成组遍历，先用后缀首字节快速否决。
 
-实现入口：[SearchEngine.cs](src/Pathleap.Shared/Index/SearchEngine.cs)、[IndexSnapshot.cs](src/Pathleap.Shared/Index/IndexSnapshot.cs)。
+实现入口：[SearchEngine.cs](src/Findio.Shared/Index/SearchEngine.cs)、[IndexSnapshot.cs](src/Findio.Shared/Index/IndexSnapshot.cs)。
 
 ## 4. 实测数据（口径与环境）
 
@@ -368,12 +368,12 @@ USN 实测（管理员，整卷 `C:\`）：1,110,379 条、构建 10,822 ms、�
 ## 5. 目录结构与两个进程
 
 ```
-Pathleap/
+Findio/
 ├── src/
-│   ├── Pathleap.Shared/        品牌常量、配置、日志、IPC 协议、索引格式/构建/查询、更新清单与 Ed25519
-│   ├── Pathleap.Service/       常驻索引服务：管道、索引装载/构建、搜索；--build-once 子进程入口
-│   ├── Pathleap.UI/            WinUI 3：托盘、全局热键、搜索窗、结果列表、设置、更新窗、快速切换栏
-│   └── Pathleap.ReleaseTool/   发布工具（控制台）：gen-key / create / verify / selftest
+│   ├── Findio.Shared/        品牌常量、配置、日志、IPC 协议、索引格式/构建/查询、更新清单与 Ed25519
+│   ├── Findio.Service/       常驻索引服务：管道、索引装载/构建、搜索；--build-once 子进程入口
+│   ├── Findio.UI/            WinUI 3：托盘、全局热键、搜索窗、结果列表、设置、更新窗、快速切换栏
+│   └── Findio.ReleaseTool/   发布工具（控制台）：gen-key / create / verify / selftest
 ├── installer/                  Inno Setup 脚本与中文语言文件
 ├── tools/                      PowerShell 构建/打包/测试/基准脚本（自定义变量统一 Lp 前缀）
 ├── docs/                       里程碑报告、发布说明、版本规则、发布检查清单、界面对照
@@ -382,12 +382,12 @@ Pathleap/
 
 | 进程 | 职责 | 生命周期 |
 | --- | --- | --- |
-| `Pathleap.UI.exe` | 单实例互斥、托盘、全局热键、搜索窗与结果列表、把 `--show/--status/--bench/--quit` 转发给主实例；按配置拉起服务 | 常驻托盘；可由用户退出 |
-| `Pathleap.Service.exe` | 命名管道控制面（`PING/STATUS/SEARCH/INDEX_STATUS/INDEX_BUILD`）、索引装载、构建与查询 | 由 UI 拉起（`--console`），UI 退出时一并结束；也可手动以控制台/SCM 模式运行 |
+| `Findio.UI.exe` | 单实例互斥、托盘、全局热键、搜索窗与结果列表、把 `--show/--status/--bench/--quit` 转发给主实例；按配置拉起服务 | 常驻托盘；可由用户退出 |
+| `Findio.Service.exe` | 命名管道控制面（`PING/STATUS/SEARCH/INDEX_STATUS/INDEX_BUILD`）、索引装载、构建与查询 | 由 UI 拉起（`--console`），UI 退出时一并结束；也可手动以控制台/SCM 模式运行 |
 
-服务 IPC 只绑定命名管道，不监听网络端口。索引构建通过 `Pathleap.Service.exe --build-once <mode> <root> <output>`
+服务 IPC 只绑定命名管道，不监听网络端口。索引构建通过 `Findio.Service.exe --build-once <mode> <root> <output>`
 短生命周期子进程执行，父进程只读取 `.result.json` 摘要。
-`Pathleap.ReleaseTool` 不随发行包分发（`IsPublishable=false`），只在源码仓库与 CI 中使用。
+`Findio.ReleaseTool` 不随发行包分发（`IsPublishable=false`），只在源码仓库与 CI 中使用。
 
 ## 6. 构建、打包与 CI
 
@@ -395,20 +395,20 @@ Pathleap/
 # 编译（先跑脚本变量命名检查，并把服务产物复制进 UI 输出目录）
 pwsh -File .\tools\Build-Lp.ps1 -LpConfiguration Release
 
-# 便携 zip：dist\Pathleap-<版本>-win-x64.zip
+# 便携 zip：dist\Findio-<版本>-win-x64.zip
 pwsh -File .\tools\Package-Lp.ps1
 
-# 安装包：dist\Pathleap-<版本>-win-x64-setup.exe（需要 Inno Setup 6）
+# 安装包：dist\Findio-<版本>-win-x64-setup.exe（需要 Inno Setup 6）
 pwsh -File .\tools\Package-LpInstaller.ps1
 
 # 发布工具：自检 / 生成签名清单 / 验签
-dotnet run --project src/Pathleap.ReleaseTool -- selftest
-dotnet run --project src/Pathleap.ReleaseTool -- create --version 1.0.4 --tag v1.0.4 `
+dotnet run --project src/Findio.ReleaseTool -- selftest
+dotnet run --project src/Findio.ReleaseTool -- create --version 1.0.4 --tag v1.0.4 `
   --notes-file docs/1.0.4-发布说明.md `
-  --installer dist/Pathleap-1.0.4-win-x64-setup.exe `
-  --portable dist/Pathleap-1.0.4-win-x64.zip `
+  --installer dist/Findio-1.0.4-win-x64-setup.exe `
+  --portable dist/Findio-1.0.4-win-x64.zip `
   --out dist/latest.json --seed-file release-keys/ed25519-seed.txt
-dotnet run --project src/Pathleap.ReleaseTool -- verify --manifest dist/latest.json
+dotnet run --project src/Findio.ReleaseTool -- verify --manifest dist/latest.json
 ```
 
 本机安装包编译可用 Inno Setup 6；脚本会依次查找 PATH、
@@ -419,7 +419,7 @@ CI（[build.yml](.github/workflows/build.yml)）按触发条件区分：
 - **main / PR**：解析版本号（校验格式）→ 脚本变量命名检查 → 发布工具 `selftest` → Release 编译，不产包、不发布。
 - **tag `v*`**：在上面的基础上，用 tag 版本注入编译，打包 zip 与安装包 → 核对 zip 必须包含
   `runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll` → 创建/更新该 tag 的 Release 并上传
-  `Pathleap-<版本>-win-x64.zip`、`Pathleap-<版本>-win-x64-setup.exe`；配置了 secret `PATHLEAP_SIGNING_KEY` 时
+  `Findio-<版本>-win-x64.zip`、`Findio-<版本>-win-x64-setup.exe`；配置了 secret `FINDIO_SIGNING_KEY` 时
   再生成并上传 `latest.json` 与 `latest.json.sig`（缺少 secret 会在日志与注解中告警，且不生成、不上传未签名清单）。
 
 本机仍可用上面两条 `Package-*` 脚本产出等价产物（备用路径），清单用 `ReleaseTool create` 本地签名。
@@ -427,7 +427,7 @@ CI（[build.yml](.github/workflows/build.yml)）按触发条件区分：
 ## 7. 更新检查与签名清单
 
 - 客户端只请求公开主仓库最新 Release 的 `latest.json`：
-  `https://github.com/yunyu697/pathleap/releases/latest/download/latest.json`，**不携带任何令牌**，
+  `https://github.com/yunyu697/findio/releases/latest/download/latest.json`，**不携带任何令牌**，
   没有第二套私有源逻辑。
 - **清单缺失时的表现（2026-11-08 实测）**：`1.0.1`–`1.0.3` 的 Release 只有 zip 与安装包，该地址真实返回 HTTP 404；
   客户端据此返回「主仓库暂无最新清单（HTTP 404）：<清单地址>」，手动检查在窗内以红字显示
@@ -440,7 +440,7 @@ CI（[build.yml](.github/workflows/build.yml)）按触发条件区分：
   `ok=True` 是 `Shell_NotifyIconW(NIM_MODIFY, NIF_INFO)` 的真实返回值，说明气泡已被系统接受；
   当时会话处于锁屏（`LockApp`/`LogonUI` 在运行、`GetForegroundWindow()==0`），全屏截图只能拍到黑屏。
   2026-11-15 在解锁后的正常桌面上重做了一次：用户级代理指向 `127.0.0.1:9` 让真实 HTTP 请求失败，
-  [85-tray-failure-balloon.png](docs/shots/85-tray-failure-balloon.png) 拍到气泡本体（应用名 `Pathleap.UI`、
+  [85-tray-failure-balloon.png](docs/shots/85-tray-failure-balloon.png) 拍到气泡本体（应用名 `Findio.UI`、
   标题「更新检查未完成」、正文列出两个镜像「由于目标计算机积极拒绝，无法连接。(127.0.0.1:9)」、蓝色 info 图标）。
   同一次实测也暴露一个观感局限：正文接近 250 字符上限时，气泡在第 5 行起被截断，用户看到的是一条半截正文。
 - 清单字段：`schemaVersion`、`version`、`tag`、`releasedAt`、`channel`、`platform`（`win-x64`）、
@@ -458,7 +458,7 @@ CI（[build.yml](.github/workflows/build.yml)）按触发条件区分：
 
 ## 8. 版本号规则
 
-版本号唯一来源是 [Directory.Build.props](Directory.Build.props) 的 `PathleapVersion`；程序集版本、程序内显示、
+版本号唯一来源是 [Directory.Build.props](Directory.Build.props) 的 `FindioVersion`；程序集版本、程序内显示、
 zip/安装包名、编译时注入版本都由它派生。规则摘要：
 
 - 格式 `<major>.<minor>.<patch>[-alpha<N>]`；`major` 不设上限，`minor` / `patch` 取 0–10，超过 10 向前进位。
@@ -485,6 +485,7 @@ zip/安装包名、编译时注入版本都由它派生。规则摘要：
 | [1.0.8-发布说明](docs/1.0.8-发布说明.md) | 1.0.8：主搜索窗改为工作区半宽、顶边固定在工作区 1/4，双档实拍核对 |
 | [1.0.9-发布说明](docs/1.0.9-发布说明.md) | 1.0.9：QS 栏输入即搜、搜索框按主窗重做、栏与对话框同层、去掉常驻说明文字并加首次引导与设置帮助页 |
 | [1.1.3-发布说明](docs/1.1.3-发布说明.md) | 1.1.3：修复提权开关点击即崩溃（`ShellExecuteExW` 误声明在 `user32.dll`，应为 `shell32.dll`）；按界面点击链路实测开启 9/9、关闭 7/7 |
+| [1.2.0-发布说明](docs/1.2.0-发布说明.md) | 1.2.0：产品改名 Findio（中文名取消），索引扩展名 `.plidx` → `.fidx`，首次启动重建索引 |
 | [1.1.2-发布说明](docs/1.1.2-发布说明.md) | 1.1.2：接入下载镜像（镜像优先 + 失败回退官方）与预览版通道（独立清单源、预发布 Release、通道一致性校验）；更新窗通道文案统一；设置页「未接入」清零 |
 | [1.1.1-发布说明](docs/1.1.1-发布说明.md) | 1.1.1：补齐「未接入」清单——浏览器历史与书签、网络位置、索引目录增删、拖放、鼠标中键/侧键、设置页常规与关于；如实列出未验证项与已知限制 |
 | [1.1.0-发布说明](docs/1.1.0-发布说明.md) | 1.1.0：QS 栏恢复圆角（DWM 8 DIP）、栏与对话框留 8 DIP 设计间距、跟随改为几何事件驱动（轮询只管 z 序自愈）、底边中点缩放热区恢复、全站窗口圆角统一 8 DIP |
@@ -509,7 +510,7 @@ zip/安装包名、编译时注入版本都由它派生。规则摘要：
 3. **旧版本需手动升级**：`1.0.0`–`1.0.4` 走 GitHub Releases API，能发现新版本但不验签、不校验 SHA256；首个带签名校验的版本是 `1.0.5`。
 4. **运行期自动刷新依赖 USN 与管理员**：USN 索引会在检测到变更、安静 60 秒后自动重建（最小间隔 15 分钟）；
    目录遍历索引（非管理员）不自动刷新，仍需手动「重建索引」。首次构建完成前进度可见，但没有旧索引时搜索只能返回「索引构建中」提示。
-5. **索引是单卷/单文件**：`LoadLatest` 只装载最新的一个 `.plidx`，多卷合并未实现。
+5. **索引是单卷/单文件**：`LoadLatest` 只装载最新的一个 `.fidx`，多卷合并未实现。
 6. **自动刷新是重建而非逐条增量（已评估，2026-11-08）**：USN 记录只用于「有变更」检测，随后整重建。
    逐条增量需要管理员/服务身份与带 FRN 的索引格式；现有整重建暖 23.6 s / 冷 51.9 s、写盘黑屏 1.76 s，
    本机约 882 条/小时变更，成本可接受，故暂不做，数据与理由见 §2.3「逐条增量评估」。

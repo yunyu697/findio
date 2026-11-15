@@ -27,9 +27,9 @@ $LpRepoRoot = Split-Path -Parent $PSScriptRoot
 # 版本号单一来源：Directory.Build.props；CI tag 构建可用 -LpVersion 覆盖。
 if ([string]::IsNullOrWhiteSpace($LpVersion)) {
     $LpPropsRaw = Get-Content -LiteralPath (Join-Path $LpRepoRoot 'Directory.Build.props') -Raw
-    $LpVersionMatch = [regex]::Match($LpPropsRaw, '<PathleapVersion>([^<]+)</PathleapVersion>')
+    $LpVersionMatch = [regex]::Match($LpPropsRaw, '<FindioVersion>([^<]+)</FindioVersion>')
     if (-not $LpVersionMatch.Success) {
-        throw 'Directory.Build.props 中缺少 <PathleapVersion>。'
+        throw 'Directory.Build.props 中缺少 <FindioVersion>。'
     }
 
     $LpVersion = $LpVersionMatch.Groups[1].Value.Trim()
@@ -61,9 +61,9 @@ if (-not $LpSkipDesignTokenCheck) {
 }
 
 $LpProjects = @(
-    (Join-Path $LpRepoRoot 'src\Pathleap.Shared\Pathleap.Shared.csproj'),
-    (Join-Path $LpRepoRoot 'src\Pathleap.Service\Pathleap.Service.csproj'),
-    (Join-Path $LpRepoRoot 'src\Pathleap.UI\Pathleap.UI.csproj')
+    (Join-Path $LpRepoRoot 'src\Findio.Shared\Findio.Shared.csproj'),
+    (Join-Path $LpRepoRoot 'src\Findio.Service\Findio.Service.csproj'),
+    (Join-Path $LpRepoRoot 'src\Findio.UI\Findio.UI.csproj')
 )
 
 foreach ($LpProject in $LpProjects) {
@@ -76,7 +76,7 @@ foreach ($LpProject in $LpProjects) {
         'build', $LpProject,
         '--configuration', $LpConfiguration,
         '--property', "Platform=$LpPlatform",
-        '--property', "PathleapVersion=$LpVersion",
+        '--property', "FindioVersion=$LpVersion",
         '--nologo'
     )
     & dotnet @LpBuildArgs
@@ -85,17 +85,17 @@ foreach ($LpProject in $LpProjects) {
     }
 }
 
-$LpUiExe = Join-Path $LpRepoRoot "src\Pathleap.UI\bin\$LpPlatform\$LpConfiguration\net8.0-windows10.0.22621.0\Pathleap.UI.exe"
-$LpServiceExe = Join-Path $LpRepoRoot "src\Pathleap.Service\bin\$LpPlatform\$LpConfiguration\net8.0-windows\Pathleap.Service.exe"
+$LpUiExe = Join-Path $LpRepoRoot "src\Findio.UI\bin\$LpPlatform\$LpConfiguration\net8.0-windows10.0.22621.0\Findio.UI.exe"
+$LpServiceExe = Join-Path $LpRepoRoot "src\Findio.Service\bin\$LpPlatform\$LpConfiguration\net8.0-windows\Findio.Service.exe"
 
 # 开发布局：把服务进程的文件复制到 UI 输出目录，UI 才能在 AppContext.BaseDirectory 下找到并拉起它。
 $LpUiOutputDir = Split-Path -Parent $LpUiExe
 $LpServiceOutputDir = Split-Path -Parent $LpServiceExe
 $LpServiceArtifacts = @(
-    'Pathleap.Service.exe',
-    'Pathleap.Service.dll',
-    'Pathleap.Service.runtimeconfig.json',
-    'Pathleap.Service.deps.json'
+    'Findio.Service.exe',
+    'Findio.Service.dll',
+    'Findio.Service.runtimeconfig.json',
+    'Findio.Service.deps.json'
 )
 foreach ($LpArtifact in $LpServiceArtifacts) {
     $LpSource = Join-Path $LpServiceOutputDir $LpArtifact

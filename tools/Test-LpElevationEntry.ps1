@@ -22,12 +22,12 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 if ([string]::IsNullOrWhiteSpace($LpExe)) {
-    $LpExe = Join-Path $PSScriptRoot '..\src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+    $LpExe = Join-Path $PSScriptRoot '..\src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 }
 $LpExe = (Resolve-Path -LiteralPath $LpExe).Path
-$LpTaskName = "Pathleap-Elevated-$([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value)"
-$LpLogRoot = Join-Path $env:LOCALAPPDATA 'Pathleap\logs'
-$LpShortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Pathleap-提权入口测试.lnk'
+$LpTaskName = "Findio-Elevated-$([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value)"
+$LpLogRoot = Join-Path $env:LOCALAPPDATA 'Findio\logs'
+$LpShortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Findio-提权入口测试.lnk'
 $LpSampleFile = Join-Path $env:TEMP 'lp-entry-samples.txt'
 
 Add-Type -TypeDefinition @'
@@ -119,14 +119,14 @@ if ($LASTEXITCODE -ne 0) { throw '计划任务未注册：先开启设置页「�
 
 $LpSampler = $null
 try {
-    Get-Process Pathleap.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
+    Get-Process Findio.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
     Start-Sleep -Milliseconds 600
 
     $LpShell = New-Object -ComObject WScript.Shell
     $LpLink = $LpShell.CreateShortcut($LpShortcut)
     $LpLink.TargetPath = $LpExe
     $LpLink.WorkingDirectory = Split-Path -Parent $LpExe
-    $LpLink.Description = 'Pathleap 提权入口验证'
+    $LpLink.Description = 'Findio 提权入口验证'
     $LpLink.Save()
 
     $LpLogFile = Get-ChildItem -LiteralPath $LpLogRoot -Filter 'ui-*.log' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -139,7 +139,7 @@ try {
         $LpSeen = @{}
         $LpEnd = (Get-Date).AddSeconds(45)
         while ((Get-Date) -lt $LpEnd) {
-            foreach ($LpRow in Get-CimInstance Win32_Process -Filter "Name='Pathleap.UI.exe'" -ErrorAction SilentlyContinue) {
+            foreach ($LpRow in Get-CimInstance Win32_Process -Filter "Name='Findio.UI.exe'" -ErrorAction SilentlyContinue) {
                 if (-not $LpSeen.ContainsKey($LpRow.ProcessId)) {
                     $LpSeen[$LpRow.ProcessId] = $true
                     "{0}`t{1}`t{2}" -f $LpRow.ProcessId, $LpRow.ParentProcessId, $LpRow.CommandLine | Add-Content -LiteralPath $LpFile
@@ -149,7 +149,7 @@ try {
         }
     }
 
-    $LpKnown = @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id)
+    $LpKnown = @(Get-Process Findio.UI -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id)
     $LpLaunchAt = Get-Date
     Start-Process -FilePath 'explorer.exe' -ArgumentList "`"$LpShortcut`""
 
@@ -157,7 +157,7 @@ try {
     $LpObserved = @{}
     $LpDeadline = (Get-Date).AddSeconds(40)
     while ((Get-Date) -lt $LpDeadline -and $null -eq $LpElevated) {
-        foreach ($LpProc in @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Where-Object { $LpKnown -notcontains $_.Id })) {
+        foreach ($LpProc in @(Get-Process Findio.UI -ErrorAction SilentlyContinue | Where-Object { $LpKnown -notcontains $_.Id })) {
             if (-not $LpObserved.ContainsKey($LpProc.Id)) {
                 $LpObserved[$LpProc.Id] = [LpEntryToken]::Describe($LpProc.Id)
             }
@@ -225,7 +225,7 @@ finally {
     # 任务服务拉起的实例，普通权限 Kill 不掉，先让任务结束。
     schtasks.exe /End /TN $LpTaskName 2>&1 | Out-Null
     Start-Sleep -Milliseconds 800
-    Get-Process Pathleap.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
+    Get-Process Findio.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
     if (Test-Path -LiteralPath $LpShortcut) { Remove-Item -LiteralPath $LpShortcut -Force }
 }
 

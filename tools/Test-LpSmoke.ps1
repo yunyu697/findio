@@ -20,9 +20,9 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $LpRepoRoot = Split-Path -Parent $PSScriptRoot
-$LpUiExe = Join-Path $LpRepoRoot "src\Pathleap.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Pathleap.UI.exe"
-$LpStagedServiceExe = Join-Path (Split-Path -Parent $LpUiExe) 'Pathleap.Service.exe'
-$LpUserRoot = Join-Path $env:LOCALAPPDATA 'Pathleap'
+$LpUiExe = Join-Path $LpRepoRoot "src\Findio.UI\bin\x64\$LpConfiguration\net8.0-windows10.0.22621.0\Findio.UI.exe"
+$LpStagedServiceExe = Join-Path (Split-Path -Parent $LpUiExe) 'Findio.Service.exe'
+$LpUserRoot = Join-Path $env:LOCALAPPDATA 'Findio'
 $LpConfigFile = Join-Path $LpUserRoot 'config.json'
 $LpLogRoot = Join-Path $LpUserRoot 'logs'
 $LpToday = Get-Date -Format 'yyyyMMdd'
@@ -103,7 +103,7 @@ if (-not (Test-Path -LiteralPath $LpUiExe)) {
 }
 
 # 2. 启动常驻实例
-$LpUiProcesses = @(Get-Process -Name 'Pathleap.UI' -ErrorAction SilentlyContinue)
+$LpUiProcesses = @(Get-Process -Name 'Findio.UI' -ErrorAction SilentlyContinue)
 if ($LpUiProcesses.Count -eq 0) {
     Write-Host '启动常驻 UI（--tray，不显示窗口）...' -ForegroundColor Cyan
     Start-Process -FilePath $LpUiExe -ArgumentList '--tray'
@@ -113,15 +113,15 @@ else {
 }
 
 # 3. UI 控制管道 + 热键
-$LpUiStatus = Wait-LpPipeCommand -LpPipeName 'Pathleap.UI' -LpCommand 'STATUS'
+$LpUiStatus = Wait-LpPipeCommand -LpPipeName 'Findio.UI' -LpCommand 'STATUS'
 Add-LpCheck -LpName 'UI 控制管道可用' -LpPassed ([bool]$LpUiStatus.ok) -LpDetail $LpUiStatus.message
 Add-LpCheck -LpName '全局热键已注册' -LpPassed ($LpUiStatus.message -match 'registered=True') -LpDetail $LpUiStatus.message
 
 # 4. 服务管道（UI 会自动拉起服务）
-$LpServiceStatus = Wait-LpPipeCommand -LpPipeName 'Pathleap.Service' -LpCommand 'STATUS' -LpWaitSeconds 20
+$LpServiceStatus = Wait-LpPipeCommand -LpPipeName 'Findio.Service' -LpCommand 'STATUS' -LpWaitSeconds 20
 Add-LpCheck -LpName '服务管道可用' -LpPassed ([bool]$LpServiceStatus.ok) -LpDetail ("mode=" + $LpServiceStatus.status.mode + ", pid=" + $LpServiceStatus.status.pid)
 
-$LpIndexStatus = Wait-LpPipeCommand -LpPipeName 'Pathleap.Service' -LpCommand 'INDEX_STATUS' -LpWaitSeconds 20
+$LpIndexStatus = Wait-LpPipeCommand -LpPipeName 'Findio.Service' -LpCommand 'INDEX_STATUS' -LpWaitSeconds 20
 $LpIndexDetail = 'index=null'
 if ($null -ne $LpIndexStatus.index) {
     $LpIndexDetail = 'state=' + $LpIndexStatus.index.state + ', entries=' + $LpIndexStatus.index.entryCount + ', source=' + $LpIndexStatus.index.source

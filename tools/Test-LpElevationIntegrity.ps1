@@ -3,7 +3,7 @@
 .SYNOPSIS
   实测开启「始终以管理员身份运行」后，从正常入口启动的进程是否真的处于高完整性级别。
 .DESCRIPTION
-  以当前构建启动 Pathleap.UI.exe，等待目标完整性级别的新进程，读取进程令牌：
+  以当前构建启动 Findio.UI.exe，等待目标完整性级别的新进程，读取进程令牌：
   TokenElevation / TokenElevationType / TokenIntegrityLevel / TokenVirtualizationEnabled。
   -LpPhase on  期望 High（S-1-16-12288）+ Full + elevation=1；
   -LpPhase off 期望 Medium（S-1-16-8192）+ 非提权。
@@ -26,7 +26,7 @@ $ErrorActionPreference = 'Stop'
 
 if ([string]::IsNullOrWhiteSpace($LpExe)) {
     $LpRepoRoot = Split-Path -Parent $PSScriptRoot
-    $LpExe = Join-Path $LpRepoRoot 'src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+    $LpExe = Join-Path $LpRepoRoot 'src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 }
 
 if (-not (Test-Path -LiteralPath $LpExe)) { throw "找不到 $LpExe" }
@@ -103,7 +103,7 @@ public static class LpTokenProbe
 }
 '@
 
-$LpBefore = @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id)
+$LpBefore = @(Get-Process Findio.UI -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id)
 
 Write-Host ("UAC 策略: " + ((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' |
             Select-Object EnableLUA, ConsentPromptBehaviorAdmin, PromptOnSecureDesktop) | ConvertTo-Json -Compress))
@@ -117,7 +117,7 @@ $LpDescription = ''
 $LpLast = ''
 for ($LpIndex = 0; $LpIndex -lt 50; $LpIndex++) {
     Start-Sleep -Milliseconds 500
-    $LpCandidates = @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue |
+    $LpCandidates = @(Get-Process Findio.UI -ErrorAction SilentlyContinue |
             Where-Object { $LpBefore -notcontains $_.Id -and $_.StartTime -gt $LpStart.AddSeconds(-2) })
     foreach ($LpCandidate in $LpCandidates) {
         $LpProbe = [LpTokenProbe]::Describe($LpCandidate.Id)
@@ -134,7 +134,7 @@ for ($LpIndex = 0; $LpIndex -lt 50; $LpIndex++) {
 
 if (-not $LpTarget) {
     Write-Host "[FAIL] 未观察到目标完整性级别，最后探针: $LpLast" -ForegroundColor Red
-    Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process Findio.UI -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     exit 1
 }
 
@@ -155,7 +155,7 @@ else {
     $LpDescription -like '*elevation=0*' -and $LpDescription -like '*integrity=S-1-16-8192*'
 }
 
-Get-Process Pathleap.UI -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Process Findio.UI -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 
 if (-not $LpOk) {
     Write-Host '[FAIL] 完整性级别/提权类型与预期不符' -ForegroundColor Red

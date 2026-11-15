@@ -7,15 +7,15 @@
 <Project>
   <PropertyGroup>
     <!-- 语义化版本字符串：1.0.0 / 1.0.0-alpha1 / 1.1.0 / 2.0.0 ... -->
-    <PathleapVersion>1.1.3</PathleapVersion>
+    <FindioVersion>1.2.0</FindioVersion>
 
     <!-- 由上面的字符串自动去掉 -alphaN 后缀得到 1.0.0，供 AssemblyVersion / FileVersion 使用 -->
-    <PathleapNumericVersion>$([System.String]::Copy('$(PathleapVersion)').Split('-')[0])</PathleapNumericVersion>
+    <FindioNumericVersion>$([System.String]::Copy('$(FindioVersion)').Split('-')[0])</FindioNumericVersion>
 
-    <Version>$(PathleapVersion)</Version>
-    <AssemblyInformationalVersion>$(PathleapVersion)</AssemblyInformationalVersion>
-    <AssemblyVersion>$(PathleapNumericVersion)</AssemblyVersion>
-    <FileVersion>$(PathleapNumericVersion)</FileVersion>
+    <Version>$(FindioVersion)</Version>
+    <AssemblyInformationalVersion>$(FindioVersion)</AssemblyInformationalVersion>
+    <AssemblyVersion>$(FindioNumericVersion)</AssemblyVersion>
+    <FileVersion>$(FindioNumericVersion)</FileVersion>
 
     <!-- 不要把 git 提交哈希追加到 InformationalVersion，否则程序内版本会变成 1.0.0-alpha1+abc1234 -->
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>

@@ -4,7 +4,7 @@
   tag 发布前后的强制校验：确保 tag 打在干净、与远端一致的 HEAD 上，并在推送后回读远端指向。
 .DESCRIPTION
   打 tag 前（-LpPhase pre）：
-    1. tag 名符合版本规则，且与 Directory.Build.props 的 PathleapVersion 一致；
+    1. tag 名符合版本规则，且与 Directory.Build.props 的 FindioVersion 一致；
     2. 工作区干净（含未跟踪文件）；
     3. 本地 HEAD 与 origin/main 一致；
     4. tag 在本地与远端都不存在。
@@ -61,12 +61,12 @@ else {
 
 $LpVersion = $LpTag.Substring(1)
 $LpProps = Get-Content -LiteralPath (Join-Path $LpRepoRoot 'Directory.Build.props') -Raw
-$LpVersionMatch = [regex]::Match($LpProps, '<PathleapVersion>\s*(?<v>[^<]+?)\s*</PathleapVersion>')
+$LpVersionMatch = [regex]::Match($LpProps, '<FindioVersion>\s*(?<v>[^<]+?)\s*</FindioVersion>')
 if (-not $LpVersionMatch.Success) {
-    Add-LpResult $false 'Directory.Build.props 缺少 PathleapVersion'
+    Add-LpResult $false 'Directory.Build.props 缺少 FindioVersion'
 }
 else {
-    Add-LpResult ($LpVersionMatch.Groups['v'].Value -eq $LpVersion) "PathleapVersion 与 tag 一致（$LpVersion）"
+    Add-LpResult ($LpVersionMatch.Groups['v'].Value -eq $LpVersion) "FindioVersion 与 tag 一致（$LpVersion）"
 }
 
 $LpStatus = Invoke-LpGit @('status', '--porcelain')

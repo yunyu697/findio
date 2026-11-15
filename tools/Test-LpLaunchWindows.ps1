@@ -19,7 +19,7 @@
          其它后台程序（例如别的会话拉起 Windows Terminal）造成的控制台窗口按祖先进程链
          判定为外部干扰，单独列出、不计入本项；无法追溯到祖先链的按「无法归属」判失败；
       3. 提权实例有且只有一个已绘制窗口（主窗口），首次绘制后不再回到不可见/被遮蔽，
-         且不存在第二个已绘制的 Pathleap 窗口、不存在零尺寸已绘制窗口。若回退时前台已被
+         且不存在第二个已绘制的 Findio 窗口、不存在零尺寸已绘制窗口。若回退时前台已被
          其它进程拿走，按「失焦即隐藏」的既有设计记为外部干扰并列出；读不到前台或前台仍
          在本进程/启动链内，仍判失败。
 
@@ -39,12 +39,12 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 if ([string]::IsNullOrWhiteSpace($LpExe)) {
-    $LpExe = Join-Path $PSScriptRoot '..\src\Pathleap.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Pathleap.UI.exe'
+    $LpExe = Join-Path $PSScriptRoot '..\src\Findio.UI\bin\x64\Debug\net8.0-windows10.0.22621.0\Findio.UI.exe'
 }
 $LpExe = (Resolve-Path -LiteralPath $LpExe).Path
-$LpTaskName = "Pathleap-Elevated-$([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value)"
-$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Pathleap\config.json'
-$LpShortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Pathleap-提权入口测试.lnk'
+$LpTaskName = "Findio-Elevated-$([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value)"
+$LpConfigPath = Join-Path $env:LOCALAPPDATA 'Findio\config.json'
+$LpShortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Findio-提权入口测试.lnk'
 $LpEvidence = Join-Path $env:TEMP 'lp-launch-windows.json'
 
 Add-Type -TypeDefinition @'
@@ -287,7 +287,7 @@ namespace LpLaunchWatch
             string exe = ExeOf(pid);
             string cls = ClassOf(hwnd);
 
-            bool isTarget = exe.EndsWith("Pathleap.UI.exe", StringComparison.OrdinalIgnoreCase);
+            bool isTarget = exe.EndsWith("Findio.UI.exe", StringComparison.OrdinalIgnoreCase);
             bool isConsole = cls.Equals("ConsoleWindowClass", StringComparison.OrdinalIgnoreCase)
                           || cls.Equals("CASCADIA_HOSTING_WINDOW_CLASS", StringComparison.OrdinalIgnoreCase)
                           || exe.EndsWith("conhost.exe", StringComparison.OrdinalIgnoreCase)
@@ -562,14 +562,14 @@ $LpProcessJob = $true
 $LpMediumPid = 0
 $LpElevatedPid = 0
 try {
-    Get-Process Pathleap.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
+    Get-Process Findio.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
     Start-Sleep -Milliseconds 600
 
     $LpShell = New-Object -ComObject WScript.Shell
     $LpLink = $LpShell.CreateShortcut($LpShortcut)
     $LpLink.TargetPath = $LpExe
     $LpLink.WorkingDirectory = Split-Path -Parent $LpExe
-    $LpLink.Description = 'Pathleap 启动可见性验证'
+    $LpLink.Description = 'Findio 启动可见性验证'
     $LpLink.Save()
 
     $LpSampleFile = Join-Path $env:TEMP 'lp-launch-procs.txt'
@@ -579,7 +579,7 @@ try {
         $LpSeen = @{}
         $LpEnd = (Get-Date).AddSeconds(45)
         while ((Get-Date) -lt $LpEnd) {
-            foreach ($LpRow in Get-CimInstance Win32_Process -Filter "Name='Pathleap.UI.exe'" -ErrorAction SilentlyContinue) {
+            foreach ($LpRow in Get-CimInstance Win32_Process -Filter "Name='Findio.UI.exe'" -ErrorAction SilentlyContinue) {
                 if (-not $LpSeen.ContainsKey($LpRow.ProcessId)) {
                     $LpSeen[$LpRow.ProcessId] = $true
                     "{0}`t{1}" -f $LpRow.ProcessId, $LpRow.CommandLine | Add-Content -LiteralPath $LpFile
@@ -596,7 +596,7 @@ try {
     $LpPaintedAt = [datetime]::MinValue
     $LpDeadline = (Get-Date).AddSeconds($LpTimeoutSeconds)
     while ((Get-Date) -lt $LpDeadline) {
-        foreach ($LpProc in @(Get-Process Pathleap.UI -ErrorAction SilentlyContinue)) {
+        foreach ($LpProc in @(Get-Process Findio.UI -ErrorAction SilentlyContinue)) {
             $LpElevated = [LpLaunchToken]::Elevation($LpProc.Id)
             if ($LpElevated -eq 1 -and $LpElevatedPid -eq 0) {
                 $LpElevatedPid = $LpProc.Id
@@ -637,7 +637,7 @@ try {
         if ($null -ne $LpElevatedHint) { $LpElevatedPid = $LpElevatedHint.Pid }
     }
     if ($LpElevatedPid -eq 0) {
-        $LpKnownPids = @($LpRecords | Where-Object { $_.Exe -like '*Pathleap.UI.exe' } | Select-Object -ExpandProperty Pid -Unique)
+        $LpKnownPids = @($LpRecords | Where-Object { $_.Exe -like '*Findio.UI.exe' } | Select-Object -ExpandProperty Pid -Unique)
         foreach ($LpPid in $LpKnownPids) {
             if ([LpLaunchToken]::Elevation([int]$LpPid) -eq 1) { $LpElevatedPid = [int]$LpPid }
         }
@@ -648,13 +648,13 @@ try {
 
     $LpKnownProcessPids = @($LpProcSamples | Select-Object -ExpandProperty Pid)
     if ($LpElevatedPid -ne 0) { $LpKnownProcessPids = @($LpKnownProcessPids + $LpElevatedPid | Select-Object -Unique) }
-    $LpPathleapRecords = @($LpRecords | Where-Object {
-            $_.Exe -like '*Pathleap.UI.exe' -or $LpKnownProcessPids -contains [int]$_.Pid
+    $LpFindioRecords = @($LpRecords | Where-Object {
+            $_.Exe -like '*Findio.UI.exe' -or $LpKnownProcessPids -contains [int]$_.Pid
         })
-    $LpNonElevatedPathleap = @($LpPathleapRecords | Where-Object { $_.Pid -ne $LpElevatedPid })
-    $LpElevatedRecords = @($LpPathleapRecords | Where-Object { $_.Pid -eq $LpElevatedPid })
+    $LpNonElevatedFindio = @($LpFindioRecords | Where-Object { $_.Pid -ne $LpElevatedPid })
+    $LpElevatedRecords = @($LpFindioRecords | Where-Object { $_.Pid -eq $LpElevatedPid })
     $LpElevatedPainted = @($LpElevatedRecords | Where-Object { $_.PaintedSamples -gt 0 })
-    $LpPathleapPainted = @($LpPathleapRecords | Where-Object { $_.PaintedSamples -gt 0 })
+    $LpFindioPainted = @($LpFindioRecords | Where-Object { $_.PaintedSamples -gt 0 })
 
     $LpConsoleClasses = @('ConsoleWindowClass', 'CASCADIA_HOSTING_WINDOW_CLASS')
     $LpConsoleRecords = @($LpRecords | Where-Object {
@@ -669,7 +669,7 @@ try {
         })
 
     # 归属判定：窗口 owner 的祖先进程链里是否出现本次启动链的进程（中转/提权实例）。
-    # 启动链若有控制台，owner 会是 conhost/OpenConsole，其父即 schtasks/Pathleap.UI，能向上追到中转 pid。
+    # 启动链若有控制台，owner 会是 conhost/OpenConsole，其父即 schtasks/Findio.UI，能向上追到中转 pid。
     # 外部后台程序（例如其它会话拉起 Windows Terminal）同样会被枚举到，按归属排除，但不能算通过。
     $LpChainPids = @(@($LpMediumPid, $LpElevatedPid) | Where-Object { $_ -ne 0 })
     $LpAttributed = @($LpConsoleFlash | ForEach-Object {
@@ -716,7 +716,7 @@ try {
         "pid=$LpMediumPid，顶层窗口 $($LpMediumRecords.Count) 个：$((@($LpMediumRecords | ForEach-Object { "$($_.ClassName)/$($_.FinalState)" })) -join ', ')"
     }
     else {
-        "未捕获中转 pid；非提权 Pathleap 进程窗口 $($LpNonElevatedPathleap.Count) 个"
+        "未捕获中转 pid；非提权 Findio 进程窗口 $($LpNonElevatedFindio.Count) 个"
     }
 
     $LpFgNames = @{}
@@ -735,14 +735,14 @@ try {
             "{0}ms {1}（前台 {2} {3}）" -f $_.Ms, $_.State, $_.FgPid, $LpFgLabel
         }) -join '；'
 
-    Add-LpCheck -LpName '中转进程没有创建任何顶层窗口' -LpPassed ($LpNonElevatedPathleap.Count -eq 0) -LpDetail $LpMediumDetail
+    Add-LpCheck -LpName '中转进程没有创建任何顶层窗口' -LpPassed ($LpNonElevatedFindio.Count -eq 0) -LpDetail $LpMediumDetail
     Add-LpCheck -LpName '启动链没有控制台窗口变为可见' -LpPassed ($LpConsoleOurs.Count -eq 0 -and $LpConsoleUnknown.Count -eq 0) -LpDetail ("启动链内的控制台窗口 {0} 个{1}；无法归属 {2} 个{3}；外部程序本次新增并变为可见 {4} 个{5}；本次新增控制台类窗口共 {6} 个" -f $LpConsoleOurs.Count, ($(if ($LpConsoleOursText -ne '') { "：$LpConsoleOursText" } else { '' })), $LpConsoleUnknown.Count, ($(if ($LpConsoleUnknownText -ne '') { "：$LpConsoleUnknownText" } else { '' })), $LpConsoleExternal.Count, ($(if ($LpConsoleExternalText -ne '') { "（不计入本项，按外部干扰记录）：$LpConsoleExternalText" } else { '' })), $LpConsoleNew.Count)
     Add-LpCheck -LpName '提权实例只有主窗口这一扇已绘制窗口' -LpPassed ($LpElevatedPainted.Count -eq 1) -LpDetail ("已绘制 {0} 个：{1}" -f $LpElevatedPainted.Count, ((@($LpElevatedPainted | ForEach-Object { "$($_.ClassName)'$($_.Title)' $($_.Rect)" })) -join ' | '))
     Add-LpCheck -LpName '主窗口首次绘制后未再隐藏或被遮蔽' -LpPassed ($null -ne $LpMain -and -not $LpMainFlash) -LpDetail ($(if ($null -ne $LpMain) { "首次绘制 {0}ms；回退 {1} 次{2}；状态序列 {3}" -f $LpMain.FirstPaintedMs, $LpMainHides.Count, ($(if ($LpMainHideText -ne '') { "（$LpMainHideText）" } else { '' })), $LpMain.Timeline } else { '未出现已绘制窗口' }))
-    Add-LpCheck -LpName '不存在第二个已绘制的 Pathleap 窗口' -LpPassed ($LpPathleapPainted.Count -eq 1) -LpDetail ("已绘制 Pathleap 窗口 {0} 个" -f $LpPathleapPainted.Count)
-    Add-LpCheck -LpName '已绘制窗口均为非零尺寸' -LpPassed (@($LpPathleapPainted | Where-Object { $_.FirstPaintedRect -match ',0x0$' }).Count -eq 0) -LpDetail ((@($LpPathleapPainted | ForEach-Object { $_.FirstPaintedRect })) -join ', ')
+    Add-LpCheck -LpName '不存在第二个已绘制的 Findio 窗口' -LpPassed ($LpFindioPainted.Count -eq 1) -LpDetail ("已绘制 Findio 窗口 {0} 个" -f $LpFindioPainted.Count)
+    Add-LpCheck -LpName '已绘制窗口均为非零尺寸' -LpPassed (@($LpFindioPainted | Where-Object { $_.FirstPaintedRect -match ',0x0$' }).Count -eq 0) -LpDetail ((@($LpFindioPainted | ForEach-Object { $_.FirstPaintedRect })) -join ', ')
     Add-LpCheck -LpName '主窗口首次绘制后未改变几何' -LpPassed ($null -ne $LpMain -and $LpMain.RectChangesPainted -eq 0) -LpDetail ($(if ($null -ne $LpMain) { "几何变化 {0} 次；首绘 {1}；最终 {2}；DPI={3}；DIP={4}；口径={5}" -f $LpMain.RectChangesPainted, $LpMain.FirstPaintedRect, $LpMain.Rect, $LpMain.Dpi, $LpMain.RectDip, $LpMain.RectSource } else { '无主窗口' }))
-    Add-LpCheck -LpName '主窗口类名与标题可核对' -LpPassed ($null -ne $LpMain -and $LpMain.ClassName -eq 'WinUIDesktopWin32WindowClass' -and $LpMain.Title -like '*Pathleap*') -LpDetail ($(if ($null -ne $LpMain) { "class=$($LpMain.ClassName) title='$($LpMain.Title)' 首绘标题='$($LpMain.PaintTitle)'" } else { '无主窗口' }))
+    Add-LpCheck -LpName '主窗口类名与标题可核对' -LpPassed ($null -ne $LpMain -and $LpMain.ClassName -eq 'WinUIDesktopWin32WindowClass' -and $LpMain.Title -like '*Findio*') -LpDetail ($(if ($null -ne $LpMain) { "class=$($LpMain.ClassName) title='$($LpMain.Title)' 首绘标题='$($LpMain.PaintTitle)'" } else { '无主窗口' }))
 
     [pscustomobject]@{
         GeneratedAt   = (Get-Date).ToString('o')
@@ -779,7 +779,7 @@ finally {
 
     schtasks.exe /End /TN $LpTaskName 2>&1 | Out-Null
     Start-Sleep -Milliseconds 800
-    Get-Process Pathleap.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
+    Get-Process Findio.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
     if (Test-Path -LiteralPath $LpShortcut) { Remove-Item -LiteralPath $LpShortcut -Force }
 }
 

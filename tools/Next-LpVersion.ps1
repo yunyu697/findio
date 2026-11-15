@@ -31,9 +31,9 @@ $LpPropsFile = Join-Path $LpRepoRoot 'Directory.Build.props'
 
 if ([string]::IsNullOrWhiteSpace($LpCurrent)) {
     $LpPropsRaw = Get-Content -LiteralPath $LpPropsFile -Raw
-    $LpVersionMatch = [regex]::Match($LpPropsRaw, '<PathleapVersion>([^<]+)</PathleapVersion>')
+    $LpVersionMatch = [regex]::Match($LpPropsRaw, '<FindioVersion>([^<]+)</FindioVersion>')
     if (-not $LpVersionMatch.Success) {
-        throw "Directory.Build.props 中缺少 <PathleapVersion>。"
+        throw "Directory.Build.props 中缺少 <FindioVersion>。"
     }
 
     $LpCurrent = $LpVersionMatch.Groups[1].Value.Trim()
@@ -105,14 +105,14 @@ if (-not $LpApply) {
     return
 }
 
-if (-not $PSCmdlet.ShouldProcess($LpPropsFile, "把 PathleapVersion 从 $LpCurrent 改为 $LpNextVersion")) {
+if (-not $PSCmdlet.ShouldProcess($LpPropsFile, "把 FindioVersion 从 $LpCurrent 改为 $LpNextVersion")) {
     return
 }
 
 $LpUpdatedRaw = [regex]::Replace(
     $LpPropsRaw,
-    '<PathleapVersion>[^<]*</PathleapVersion>',
-    "<PathleapVersion>$LpNextVersion</PathleapVersion>")
+    '<FindioVersion>[^<]*</FindioVersion>',
+    "<FindioVersion>$LpNextVersion</FindioVersion>")
 
 Set-Content -LiteralPath $LpPropsFile -Value $LpUpdatedRaw -Encoding utf8 -NoNewline
 Write-Host "已写回 $LpPropsFile（git tag 请用 v$LpNextVersion）。" -ForegroundColor Green

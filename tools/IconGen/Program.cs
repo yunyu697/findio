@@ -3,11 +3,11 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Pathleap.IconGen;
+namespace Findio.IconGen;
 
 /// <summary>
-/// 按 assets/brand/pathleap-bolt-aurora-{dark|light}.svg 的几何与配色生成图标。
-/// 输出：Assets/Pathleap.ico（暗色多尺寸）、Assets/pathleap-mark-dark.png / light.png（界面用）。
+/// 按 assets/brand/findio-bolt-aurora-{dark|light}.svg 的几何与配色生成图标。
+/// 输出：Assets/Findio.ico（暗色多尺寸）、Assets/findio-mark-dark.png / light.png（界面用）。
 /// 小尺寸（16/24）省略装饰元素并加粗主线，保证 16px 仍能读出「放大镜 + 闪电」。
 /// </summary>
 internal static class Program
@@ -25,15 +25,15 @@ internal static class Program
             return 2;
         }
 
-        var lpAssets = Path.Combine(lpRoot, "src", "Pathleap.UI", "Assets");
+        var lpAssets = Path.Combine(lpRoot, "src", "Findio.UI", "Assets");
         Directory.CreateDirectory(lpAssets);
 
         // 程序图标（exe / 安装包 / 托盘 / 任务栏）统一用暗色版。
-        WriteIco(Path.Combine(lpAssets, "Pathleap.ico"), dark: true);
+        WriteIco(Path.Combine(lpAssets, "Findio.ico"), dark: true);
 
         // 界面内标记随明暗主题切换，用 128px PNG。
-        WritePng(Path.Combine(lpAssets, "pathleap-mark-dark.png"), 128, dark: true);
-        WritePng(Path.Combine(lpAssets, "pathleap-mark-light.png"), 128, dark: false);
+        WritePng(Path.Combine(lpAssets, "findio-mark-dark.png"), 128, dark: true);
+        WritePng(Path.Combine(lpAssets, "findio-mark-light.png"), 128, dark: false);
 
         Console.WriteLine($"图标已生成: {lpAssets}");
         return 0;

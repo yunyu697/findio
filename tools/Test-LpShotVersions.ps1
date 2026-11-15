@@ -3,7 +3,7 @@
 .SYNOPSIS
   校验截图版本台账：文档引用的带版本截图必须与当前版本一致。
 .DESCRIPTION
-  - 从 Directory.Build.props 读取当前 PathleapVersion；
+  - 从 Directory.Build.props 读取当前 FindioVersion；
   - 扫描 README.md 与 docs/*.md 里的 shots/*.png 引用；
   - docs/shots/manifest.json 登记过的截图，version 必须等于当前版本；
   - 当前发布说明（docs/<版本>-发布说明.md）引用的截图必须在台账里登记；
@@ -24,7 +24,7 @@ $LpManifestPath = Join-Path $LpRepoRoot 'docs\shots\manifest.json'
 if (-not (Test-Path -LiteralPath $LpManifestPath)) { throw "缺少截图台账: $LpManifestPath" }
 
 $LpProps = Get-Content -LiteralPath (Join-Path $LpRepoRoot 'Directory.Build.props') -Raw
-$LpVersion = [regex]::Match($LpProps, '<PathleapVersion>\s*(?<v>[^<]+?)\s*</PathleapVersion>').Groups['v'].Value
+$LpVersion = [regex]::Match($LpProps, '<FindioVersion>\s*(?<v>[^<]+?)\s*</FindioVersion>').Groups['v'].Value
 
 $LpManifest = (Get-Content -LiteralPath $LpManifestPath -Raw | ConvertFrom-Json).shots
 $LpManifestMap = @{}
