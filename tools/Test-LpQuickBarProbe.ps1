@@ -371,72 +371,93 @@ Write-Lp ''
 Write-Lp '--- [7c] 拖动前：贴边间隙 + 四角像素 ---'
 Invoke-LpSeamCapture 'pre'
 
-# ---------- 8. 连续改尺寸：可见性变化 / 位置序列 / 每帧贴边偏差 ----------
+# ---------- 8. 连续改尺寸：真实 2px 步进（主判据）+ 一次性 +60px（压力用例） ----------
 Write-Lp ''
-Write-Lp '--- [8] 连续改尺寸（60Hz×2s，1ms 级采样）---'
+Write-Lp '--- [8] 连续改尺寸：真实 2px 步进（60Hz×3.2s，1ms 级采样）---'
 $LpGapPreBar = Get-LpBounds $LpBar1
 $LpGapPreDlg = Get-LpBounds $LpDlg1
 $LpDesignGapPx = [int]($LpGapPreBar.T - $LpGapPreDlg.B)
-$LpDragOut = & $LpProbe 'dragresize' "$([int64]$LpBar1)" "$([int64]$LpDlg1)" '120' '16' "$LpDesignGapPx" 2>&1
-$LpDragOut | ForEach-Object { $script:LpLines.Add([string]$_) }
-Write-Lp ('连续改尺寸摘要: {0}' -f (($LpDragOut | Select-String -Pattern 'DRAGSUMMARY|DRAGDIST|SETTLE' | ForEach-Object { $_.Line }) -join ' / '))
-Write-Lp ('可见性变化明细: {0}' -f (($LpDragOut | Select-String -Pattern '^V|^Z ' | Measure-Object).Count))
 
-# ---------- 8b. 跟手观感判据（帧级） ----------
-# 采样汇总（avgDev/p95）不能证明「人看着跟手」，这里换成按 60Hz 帧判定的可见口径。
-# 把 [8] 每帧末尾的位置当作「用户眼里的这一帧」，单位物理像素（本机 200%，2px = 1 DIP）：
+# 跟手观感判据（帧级）：采样分位数不能证明「人看着跟手」，按 60Hz 帧判定。
+# 把每帧末尾的位置当作「用户眼里的这一帧」，单位物理像素（本机 200%，2px = 1 DIP）：
 #   dev_i     = barTop_i - dlgBottom_i - 设计间距；0 表示这一帧看着贴住对话框。
 #   可见跳动   = |dev_i - dev_{i-1}| > 4px（2 DIP，肉眼可辨）——期望 0 次。
 #   可见滞后帧 = 本帧对话框底边变了、栏却没动（moves=0），或帧末 |dev_i| > 4px——期望 0 帧。
 #   帧内最大偏差 = 该帧任意采样的 |dev| 最大值 ≤ 4px（比只看帧末更严）。
-#   第 0 帧例外：脚本一上来就把对话框高度 +60px，是测试瞬态（真实拖动是逐像素的），
-#   单独报告它的帧内最大值，不参与判定。
 #   最大偏差   = max|dev_i| ≤ 4px；收敛 = SETTLE 且 settleMs ≥ 0、|dev| ≤ 1px；拖动中可见性变化 0 次。
-$LpFrames = @($LpDragOut | ForEach-Object {
-        $LpLine = [string]$_
-        if ($LpLine -match '^F frame=(\d+) .*samples=(\d+) visChanges=(\d+) moves=(\d+) maxDev=([\d.]+)') {
-            [pscustomobject]@{
-                Frame = [int]$Matches[1]; Samples = [int]$Matches[2]; Vis = [int]$Matches[3]
-                Moves = [int]$Matches[4]; MaxDev = [double]$Matches[5]
-                DlgBottom = [int]([regex]::Match($LpLine, 'dlgBottom=(-?\d+)').Groups[1].Value)
-                BarTop = [int]([regex]::Match($LpLine, 'barTop=(-?\d+)').Groups[1].Value)
+function Measure-LpFeel {
+    param($LpOut, [string]$LpLabel, [int]$LpExpectedFrames, [double]$LpGapPx, [switch]$LpExcludeFirst)
+
+    $LpFrames = @($LpOut | ForEach-Object {
+            $LpLine = [string]$_
+            if ($LpLine -match '^F frame=(\d+) .*samples=(\d+) visChanges=(\d+) moves=(\d+) maxDev=([\d.]+)') {
+                [pscustomobject]@{
+                    Frame = [int]$Matches[1]; Samples = [int]$Matches[2]; Vis = [int]$Matches[3]
+                    Moves = [int]$Matches[4]; MaxDev = [double]$Matches[5]
+                    DlgBottom = [int]([regex]::Match($LpLine, 'dlgBottom=(-?\d+)').Groups[1].Value)
+                    BarTop = [int]([regex]::Match($LpLine, 'barTop=(-?\d+)').Groups[1].Value)
+                }
             }
+        })
+    $LpJump = 0; $LpLag = 0; $LpMaxDev = 0.0; $LpVisChanges = 0; $LpWorstFrameMaxDev = 0.0
+    $LpFirstFrameMaxDev = 0.0
+    $LpPrevDev = $null; $LpPrevBottom = $null
+    foreach ($LpF in $LpFrames) {
+        $LpDev = [double]($LpF.BarTop - $LpF.DlgBottom - $LpGapPx)
+        $LpSkip = $LpExcludeFirst -and $LpF.Frame -eq 0
+        if ($LpSkip) {
+            $LpFirstFrameMaxDev = $LpF.MaxDev
         }
-    })
-$LpJump = 0; $LpLag = 0; $LpMaxDev = 0.0; $LpVisChanges = 0; $LpWorstFrameMaxDev = 0.0
-$LpFirstFrameMaxDev = 0.0
-$LpPrevDev = $null; $LpPrevBottom = $null
-foreach ($LpF in $LpFrames) {
-    $LpDev = [double]($LpF.BarTop - $LpF.DlgBottom - $LpDesignGapPx)
-    if ($LpF.Frame -eq 0) { $LpFirstFrameMaxDev = $LpF.MaxDev }
-    elseif ($LpF.MaxDev -gt $LpWorstFrameMaxDev) { $LpWorstFrameMaxDev = $LpF.MaxDev }
-    if ([Math]::Abs($LpDev) -gt $LpMaxDev) { $LpMaxDev = [Math]::Abs($LpDev) }
-    if ($LpF.Frame -gt 0 -and $null -ne $LpPrevDev -and [Math]::Abs($LpDev - $LpPrevDev) -gt 4) { $LpJump++ }
-    if ($null -ne $LpPrevBottom -and $LpF.DlgBottom -ne $LpPrevBottom -and ($LpF.Moves -eq 0 -or [Math]::Abs($LpDev) -gt 4)) { $LpLag++ }
-    $LpVisChanges += $LpF.Vis
-    $LpPrevDev = $LpDev; $LpPrevBottom = $LpF.DlgBottom
+        elseif ($LpF.MaxDev -gt $LpWorstFrameMaxDev) {
+            $LpWorstFrameMaxDev = $LpF.MaxDev
+        }
+        if ([Math]::Abs($LpDev) -gt $LpMaxDev) { $LpMaxDev = [Math]::Abs($LpDev) }
+        if ($null -ne $LpPrevDev -and [Math]::Abs($LpDev - $LpPrevDev) -gt 4) { $LpJump++ }
+        if ($null -ne $LpPrevBottom -and $LpF.DlgBottom -ne $LpPrevBottom -and ($LpF.Moves -eq 0 -or [Math]::Abs($LpDev) -gt 4)) { $LpLag++ }
+        $LpVisChanges += $LpF.Vis
+        $LpPrevDev = $LpDev; $LpPrevBottom = $LpF.DlgBottom
+    }
+    $LpSettleLine = (@($LpOut | Select-String -Pattern '^SETTLE ') | Select-Object -First 1)
+    $LpSettleOk = $false
+    $LpSettleDev = [double]::NaN
+    if ($null -ne $LpSettleLine -and ([string]$LpSettleLine.Line) -match 'settleMs=([\d.]+).*dev=(-?[\d.]+)') {
+        $LpSettleOk = ([double]$Matches[1] -ge 0) -and ([Math]::Abs([double]$Matches[2]) -le 1)
+        $LpSettleDev = [double]$Matches[2]
+    }
+    $LpFeelChecks = @(
+        @{ Name = '帧数完整'; Ok = ($LpFrames.Count -ge $LpExpectedFrames) },
+        @{ Name = '无可见跳动'; Ok = ($LpJump -eq 0) },
+        @{ Name = '无可见滞后帧'; Ok = ($LpLag -eq 0) },
+        @{ Name = '帧内最大偏差 ≤ 4px'; Ok = ($LpWorstFrameMaxDev -le 4) },
+        @{ Name = '帧末最大偏差 ≤ 4px'; Ok = ($LpMaxDev -le 4) },
+        @{ Name = '拖动中无可见性变化'; Ok = ($LpVisChanges -eq 0) },
+        @{ Name = '拖动后收敛到贴边'; Ok = $LpSettleOk }
+    )
+    $LpFeelFailed = @($LpFeelChecks | Where-Object { -not $_.Ok })
+    $LpDetail = ('{0}: {1} — 帧数={2} 可见跳动={3} 可见滞后帧={4} 帧内最大偏差={5}px 帧末最大偏差={6}px 可见性变化={7} 收敛={8} dev={9}px 首帧={10}px ({11})' -f
+        $LpLabel, $(if ($LpFeelFailed.Count -eq 0) { 'PASS' } else { 'FAIL' }),
+        $LpFrames.Count, $LpJump, $LpLag, $LpWorstFrameMaxDev, $LpMaxDev, $LpVisChanges, $LpSettleOk, $LpSettleDev,
+        $(if ($LpExcludeFirst) { $LpFirstFrameMaxDev } else { '—' }),
+        (($LpFeelChecks | ForEach-Object { '{0}={1}' -f $_.Name, $(if ($_.Ok) { 'ok' } else { 'FAIL' }) }) -join ' '))
+    Write-Lp ('跟手观感判据 ' + $LpDetail)
+    [pscustomobject]@{ Label = $LpLabel; Pass = ($LpFeelFailed.Count -eq 0); Detail = $LpDetail }
 }
-$LpSettleLine = (@($LpDragOut | Select-String -Pattern '^SETTLE ') | Select-Object -First 1)
-$LpSettleOk = $false
-$LpSettleDev = [double]::NaN
-if ($null -ne $LpSettleLine -and ([string]$LpSettleLine.Line) -match 'settleMs=([\d.]+).*dev=(-?[\d.]+)') {
-    $LpSettleOk = ([double]$Matches[1] -ge 0) -and ([Math]::Abs([double]$Matches[2]) -le 1)
-    $LpSettleDev = [double]$Matches[2]
-}
-$LpFeelChecks = @(
-    @{ Name = '帧数完整'; Ok = ($LpFrames.Count -ge 120) },
-    @{ Name = '无可见跳动'; Ok = ($LpJump -eq 0) },
-    @{ Name = '无可见滞后帧'; Ok = ($LpLag -eq 0) },
-    @{ Name = '第 1 帧起帧内最大偏差 ≤ 4px'; Ok = ($LpWorstFrameMaxDev -le 4) },
-    @{ Name = '帧末最大偏差 ≤ 4px'; Ok = ($LpMaxDev -le 4) },
-    @{ Name = '拖动中无可见性变化'; Ok = ($LpVisChanges -eq 0) },
-    @{ Name = '拖动后收敛到贴边'; Ok = $LpSettleOk }
-)
-$LpFeelFailed = @($LpFeelChecks | Where-Object { -not $_.Ok })
-Write-Lp ('跟手观感判据: {0} — 帧数={1} 可见跳动={2} 可见滞后帧={3} 第1帧起帧内最大偏差={4}px 帧末最大偏差={5}px 可见性变化={6} 收敛={7} dev={8}px 首帧瞬态={9}px ({10})' -f
-    $(if ($LpFeelFailed.Count -eq 0) { 'PASS' } else { 'FAIL' }),
-    $LpFrames.Count, $LpJump, $LpLag, $LpWorstFrameMaxDev, $LpMaxDev, $LpVisChanges, $LpSettleOk, $LpSettleDev, $LpFirstFrameMaxDev,
-    (($LpFeelChecks | ForEach-Object { '{0}={1}' -f $_.Name, $(if ($_.Ok) { 'ok' } else { 'FAIL' }) }) -join ' '))
+
+$LpStepOut = & $LpProbe 'stepresize' "$([int64]$LpBar1)" "$([int64]$LpDlg1)" '200' '16' "$LpDesignGapPx" '2' 2>&1
+$LpStepOut | ForEach-Object { $script:LpLines.Add([string]$_) }
+Write-Lp ('真实步进摘要: {0}' -f (($LpStepOut | Select-String -Pattern 'DRAGSUMMARY|DRAGDIST|SETTLE' | ForEach-Object { $_.Line }) -join ' / '))
+Write-Lp ('真实步进可见性变化明细: {0}' -f (($LpStepOut | Select-String -Pattern '^V|^Z ' | Measure-Object).Count))
+$LpStepFeel = Measure-LpFeel -LpOut $LpStepOut -LpLabel '真实 2px 步进' -LpExpectedFrames 200 -LpGapPx $LpDesignGapPx
+
+# 压力用例：一次性 +60px 改高（真实拖动不会这样，保留作最坏情况）。
+Write-Lp ''
+Write-Lp '--- [8b] 压力用例：一次性 +60px 改高（60Hz×2s）---'
+$LpStressOut = & $LpProbe 'dragresize' "$([int64]$LpBar1)" "$([int64]$LpDlg1)" '120' '16' "$LpDesignGapPx" 2>&1
+$LpStressOut | ForEach-Object { $script:LpLines.Add([string]$_) }
+Write-Lp ('压力用例摘要: {0}' -f (($LpStressOut | Select-String -Pattern 'DRAGSUMMARY|DRAGDIST|SETTLE' | ForEach-Object { $_.Line }) -join ' / '))
+Write-Lp ('压力用例可见性变化明细: {0}' -f (($LpStressOut | Select-String -Pattern '^V|^Z ' | Measure-Object).Count))
+$LpStressFeel = Measure-LpFeel -LpOut $LpStressOut -LpLabel '压力用例 +60px' -LpExpectedFrames 120 -LpGapPx $LpDesignGapPx -LpExcludeFirst
+$LpFeelFailed = @(@($LpStepFeel, $LpStressFeel) | Where-Object { -not $_.Pass })
 
 # ---------- 9. 拖动后再取一次，确认改尺寸结束后接缝与四角没被破坏 ----------
 Write-Lp ''

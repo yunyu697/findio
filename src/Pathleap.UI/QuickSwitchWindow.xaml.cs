@@ -1156,10 +1156,12 @@ public sealed partial class QuickSwitchWindow : Window
 
     private void OnSearchPreviewKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
-        // 1–6 直选：Ctrl+G 之后栏本身就是前台窗口（输入需要键盘焦点），宿主低层钩子的
-        // 「前台必须是对应对话框」条件因此不成立，数字键只能在本栏的按键路径里处理。
-        // 只在尚未输入、且文件夹列表可见时生效；代价是以数字开头的查询暂时没法直接搜（已知限制）。
-        if (!_lpSearchMode && !_lpGuideVisible && !IsControlDown())
+        // Alt+1–6 直选：Ctrl+G 之后栏本身就是前台窗口（输入需要键盘焦点），宿主低层钩子的
+        // 「前台必须是对应对话框」条件因此不成立，直选只能在本栏的按键路径里处理。
+        // 裸数字必须留给搜索框（栏定位是全功能搜索框，文件名 2024Q3-报告.xlsx 不能被直选截走），
+        // 所以直选统一带 Alt，键帽提示同步为 AltN。只在尚未输入、且文件夹列表可见时生效。
+        var lpAltDown = e.KeyStatus.IsMenuKeyDown || QuickSwitchNative.IsAltDown();
+        if (!_lpSearchMode && !_lpGuideVisible && lpAltDown)
         {
             var lpPickIndex = e.Key switch
             {
@@ -1199,16 +1201,12 @@ public sealed partial class QuickSwitchWindow : Window
         }
     }
 
-    private static bool IsControlDown() =>
-        Microsoft.UI.Input.InputKeyboardSource
-            .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control)
-            .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
-
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
         var lpQuery = SearchBox.Text.Trim();
         var lpWasGuide = _lpGuideVisible;
         _lpSearchMode = lpQuery.Length > 0;
+        AppLog.Info($"快速切换栏搜索输入: \"{(lpQuery.Length > 64 ? lpQuery[..64] : lpQuery)}\" search={_lpSearchMode}");
         if (lpWasGuide && _lpSearchMode)
         {
             // 开始输入即视为看过引导：立刻落盘，下次唤起不再出现。
@@ -1603,8 +1601,9 @@ public sealed partial class QuickSwitchWindow : Window
 
         var lpBadge = new Border
         {
-            Width = 17,
+            MinWidth = 17,
             Height = 17,
+            Padding = new Thickness(3, 0, 3, 0),
             CornerRadius = new CornerRadius(4),
             Background = lpSelected ? ThemeService.Instance.AccentBrush : ThemeService.Instance.TrackOffBrush,
             BorderBrush = lpSelected ? ThemeService.Instance.AccentBrush : ThemeService.Instance.TrackOffBorderBrush,
@@ -1612,8 +1611,9 @@ public sealed partial class QuickSwitchWindow : Window
             VerticalAlignment = VerticalAlignment.Center,
             Child = new TextBlock
             {
-                Text = (index + 1).ToString(),
-                FontSize = 9,
+                // 裸数字必须留给搜索框，直选统一 Alt+数字，键帽提示与行为保持一致。
+                Text = $"Alt{index + 1}",
+                FontSize = 8,
                 FontFamily = new FontFamily("Consolas"),
                 FontWeight = lpSelected ? Microsoft.UI.Text.FontWeights.SemiBold : Microsoft.UI.Text.FontWeights.Normal,
                 Foreground = lpSelected ? ThemeService.Instance.AccentInkBrush : ThemeService.Instance.Text3Brush,

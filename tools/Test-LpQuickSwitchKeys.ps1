@@ -293,7 +293,8 @@ try {
         $LpFgBefore = [LpKeys.Native]::GetForegroundWindow()
         $LpInjected = ''
         if ($LpFgBefore -eq $LpDlg -or $LpFgBefore -eq $LpFgBar -or $LpFgBar -eq $LpDlg) {
-            Send-LpKey -LpKeys @(0x30 + $LpDigit)
+            # 直选只认 Alt+数字；裸数字必须留给搜索框。
+            Send-LpChord -LpModifier 0x12 -LpKey (0x30 + $LpDigit)
         }
         else {
             $LpInjected = '跳过：前台被其它窗口占用'
@@ -322,6 +323,107 @@ try {
     Add-LpCheck -LpName '快速切换栏挂到真实文件对话框' -LpPassed $LpDialogLogged -LpDetail '日志出现「快速切换栏已挂到对话框」'
     Add-LpCheck -LpName '快速切换栏列出 6 个文件夹' -LpPassed ($LpFoldersSeen -eq 6) -LpDetail ("日志 folders={0}" -f $LpFoldersSeen)
     Add-LpCheck -LpName 'Ctrl+G 后栏取得前台（键盘焦点）' -LpPassed ($LpBarActiveRounds -eq 6) -LpDetail ("{0}/6 轮前台进程是 Pathleap.UI" -f $LpBarActiveRounds)
+
+    # ---------- 输入态：裸数字必须进搜索框，直选改用 Alt+数字 ----------
+    $LpTypeHost = Start-Process -FilePath $LpHost -PassThru
+    $LpTypeDlg = [IntPtr]::Zero
+    $LpDeadline = (Get-Date).AddSeconds(15)
+    while ((Get-Date) -lt $LpDeadline) {
+        $LpTypeDlg = Find-LpDialog -LpPid $LpTypeHost.Id
+        if ($LpTypeDlg -ne [IntPtr]::Zero) { break }
+        Start-Sleep -Milliseconds 250
+    }
+    if ($LpTypeDlg -eq [IntPtr]::Zero) { throw '输入态测试等不到文件对话框' }
+    for ($LpTry = 0; $LpTry -lt 3; $LpTry++) {
+        if (Set-LpForeground -LpHwnd $LpTypeDlg) { break }
+        Start-Sleep -Milliseconds 300
+    }
+    Start-Sleep -Milliseconds 300
+    $LpTypeSince = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ss')
+    Send-LpChord -LpModifier 0x11 -LpKey 0x47
+    Start-Sleep -Milliseconds 800
+    $LpTypeBar = [LpKeys.Native]::GetForegroundWindow()
+    Start-Sleep -Milliseconds 300
+
+    # 键帽提示的视觉证据：此刻栏显示文件夹列表（搜索态会换成结果列表），正好能看到 Alt1..Alt6。
+    $LpShot = Join-Path $LpRepo 'docs\shots\83-quickbar-alt-hints.png'
+    try {
+        Add-Type -AssemblyName System.Drawing
+        if (-not ('LpShotRect' -as [type])) {
+            Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public static class LpShotRect {
+    [StructLayout(LayoutKind.Sequential)] public struct RECT { public int Left, Top, Right, Bottom; }
+    [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr h, out RECT r);
+    public static int[] OfWindow(IntPtr h) {
+        RECT r;
+        if (!GetWindowRect(h, out r)) return null;
+        return new int[] { r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top };
+    }
+}
+'@
+        }
+        $LpShotRect = [LpShotRect]::OfWindow($LpTypeBar)
+        if ($null -eq $LpShotRect -or $LpShotRect[2] -le 0 -or $LpShotRect[3] -le 0) { throw '栏几何无效' }
+        $LpBmp = New-Object System.Drawing.Bitmap $LpShotRect[2], $LpShotRect[3]
+        $LpGfx = [System.Drawing.Graphics]::FromImage($LpBmp)
+        $LpGfx.CopyFromScreen($LpShotRect[0], $LpShotRect[1], 0, 0, $LpBmp.Size)
+        $LpBmp.Save($LpShot, [System.Drawing.Imaging.ImageFormat]::Png)
+        $LpGfx.Dispose(); $LpBmp.Dispose()
+        Write-Host ("  键帽截图: {0} ({1}x{2})" -f $LpShot, $LpShotRect[2], $LpShotRect[3])
+    }
+    catch { Write-Host ("  截图失败（不影响按键结论）：{0}" -f $_.Exception.Message) }
+
+    function Get-LpSinceLines {
+        param([string]$LpSince)
+        @(Read-LpLogLines | Where-Object { $_.Length -ge 19 -and [string]::CompareOrdinal($_.Substring(0, 19), $LpSince) -ge 0 })
+    }
+    function Get-LpLastMatch {
+        param($LpLines, [string]$LpPattern)
+        $LpLast = $null
+        foreach ($LpLine in $LpLines) {
+            if ($LpLine -match $LpPattern) { $LpLast = $Matches }
+        }
+        $LpLast
+    }
+
+    # 1) 裸数字 2：必须进入搜索框并发出 q=2 的查询，且不能触发直选注入。
+    Send-LpKey -LpKeys @(0x32)
+    Start-Sleep -Milliseconds 900
+    $LpAfter2 = @(Get-LpSinceLines -LpSince $LpTypeSince)
+    $LpInput2 = Get-LpLastMatch -LpLines $LpAfter2 -LpPattern '快速切换栏搜索输入: "([^"]*)" search=(\w+)'
+    $LpSearch2 = Get-LpLastMatch -LpLines $LpAfter2 -LpPattern '快速切换搜索结果: q=(\S*) hits=(\d+)'
+    $LpInjectedTyping = @($LpAfter2 | Where-Object { $_ -match '文件对话框注入已发送' }).Count
+
+    # 2) 继续输入 024，组成 2024：字符必须累积进搜索框，并发出 q=2024 的查询。
+    Send-LpKey -LpKeys @(0x30, 0x32, 0x34)
+    Start-Sleep -Milliseconds 1800
+    $LpAfter2024 = @(Get-LpSinceLines -LpSince $LpTypeSince)
+    $LpInput2024 = Get-LpLastMatch -LpLines $LpAfter2024 -LpPattern '快速切换栏搜索输入: "([^"]*)" search=(\w+)'
+    $LpSearch2024 = Get-LpLastMatch -LpLines $LpAfter2024 -LpPattern '快速切换搜索结果: q=(\S*) hits=(\d+)'
+    $LpInjectedTyping = @($LpAfter2024 | Where-Object { $_ -match '文件对话框注入已发送' }).Count
+
+    # 3) Esc 清空后再用 Alt+2 直选：证明直选入口仍然可用，且与输入互不干扰。
+    Send-LpKey -LpKeys @(0x1B)
+    Start-Sleep -Milliseconds 500
+    $LpAltSince = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ss')
+    Send-LpChord -LpModifier 0x12 -LpKey 0x32
+    $LpAltInjected = ''
+    $LpDeadline = (Get-Date).AddSeconds(3)
+    while ((Get-Date) -lt $LpDeadline -and $LpAltInjected -eq '') {
+        Start-Sleep -Milliseconds 250
+        foreach ($LpLine in @(Get-LpSinceLines -LpSince $LpAltSince)) {
+            if ($LpLine -match '文件对话框注入已发送: kind=\S+ path=(.+?) edit=') { $LpAltInjected = $Matches[1].Trim() }
+        }
+    }
+    $LpAltFolder = Get-LpLastMatch -LpLines @(Get-LpSinceLines -LpSince $LpTypeSince) -LpPattern '快速切换栏文件夹: (.+)$'
+    $LpAltWant = if ($null -ne $LpAltFolder -and $LpAltFolder[1].Split(' | ').Count -ge 2) { $LpAltFolder[1].Split(' | ')[1] } else { '' }
+
+    Add-LpCheck -LpName '输入 2：字符进入搜索框且被当作查询' -LpPassed ($null -ne $LpInput2 -and $LpInput2[1] -eq '2' -and $null -ne $LpSearch2 -and $LpSearch2[1] -eq '2' -and $LpInjectedTyping -eq 0) -LpDetail ("输入日志={0}；查询日志 q={1} hits={2}；期间直选注入={3}" -f $(if ($null -eq $LpInput2) { '（无）' } else { '"' + $LpInput2[1] + '" search=' + $LpInput2[2] }), $(if ($null -eq $LpSearch2) { '（无）' } else { $LpSearch2[1] }), $(if ($null -eq $LpSearch2) { '（无）' } else { $LpSearch2[2] }), $LpInjectedTyping)
+    Add-LpCheck -LpName '输入 2024：字符累积入框并按查询过滤' -LpPassed ($null -ne $LpInput2024 -and $LpInput2024[1] -eq '2024' -and $null -ne $LpSearch2024 -and $LpSearch2024[1] -eq '2024' -and $LpInjectedTyping -eq 0) -LpDetail ("输入日志={0}；查询日志 q={1} hits={2}；期间直选注入={3}" -f $(if ($null -eq $LpInput2024) { '（无）' } else { '"' + $LpInput2024[1] + '" search=' + $LpInput2024[2] }), $(if ($null -eq $LpSearch2024) { '（无）' } else { $LpSearch2024[1] }), $(if ($null -eq $LpSearch2024) { '（无）' } else { $LpSearch2024[2] }), $LpInjectedTyping)
+    Add-LpCheck -LpName 'Esc 清空后 Alt+2 仍能直选第 2 个文件夹' -LpPassed ($LpAltInjected -ne '' -and $LpAltInjected -eq $LpAltWant) -LpDetail ("期望 {0} / 实际 {1}" -f $(if ($LpAltWant -eq '') { '（无）' } else { $LpAltWant }), $(if ($LpAltInjected -eq '') { '（无）' } else { $LpAltInjected }))
+    Get-Process -Id $LpTypeHost.Id -ErrorAction SilentlyContinue | Stop-Process -Force
 
     $LpValues = @($LpPicked.Values | Where-Object { $_ -ne '' -and $_ -notlike '失败*' -and $_ -notlike '跳过*' })
     $LpDistinct = @($LpValues | Sort-Object -Unique)

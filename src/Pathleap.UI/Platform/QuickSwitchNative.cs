@@ -36,6 +36,12 @@ internal static class QuickSwitchNative
         public int Y;
     }
 
+    [DllImport("user32.dll")]
+    private static extern short GetAsyncKeyState(int virtualKey);
+
+    /// <summary>Alt 是否按住。低层钩子与 UI 线程都可用，用于区分「Alt+数字直选」与输入数字。</summary>
+    public static bool IsAltDown() => (GetAsyncKeyState(0x12) & 0x8000) != 0;
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr GetParent(IntPtr hwnd);
 

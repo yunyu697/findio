@@ -795,6 +795,12 @@ public partial class App : Application
         }
 
         var lpIsDigit = virtualKey is >= 0x31 and <= 0x36 || virtualKey is >= 0x61 and <= 0x66;
+        // 裸数字一律放行：栏定位是全功能搜索框，数字必须能输入查询；直选只认 Alt+数字。
+        if (lpIsDigit && !QuickSwitchNative.IsAltDown())
+        {
+            return false;
+        }
+
         if (!lpIsDigit && virtualKey is not (0x1B or 0x0D or 0x26 or 0x28))
         {
             return false;
