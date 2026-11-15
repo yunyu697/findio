@@ -496,15 +496,17 @@
 压力用例的 60px 只出现在第 0 帧（脚本一次性改高造成），第 1 帧起帧内最大 4px。
 两轮判据均 PASS；任一不通过时脚本退出码为 1，采样分位数只作辅助，不再作为通过依据。
 
-### 采样环境与物理面板复测（2026-11-15）
+### 采样环境与官方基线（2026-11-15）
 
-上面 tag=`step-1115` 那次跑在 `\\.\DISPLAY16`（2940×1846@144Hz、200%）上。用 `QueryDisplayConfig` +
+**官方基线（用户确认）**：用户实际使用环境是物理面板 `\\.\DISPLAY28`（AMD Radeon 780M、`outputTechnology=INTERNAL`、
+`MONITOR\LEN9123`、2880×1800@60、200%、工作区 2880×1704）。本节的 `panel60` 数据即官方基线。
+
+对照数据 tag=`step-1115` 跑在 `\\.\DISPLAY16`（2940×1846@144Hz、200%）上。用 `QueryDisplayConfig` +
 `EnumDisplayDevicesW` 查身份后确认它**不是物理面板**：适配器 `DeviceString=GameViewer Virtual Display Adapter`、
-适配器路径 `\\?\ROOT#DISPLAY#0001...`（IDD 虚拟显示），target `outputTechnology=HDMI`；同期本机 AMD Radeon 780M
-的 `\\.\DISPLAY28` 为 `attached=False`。即那次结论来自虚拟显示器，且刷新率是 144Hz，不是面板的 60Hz。
+适配器路径 `\\?\ROOT#DISPLAY#0001...`（IDD 虚拟显示），target `outputTechnology=HDMI`。它是当时远程会话产生的
+虚拟屏，用户不需要恢复；那组数据仅作对照，且刷新率是 144Hz、不是面板的 60Hz。
 
-面板接回后（`\\.\DISPLAY28`，AMD Radeon 780M，`outputTechnology=INTERNAL`，`MONITOR\LEN9123`，
-2880×1800@60、200%、工作区 2880×1704）用同一脚本复跑（tag=`panel60`）：
+物理面板上用同一脚本复跑（tag=`panel60`）：
 
 | 场景 | 帧数 | 可见跳动 | 可见滞后帧 | 帧内最大偏差 | 帧末最大偏差 | 可见性变化 | 收敛 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
