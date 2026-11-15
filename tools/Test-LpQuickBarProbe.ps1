@@ -4,6 +4,8 @@
   快速切换栏 z 序 / 点击闪烁 / 拖动跟随的实机采样。
   用一个真实的 #32770 文件对话框（DialogHost.exe 拉起 OpenFileDialog）作为宿主，
   QsProbeLp.exe 负责 1ms 级采样与 SendInput 点击。
+  §8b 按 60Hz 帧给出「跟手观感」的可判定结论（可见跳动、可见滞后帧、帧末最大偏差、
+  拖动中可见性变化、拖动后收敛），不通过时脚本退出码为 1；采样分位数只作辅助。
 
 .EXAMPLE
   pwsh -NoProfile -File tools\Test-LpQuickBarProbe.ps1 -LpTag new
@@ -380,6 +382,62 @@ $LpDragOut | ForEach-Object { $script:LpLines.Add([string]$_) }
 Write-Lp ('连续改尺寸摘要: {0}' -f (($LpDragOut | Select-String -Pattern 'DRAGSUMMARY|DRAGDIST|SETTLE' | ForEach-Object { $_.Line }) -join ' / '))
 Write-Lp ('可见性变化明细: {0}' -f (($LpDragOut | Select-String -Pattern '^V|^Z ' | Measure-Object).Count))
 
+# ---------- 8b. 跟手观感判据（帧级） ----------
+# 采样汇总（avgDev/p95）不能证明「人看着跟手」，这里换成按 60Hz 帧判定的可见口径。
+# 把 [8] 每帧末尾的位置当作「用户眼里的这一帧」，单位物理像素（本机 200%，2px = 1 DIP）：
+#   dev_i     = barTop_i - dlgBottom_i - 设计间距；0 表示这一帧看着贴住对话框。
+#   可见跳动   = |dev_i - dev_{i-1}| > 4px（2 DIP，肉眼可辨）——期望 0 次。
+#   可见滞后帧 = 本帧对话框底边变了、栏却没动（moves=0），或帧末 |dev_i| > 4px——期望 0 帧。
+#   帧内最大偏差 = 该帧任意采样的 |dev| 最大值 ≤ 4px（比只看帧末更严）。
+#   第 0 帧例外：脚本一上来就把对话框高度 +60px，是测试瞬态（真实拖动是逐像素的），
+#   单独报告它的帧内最大值，不参与判定。
+#   最大偏差   = max|dev_i| ≤ 4px；收敛 = SETTLE 且 settleMs ≥ 0、|dev| ≤ 1px；拖动中可见性变化 0 次。
+$LpFrames = @($LpDragOut | ForEach-Object {
+        $LpLine = [string]$_
+        if ($LpLine -match '^F frame=(\d+) .*samples=(\d+) visChanges=(\d+) moves=(\d+) maxDev=([\d.]+)') {
+            [pscustomobject]@{
+                Frame = [int]$Matches[1]; Samples = [int]$Matches[2]; Vis = [int]$Matches[3]
+                Moves = [int]$Matches[4]; MaxDev = [double]$Matches[5]
+                DlgBottom = [int]([regex]::Match($LpLine, 'dlgBottom=(-?\d+)').Groups[1].Value)
+                BarTop = [int]([regex]::Match($LpLine, 'barTop=(-?\d+)').Groups[1].Value)
+            }
+        }
+    })
+$LpJump = 0; $LpLag = 0; $LpMaxDev = 0.0; $LpVisChanges = 0; $LpWorstFrameMaxDev = 0.0
+$LpFirstFrameMaxDev = 0.0
+$LpPrevDev = $null; $LpPrevBottom = $null
+foreach ($LpF in $LpFrames) {
+    $LpDev = [double]($LpF.BarTop - $LpF.DlgBottom - $LpDesignGapPx)
+    if ($LpF.Frame -eq 0) { $LpFirstFrameMaxDev = $LpF.MaxDev }
+    elseif ($LpF.MaxDev -gt $LpWorstFrameMaxDev) { $LpWorstFrameMaxDev = $LpF.MaxDev }
+    if ([Math]::Abs($LpDev) -gt $LpMaxDev) { $LpMaxDev = [Math]::Abs($LpDev) }
+    if ($LpF.Frame -gt 0 -and $null -ne $LpPrevDev -and [Math]::Abs($LpDev - $LpPrevDev) -gt 4) { $LpJump++ }
+    if ($null -ne $LpPrevBottom -and $LpF.DlgBottom -ne $LpPrevBottom -and ($LpF.Moves -eq 0 -or [Math]::Abs($LpDev) -gt 4)) { $LpLag++ }
+    $LpVisChanges += $LpF.Vis
+    $LpPrevDev = $LpDev; $LpPrevBottom = $LpF.DlgBottom
+}
+$LpSettleLine = (@($LpDragOut | Select-String -Pattern '^SETTLE ') | Select-Object -First 1)
+$LpSettleOk = $false
+$LpSettleDev = [double]::NaN
+if ($null -ne $LpSettleLine -and ([string]$LpSettleLine.Line) -match 'settleMs=([\d.]+).*dev=(-?[\d.]+)') {
+    $LpSettleOk = ([double]$Matches[1] -ge 0) -and ([Math]::Abs([double]$Matches[2]) -le 1)
+    $LpSettleDev = [double]$Matches[2]
+}
+$LpFeelChecks = @(
+    @{ Name = '帧数完整'; Ok = ($LpFrames.Count -ge 120) },
+    @{ Name = '无可见跳动'; Ok = ($LpJump -eq 0) },
+    @{ Name = '无可见滞后帧'; Ok = ($LpLag -eq 0) },
+    @{ Name = '第 1 帧起帧内最大偏差 ≤ 4px'; Ok = ($LpWorstFrameMaxDev -le 4) },
+    @{ Name = '帧末最大偏差 ≤ 4px'; Ok = ($LpMaxDev -le 4) },
+    @{ Name = '拖动中无可见性变化'; Ok = ($LpVisChanges -eq 0) },
+    @{ Name = '拖动后收敛到贴边'; Ok = $LpSettleOk }
+)
+$LpFeelFailed = @($LpFeelChecks | Where-Object { -not $_.Ok })
+Write-Lp ('跟手观感判据: {0} — 帧数={1} 可见跳动={2} 可见滞后帧={3} 第1帧起帧内最大偏差={4}px 帧末最大偏差={5}px 可见性变化={6} 收敛={7} dev={8}px 首帧瞬态={9}px ({10})' -f
+    $(if ($LpFeelFailed.Count -eq 0) { 'PASS' } else { 'FAIL' }),
+    $LpFrames.Count, $LpJump, $LpLag, $LpWorstFrameMaxDev, $LpMaxDev, $LpVisChanges, $LpSettleOk, $LpSettleDev, $LpFirstFrameMaxDev,
+    (($LpFeelChecks | ForEach-Object { '{0}={1}' -f $_.Name, $(if ($_.Ok) { 'ok' } else { 'FAIL' }) }) -join ' '))
+
 # ---------- 9. 拖动后再取一次，确认改尺寸结束后接缝与四角没被破坏 ----------
 Write-Lp ''
 Write-Lp '--- [9] 拖动后：贴边间隙 + 四角像素 ---'
@@ -421,3 +479,4 @@ if ($LpForegroundBefore -ne [IntPtr]::Zero) { [void](Set-LpForeground $LpForegro
 $script:LpLines | Set-Content -LiteralPath $LpReport -Encoding UTF8
 Write-Host ''
 Write-Host ("报告已写入 {0}" -f $LpReport)
+if ($LpFeelFailed.Count -gt 0) { exit 1 }
