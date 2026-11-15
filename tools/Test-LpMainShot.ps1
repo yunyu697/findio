@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-  主搜索窗单发实拍：在当前已切好的缩放下拉起主窗，抓物理像素，核对「宽度=工作区 1/3、顶边=工作区 1/4、水平居中」。
+  主搜索窗单发实拍：在当前已切好的缩放下拉起主窗，抓物理像素，核对「宽度=工作区 40% 并夹在 600–880 DIP、顶边=工作区 1/4、水平居中」。
   探针读数与期望缩放不符则直接中止，不做任何拍摄。
 .EXAMPLE
   pwsh -NoProfile -File tools\Test-LpMainShot.ps1 -LpScale 2.0 -LpNum 44 -LpTag 200 -LpMode recent
@@ -44,6 +44,9 @@ Add-Type -Namespace 'LpMainNative' -Name 'Win32' -MemberDefinition @'
     // DWMWA_EXTENDED_FRAME_BOUNDS = 9：窗口可见边框的物理像素矩形，用来核对「实际看到的窗宽」。
     [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
     public static extern int DwmGetWindowAttribute(System.IntPtr hWnd, int attr, out RECT rect, int size);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern uint GetDpiForWindow(System.IntPtr hWnd);
 '@
 
 function Find-LpWindowByTitle {
@@ -72,8 +75,13 @@ if ([Math]::Abs($LpProbed - $LpScale) -gt 0.02) {
     throw ("当前缩放 {0} 与期望 {1} 不符，未拍摄" -f $LpProbed, $LpScale)
 }
 $LpWorkRect = $LpJson.realWork
-# 与 MainWindowLayout.Compute 同一套取整：宽度直接对物理像素取整，X 用整数除法保持左右留白对称。
-$LpExpectWidth = [int][Math]::Round($LpWorkRect.width * 1.0 / 3.0)
+# 与 MainWindowLayout.Compute 同一套算法：工作区物理宽 → DIP → ×40% → 夹 600–880 DIP → ×DPI 回物理像素。
+$LpWorkWidthDip = [double]$LpWorkRect.width / $LpScale
+$LpTargetDip = $LpWorkWidthDip * 0.40
+$LpMinDip = [Math]::Min(600.0, $LpWorkWidthDip)
+$LpClampDip = [Math]::Min([Math]::Max($LpTargetDip, $LpMinDip), 880.0)
+$LpClampKind = if ($LpClampDip -gt $LpTargetDip + 0.01) { 'min' } elseif ($LpClampDip -lt $LpTargetDip - 0.01) { 'max' } else { 'none' }
+$LpExpectWidth = [int][Math]::Round($LpClampDip * $LpScale)
 $LpExpectTop = [int][Math]::Round($LpWorkRect.top + $LpWorkRect.height * 0.25)
 $LpExpectHeight = [int][Math]::Round(436 * $LpScale)
 $LpExpectLeft = [int]$LpWorkRect.left + [int][Math]::Floor(($LpWorkRect.width - $LpExpectWidth) / 2.0)
@@ -109,6 +117,7 @@ $LpDwm = New-Object LpMainNative.Win32+RECT
 $LpDwmOk = ([LpMainNative.Win32]::DwmGetWindowAttribute($LpHwnd, 9, [ref]$LpDwm, 16) -eq 0)
 $LpDwmW = if ($LpDwmOk) { $LpDwm.Right - $LpDwm.Left } else { 0 }
 $LpDwmH = if ($LpDwmOk) { $LpDwm.Bottom - $LpDwm.Top } else { 0 }
+$LpWindowDpi = [LpMainNative.Win32]::GetDpiForWindow($LpHwnd)
 
 Copy-Item -LiteralPath $LpRaw -Destination $LpShot -Force
 Get-Process -Id $LpProc.Id -ErrorAction SilentlyContinue | Stop-Process -Force
@@ -119,14 +128,17 @@ $LpCenterOffset = ($LpL + $LpW / 2.0) - ($LpWorkRect.left + $LpWorkW / 2.0)
 [pscustomobject]@{
     Mode          = $LpMode
     Scale         = $LpProbed
+    WindowDpi     = $LpWindowDpi
+    WorkPx        = ('L={0} T={1} {2}x{3} = {4} DIP 宽' -f $LpWorkRect.left, $LpWorkRect.top, $LpWorkW, $LpWorkH, [Math]::Round($LpWorkWidthDip, 2))
+    WidthPolicy   = ('40% = {0} DIP，夹值={1}，落 {2} DIP' -f [Math]::Round($LpTargetDip, 2), $LpClampKind, [Math]::Round($LpClampDip, 2))
     WindowPx      = ('L={0} T={1} {2}x{3}' -f $LpL, $LpT, $LpW, $LpH)
     DwmFramePx    = if ($LpDwmOk) { ('L={0} T={1} {2}x{3}' -f $LpDwm.Left, $LpDwm.Top, $LpDwmW, $LpDwmH) } else { '不可用' }
     ExpectPx      = ('L={0} T={1} {2}x{3}' -f $LpExpectLeft, $LpExpectTop, $LpExpectWidth, $LpExpectHeight)
     SizeMatch     = ($LpW -eq $LpExpectWidth -and $LpH -eq $LpExpectHeight)
     TopMatch      = ([Math]::Abs($LpT - $LpExpectTop) -le 1)
     CenterOffsetPx = $LpCenterOffset
-    DwmWidthVsWork = if ($LpDwmOk) { ('{0}/{1} = {2}（与 1/3 差 {3}px）' -f $LpDwmW, $LpWorkW, [Math]::Round($LpDwmW / $LpWorkW, 5), [Math]::Round($LpDwmW - $LpWorkW / 3.0, 2)) } else { '不可用' }
-    WidthVsWork   = ('{0}/{1} = {2}（与 1/3 差 {3}px）' -f $LpW, $LpWorkW, [Math]::Round($LpW / $LpWorkW, 5), [Math]::Round($LpW - $LpWorkW / 3.0, 2))
+    DwmWidthVsWork = if ($LpDwmOk) { ('{0}/{1} = {2}（{3} DIP）' -f $LpDwmW, $LpWorkW, [Math]::Round($LpDwmW / $LpWorkW, 5), [Math]::Round($LpDwmW / $LpScale, 2)) } else { '不可用' }
+    WidthVsWork   = ('{0}/{1} = {2}（{3} DIP）' -f $LpW, $LpWorkW, [Math]::Round($LpW / $LpWorkW, 5), [Math]::Round($LpW / $LpScale, 2))
     TopVsWork     = ('{0}-{1} / {2} = {3}' -f $LpT, $LpWorkRect.top, $LpWorkH, [Math]::Round(($LpT - $LpWorkRect.top) / $LpWorkH, 4))
     Shot          = (Split-Path $LpShot -Leaf)
 } | Format-List | Out-String -Width 200 | Write-Host

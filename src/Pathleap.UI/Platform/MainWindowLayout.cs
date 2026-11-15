@@ -1,14 +1,21 @@
 namespace Pathleap.UI.Platform;
 
 /// <summary>
-/// 主搜索窗几何：宽度取光标所在显示器工作区宽度的 1/3，顶边固定在工作区高度 1/4 处，水平居中。
-/// 宽度直接按物理像素算（不做「DIP 取整再乘回」），各缩放档下 widthPx / workWidthPx 都落在 1/3 的 ±1px 内；
-/// 高度仍由 DIP 换算成物理像素，调用方用 SetWindowPos 以物理像素落位。
+/// 主搜索窗几何：宽度取工作区宽度的 40%，再夹在 600–880 DIP 之间；顶边固定在工作区高度 1/4 处，水平居中。
+/// 计算顺序固定为「工作区物理宽 → 该屏 DIP → 乘 40% → 夹 DIP 上下限 → 乘回该屏 DPI 得物理像素」，
+/// 这样夹值在每一档缩放都按同一套 DIP 规则生效，不会因为物理像素取整而在 125%/150% 下换档。
+/// 调用方用 SetWindowPos 以物理像素落位，高度仍由 DIP 换算。
 /// </summary>
 internal static class MainWindowLayout
 {
     /// <summary>宽度占工作区宽度的比例。</summary>
-    public const double WidthFraction = 1.0 / 3.0;
+    public const double WidthFraction = 0.40;
+
+    /// <summary>宽度下限（DIP）。不随缩放放大缩小。</summary>
+    public const double MinWidthDip = 600;
+
+    /// <summary>宽度上限（DIP）。不随缩放放大缩小。</summary>
+    public const double MaxWidthDip = 880;
 
     /// <summary>顶边相对工作区高度的位置。</summary>
     public const double TopFraction = 0.25;
@@ -30,13 +37,20 @@ internal static class MainWindowLayout
         var lpWorkHeight = workBottom - workTop;
 
         // 取整策略（有意混用，改动前先读这段）：
-        // 宽度直接对物理像素取整：widthPx = Round(workWidthPx / 3)。不走「DIP 取整再乘回」——
-        // 那条路在 125%/150%/175% 下会把 1 DIP 的舍入放大成 1.25–1.75px，200% 下可差到 2px，
-        // 比值就不再稳定落在 1/3 的 ±1px 内。高度仍按 DIP 换算（Round(heightDip × scale)）。
-        // 宽高与 Y 用 Math.Round（默认 MidpointRounding.ToEven，银行家舍入），例如工作区高 1750 → 437.5 → 438；
-        // X 用整数除法（非负值即向下取整），保持左右留白完全对称：如屏宽 2880、窗宽 960 时 x=960。
-        // 若把 X 也改成 Math.Round 或把 Y 改成向下取整，.5 边界会各差 1px，历史几何表就不可比了。
-        var lpWidth = (int)Math.Round(lpWorkWidth * WidthFraction);
+        // 1) 宽度先按该屏 DPI 把工作区物理宽换成 DIP：workWidthDip = workWidthPx / scale；
+        // 2) targetDip = workWidthDip × 40%；clampDip = Clamp(targetDip, 600, 880)；
+        // 3) widthPx = Round(clampDip × scale)。宽度取整只发生在最后一步，DIP 夹值不会因为
+        //    125%/150%/175% 的换算而换档（直接对物理像素乘比例会出现这种换档）。
+        // 4) 窄屏兜底：下限取 Min(600, workWidthDip)，保证工作区比 600 DIP 还窄时窗口不越界；
+        //    工作区 DIP 宽 < 1200 时 40% 恒小于 600，因此一律按 600 处理（见 --layout-probe 的 narrowScreen）。
+        // 高度仍按 DIP 换算（Round(heightDip × scale)）。
+        // 宽高与 Y 用 Math.Round（默认 MidpointRounding.ToEven，银行家舍入）；X 用整数除法
+        // （非负值即向下取整），保持左右留白完全对称。
+        var lpWorkWidthDip = lpWorkWidth / scale;
+        var lpTargetDip = lpWorkWidthDip * WidthFraction;
+        var lpMinDip = Math.Min(MinWidthDip, lpWorkWidthDip);
+        var lpClampDip = Math.Clamp(lpTargetDip, lpMinDip, MaxWidthDip);
+        var lpWidth = (int)Math.Round(lpClampDip * scale);
         var lpHeight = (int)Math.Round(heightDip * scale);
         var lpX = workLeft + (lpWorkWidth - lpWidth) / 2;
         var lpY = workTop + (int)Math.Round(lpWorkHeight * TopFraction);

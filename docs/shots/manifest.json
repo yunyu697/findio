@@ -121,6 +121,16 @@
       "file": "shots/98-dirC-editorial-results.png",
       "version": "1.1.3",
       "shows": "观感方向 C「清晰编辑感」结果页（查询 lp，行高 56 DIP，200%）"
+    },
+    {
+      "file": "shots/99-main-scale200-recent.png",
+      "version": "1.1.3",
+      "shows": "工作区 40% 夹 600–880 DIP 后的最近访问页（200%，1200×872，实测 DWMWA_EXTENDED_FRAME_BOUNDS）"
+    },
+    {
+      "file": "shots/100-main-scale200-results.png",
+      "version": "1.1.3",
+      "shows": "工作区 40% 夹 600–880 DIP 后的结果页（200%，查询 lp，600 DIP 宽下名称/路径完整）"
     }
   ]
 }

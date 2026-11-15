@@ -686,7 +686,9 @@
     }
   ],
   "mainWindow": {
-    "widthFraction": 0.3333333333333333,
+    "widthFraction": 0.4,
+    "minWidthDip": 600,
+    "maxWidthDip": 880,
     "topFraction": 0.25,
     "heightDip": 436,
     "perScale": [
@@ -702,15 +704,18 @@
           "height": 852
         },
         "frame": {
-          "x": 480,
+          "x": 420,
           "y": 213,
-          "width": 480,
+          "width": 600,
           "height": 436
         },
         "checks": {
-          "widthDip": 480,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1440,
+          "widthDip": 600,
+          "widthTargetDip": 576,
+          "widthClamp": "min",
+          "widthRatio": 0.4167,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.25,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -728,15 +733,18 @@
           "height": 1065
         },
         "frame": {
-          "x": 600,
+          "x": 525,
           "y": 266,
-          "width": 600,
+          "width": 750,
           "height": 545
         },
         "checks": {
-          "widthDip": 480,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1440,
+          "widthDip": 600,
+          "widthTargetDip": 576,
+          "widthClamp": "min",
+          "widthRatio": 0.4167,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.2498,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -754,15 +762,18 @@
           "height": 1278
         },
         "frame": {
-          "x": 720,
+          "x": 630,
           "y": 320,
-          "width": 720,
+          "width": 900,
           "height": 654
         },
         "checks": {
-          "widthDip": 480,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1440,
+          "widthDip": 600,
+          "widthTargetDip": 576,
+          "widthClamp": "min",
+          "widthRatio": 0.4167,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.2504,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -780,15 +791,18 @@
           "height": 1491
         },
         "frame": {
-          "x": 840,
+          "x": 735,
           "y": 373,
-          "width": 840,
+          "width": 1050,
           "height": 763
         },
         "checks": {
-          "widthDip": 480,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1440,
+          "widthDip": 600,
+          "widthTargetDip": 576,
+          "widthClamp": "min",
+          "widthRatio": 0.4167,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.2502,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -806,15 +820,18 @@
           "height": 1704
         },
         "frame": {
-          "x": 960,
+          "x": 840,
           "y": 426,
-          "width": 960,
+          "width": 1200,
           "height": 872
         },
         "checks": {
-          "widthDip": 480,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1440,
+          "widthDip": 600,
+          "widthTargetDip": 576,
+          "widthClamp": "min",
+          "widthRatio": 0.4167,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.25,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -834,15 +851,18 @@
           "height": 1800
         },
         "frame": {
-          "x": -1920,
+          "x": -2016,
           "y": 230,
-          "width": 960,
+          "width": 1152,
           "height": 654
         },
         "checks": {
-          "widthDip": 640,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1920,
+          "widthDip": 768,
+          "widthTargetDip": 768,
+          "widthClamp": "none",
+          "widthRatio": 0.4,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.25,
           "centerOffsetPx": 0,
           "insideWorkArea": true
@@ -860,17 +880,20 @@
           "height": 1380
         },
         "frame": {
-          "x": 853,
+          "x": 768,
           "y": 345,
-          "width": 853,
+          "width": 1024,
           "height": 545
         },
         "checks": {
-          "widthDip": 682.4,
-          "widthRatio": 0.3332,
-          "widthRatioErrorPx": -0.333,
+          "workWidthDip": 2048,
+          "widthDip": 819.2,
+          "widthTargetDip": 819.2,
+          "widthClamp": "none",
+          "widthRatio": 0.4,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.25,
-          "centerOffsetPx": -0.5,
+          "centerOffsetPx": 0,
           "insideWorkArea": true
         }
       },
@@ -886,47 +909,84 @@
           "height": 1080
         },
         "frame": {
-          "x": 3200,
+          "x": 3136,
           "y": 270,
-          "width": 640,
+          "width": 768,
           "height": 436
         },
         "checks": {
-          "widthDip": 640,
-          "widthRatio": 0.3333,
-          "widthRatioErrorPx": 0,
+          "workWidthDip": 1920,
+          "widthDip": 768,
+          "widthTargetDip": 768,
+          "widthClamp": "none",
+          "widthRatio": 0.4,
+          "widthErrorFromTargetDip": 0,
           "topRatio": 0.25,
           "centerOffsetPx": 0,
           "insideWorkArea": true
         }
       }
     ],
-    "narrowScreen": {
-      "name": "narrow-1024x768",
-      "scale": 1,
-      "work": {
-        "left": 0,
-        "top": 0,
-        "right": 1024,
-        "bottom": 768,
-        "width": 1024,
-        "height": 768
+    "narrowScreen": [
+      {
+        "name": "narrow-1024x768",
+        "scale": 1,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 768,
+          "width": 1024,
+          "height": 768
+        },
+        "frame": {
+          "x": 212,
+          "y": 192,
+          "width": 600,
+          "height": 436
+        },
+        "checks": {
+          "workWidthDip": 1024,
+          "widthDip": 600,
+          "widthTargetDip": 409.6,
+          "widthClamp": "min",
+          "widthRatio": 0.5859,
+          "widthErrorFromTargetDip": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
       },
-      "frame": {
-        "x": 341,
-        "y": 192,
-        "width": 341,
-        "height": 436
-      },
-      "checks": {
-        "widthDip": 341,
-        "widthRatio": 0.333,
-        "widthRatioErrorPx": -0.333,
-        "topRatio": 0.25,
-        "centerOffsetPx": -0.5,
-        "insideWorkArea": true
+      {
+        "name": "narrow-1366x768",
+        "scale": 1,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 1366,
+          "bottom": 768,
+          "width": 1366,
+          "height": 768
+        },
+        "frame": {
+          "x": 383,
+          "y": 192,
+          "width": 600,
+          "height": 436
+        },
+        "checks": {
+          "workWidthDip": 1366,
+          "widthDip": 600,
+          "widthTargetDip": 546.4,
+          "widthClamp": "min",
+          "widthRatio": 0.4392,
+          "widthErrorFromTargetDip": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
       }
-    }
+    ]
   },
   "multiMonitor": {
     "note": "\u5408\u6210\u62D3\u6251\uFF1A\u672C\u673A\u53EA\u6709\u4E00\u5757 200% \u663E\u793A\u5668\uFF0C\u65E0\u6CD5\u5B9E\u6D4B\u7269\u7406\u8DE8\u5C4F\uFF1B\u8FD9\u91CC\u7528\u8FD0\u884C\u65F6\u540C\u4E00\u4E2A QuickSwitchLayout \u8BA1\u7B97\uFF0C\u9A8C\u8BC1\u300C\u6309\u5BF9\u8BDD\u6846\u6240\u5728\u663E\u793A\u5668\u91CD\u7B97\u7F29\u653E\u3001\u5DE5\u4F5C\u533A\u4E0E\u680F\u5C3A\u5BF8\u300D\u7684\u6570\u5B66\u5206\u652F\u3002",
