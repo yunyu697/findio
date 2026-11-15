@@ -62,7 +62,7 @@ public sealed class AppConfig
     /// <summary>首次使用引导是否已经看过；false 时首次打开主窗或快速切换栏会显示三步引导。</summary>
     public bool OnboardingDone { get; set; }
 
-    /// <summary>更新通道：stable / preview（preview 未接入，界面会标注）。</summary>
+    /// <summary>更新通道：stable / preview。</summary>
     public string UpdateChannel { get; set; } = "stable";
 
     /// <summary>上次检查更新的时间（ISO 8601），供界面展示。</summary>
