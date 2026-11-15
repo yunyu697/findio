@@ -1099,6 +1099,10 @@ public sealed partial class QuickSwitchWindow : Window
         }
 
         SearchBox.Focus(FocusState.Programmatic);
+        if (SearchBox.FocusState == FocusState.Unfocused)
+        {
+            FocusSearchAfterLoad();
+        }
         if (selectAll)
         {
             SearchBox.SelectAll();
@@ -1108,6 +1112,38 @@ public sealed partial class QuickSwitchWindow : Window
         // 立刻按 owner 重新插回「对话框正上方一层」，保证两者始终同层。
         PlaceDirectlyAboveOwner();
         AppLog.Info($"快速切换栏进入输入模式: foreground=0x{QuickSwitchNative.GetForegroundWindow().ToInt64():X}");
+    }
+
+    /// <summary>
+    /// 窗口首次激活时 XAML 内容还要等一拍才挂进树（实测约 30ms），此刻 Focus 一定被丢弃，
+    /// 结果是键盘事件没人接收、搜索框也打不进字。等内容 Loaded（或下一拍）后再补一次焦点。
+    /// </summary>
+    private void FocusSearchAfterLoad()
+    {
+        void LpFocus()
+        {
+            if (!_lpInputMode)
+            {
+                return;
+            }
+
+            SearchBox.Focus(FocusState.Programmatic);
+            AppLog.Info($"快速切换栏焦点补落: state={SearchBox.FocusState}");
+        }
+
+        if (SearchBox.IsLoaded)
+        {
+            DispatcherQueue.TryEnqueue(LpFocus);
+            return;
+        }
+
+        void LpOnLoaded(object lpSender, RoutedEventArgs lpArgs)
+        {
+            SearchBox.Loaded -= LpOnLoaded;
+            LpFocus();
+        }
+
+        SearchBox.Loaded += LpOnLoaded;
     }
 
     private void OnSearchGotFocus(object sender, RoutedEventArgs e)
@@ -1120,6 +1156,28 @@ public sealed partial class QuickSwitchWindow : Window
 
     private void OnSearchPreviewKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
     {
+        // 1–6 直选：Ctrl+G 之后栏本身就是前台窗口（输入需要键盘焦点），宿主低层钩子的
+        // 「前台必须是对应对话框」条件因此不成立，数字键只能在本栏的按键路径里处理。
+        // 只在尚未输入、且文件夹列表可见时生效；代价是以数字开头的查询暂时没法直接搜（已知限制）。
+        if (!_lpSearchMode && !_lpGuideVisible && !IsControlDown())
+        {
+            var lpPickIndex = e.Key switch
+            {
+                >= Windows.System.VirtualKey.Number1 and <= Windows.System.VirtualKey.Number6 =>
+                    (int)e.Key - (int)Windows.System.VirtualKey.Number1,
+                >= Windows.System.VirtualKey.NumberPad1 and <= Windows.System.VirtualKey.NumberPad6 =>
+                    (int)e.Key - (int)Windows.System.VirtualKey.NumberPad1,
+                _ => -1
+            };
+
+            if (lpPickIndex >= 0 && lpPickIndex < _lpFolders.Count)
+            {
+                e.Handled = true;
+                Pick(lpPickIndex);
+                return;
+            }
+        }
+
         switch (e.Key)
         {
             case Windows.System.VirtualKey.Escape:
@@ -1140,6 +1198,11 @@ public sealed partial class QuickSwitchWindow : Window
                 break;
         }
     }
+
+    private static bool IsControlDown() =>
+        Microsoft.UI.Input.InputKeyboardSource
+            .GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control)
+            .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
 
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -1324,6 +1387,8 @@ public sealed partial class QuickSwitchWindow : Window
                     false));
             }
         }
+
+        AppLog.Info($"快速切换栏文件夹: {string.Join(" | ", _lpFolders.Select(lpFolder => lpFolder.Path))}");
 
         _lpSelected = Math.Clamp(_lpSelected, 0, Math.Max(0, _lpFolders.Count - 1));
     }
@@ -1663,6 +1728,7 @@ public sealed partial class QuickSwitchWindow : Window
             }
 
             var lpCandidates = new HashSet<IntPtr>(lpFound.Select(lpItem => (IntPtr)(long)lpItem.Process));
+            AppLog.Info($"读取打开窗口: Shell.Application 窗口 {lpCount} 个，可用 {lpFound.Count} 个");
             var lpActive = DialogWindowFinder.FindTopExplorerWindow(lpCandidates);
 
             var lpActiveIndex = lpActive == IntPtr.Zero
