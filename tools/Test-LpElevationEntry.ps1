@@ -114,7 +114,7 @@ function Get-LpTaskField {
 }
 
 if (-not (Test-Path -LiteralPath $LpExe)) { throw "找不到 $LpExe" }
-$null = schtasks.exe /Query /TN $LpTaskName 2>&1
+schtasks.exe /Query /TN $LpTaskName 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) { throw '计划任务未注册：先开启设置页「始终以管理员身份运行」再跑本脚本' }
 
 $LpSampler = $null
@@ -185,7 +185,7 @@ try {
     if ($null -ne $LpLogFile) {
         $LpStream = [System.IO.File]::Open($LpLogFile.FullName, 'Open', 'Read', 'ReadWrite')
         try {
-            $null = $LpStream.Seek($LpLogOffset, 'Begin')
+            $LpStream.Seek($LpLogOffset, 'Begin') | Out-Null
             $LpLogText = (New-Object System.IO.StreamReader($LpStream)).ReadToEnd()
         }
         finally { $LpStream.Dispose() }
@@ -196,7 +196,7 @@ try {
     $LpLastResult = Get-LpTaskField -LpText $LpTaskAfter -LpName 'Last Result'
     if ($LpLastResult -eq '') { $LpLastResult = Get-LpTaskField -LpText $LpTaskAfter -LpName '上次结果' }
     $LpLastRunTime = [datetime]::MinValue
-    $null = [datetime]::TryParse($LpLastRun, [ref]$LpLastRunTime)
+    if (-not [datetime]::TryParse($LpLastRun, [ref]$LpLastRunTime)) { $LpLastRunTime = [datetime]::MinValue }
     $LpTaskRanNow = $LpLastRunTime -ne [datetime]::MinValue -and [Math]::Abs(($LpLastRunTime - $LpLaunchAt).TotalSeconds) -le 10
 
     $LpElevatedProc = if ($LpElevated) { Get-CimInstance Win32_Process -Filter "ProcessId = $($LpElevated.Pid)" -ErrorAction SilentlyContinue } else { $null }
@@ -223,7 +223,7 @@ finally {
     }
 
     # 任务服务拉起的实例，普通权限 Kill 不掉，先让任务结束。
-    $null = schtasks.exe /End /TN $LpTaskName 2>$null
+    schtasks.exe /End /TN $LpTaskName 2>&1 | Out-Null
     Start-Sleep -Milliseconds 800
     Get-Process Pathleap.UI -ErrorAction SilentlyContinue | ForEach-Object { try { $_.Kill() } catch { } }
     if (Test-Path -LiteralPath $LpShortcut) { Remove-Item -LiteralPath $LpShortcut -Force }
