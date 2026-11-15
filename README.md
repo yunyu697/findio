@@ -438,8 +438,11 @@ CI（[build.yml](.github/workflows/build.yml)）按触发条件区分：
   `[WARN] 更新检查失败: … (127.0.0.1:9)` → `[WARN] 自动检查更新未完成: …` →
   `[INFO] 托盘提示已提交: title="更新检查未完成" warning=False ok=True`。
   `ok=True` 是 `Shell_NotifyIconW(NIM_MODIFY, NIF_INFO)` 的真实返回值，说明气泡已被系统接受；
-  当时会话处于锁屏（`LockApp`/`LogonUI` 在运行、`GetForegroundWindow()==0`），全屏截图只能拍到黑屏，
-  因此**气泡外观的截图证据仍缺**，只以系统返回值与日志为证。
+  当时会话处于锁屏（`LockApp`/`LogonUI` 在运行、`GetForegroundWindow()==0`），全屏截图只能拍到黑屏。
+  2026-11-15 在解锁后的正常桌面上重做了一次：用户级代理指向 `127.0.0.1:9` 让真实 HTTP 请求失败，
+  [85-tray-failure-balloon.png](docs/shots/85-tray-failure-balloon.png) 拍到气泡本体（应用名 `Pathleap.UI`、
+  标题「更新检查未完成」、正文列出两个镜像「由于目标计算机积极拒绝，无法连接。(127.0.0.1:9)」、蓝色 info 图标）。
+  同一次实测也暴露一个观感局限：正文接近 250 字符上限时，气泡在第 5 行起被截断，用户看到的是一条半截正文。
 - 清单字段：`schemaVersion`、`version`、`tag`、`releasedAt`、`channel`、`platform`（`win-x64`）、
   `minimumSystem`（Windows / .NET Desktop / Windows App Runtime）、`assets`（文件名、大小、SHA256、URL）、`notes`、`signature`。
 - 验签：Ed25519（RFC 8032，托管实现），公钥内置在客户端；签名覆盖固定文本（含 URL 与 SHA256），
