@@ -13,6 +13,16 @@
       "shows": "快速切换栏键帽提示 Alt1–Alt6（栏内无版本号显示；截图取自 1.1.3 构建，由 Test-LpQuickSwitchKeys.ps1 采集）"
     },
     {
+      "file": "shots/84-main-keys-nav-1.png",
+      "version": "1.1.3",
+      "shows": "主窗真实按键导航：↓、↓ 后选中第 2 行（「↵」徽标与行高亮；由 Test-LpMainKeys.ps1 采集）"
+    },
+    {
+      "file": "shots/84-main-keys-nav-2.png",
+      "version": "1.1.3",
+      "shows": "主窗真实按键导航：两次 PgDn 后选中第 23 行（列表已滚至末尾，本行仍带「↵」徽标）"
+    },
+    {
       "file": "shots/74-browser-results.png",
       "version": "1.1.3",
       "shows": "主窗口无版本号显示；按 1.1.3 构建重拍（网页结果）"
