@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "note": "截图版本台账：登记了 version 的截图必须与当前 PathleapVersion 一致；发布说明引用的截图必须登记。新增带版本号显示的截图时同步登记并注明显示位置。",
+  "shots": [
+    {
+      "file": "shots/79-settings-general.png",
+      "version": "1.1.3",
+      "shows": "左下角版本号"
+    },
+    {
+      "file": "shots/80-settings-about.png",
+      "version": "1.1.3",
+      "shows": "关于页版本号 + 左下角版本号"
+    },
+    {
+      "file": "shots/81-settings-elevation-on.png",
+      "version": "1.1.3",
+      "shows": "更新页左下角版本号"
+    },
+    {
+      "file": "shots/82-settings-elevation-off.png",
+      "version": "1.1.3",
+      "shows": "更新页左下角版本号"
+    }
+  ]
+}
