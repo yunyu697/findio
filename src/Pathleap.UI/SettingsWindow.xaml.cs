@@ -1339,8 +1339,8 @@ public sealed partial class SettingsWindow : Window
             };
 
             ScopeLocalDetail.Text = lpStatus.Loaded
-                ? $"由后台服务提供 · {FormatCount(lpStatus.EntryCount)} 项"
-                : "由后台服务提供 · 索引尚未建立";
+                ? $"固定开启，不可关闭 · 由后台服务提供 · {FormatCount(lpStatus.EntryCount)} 项"
+                : "固定开启，不可关闭 · 由后台服务提供 · 索引尚未建立";
 
             if (lpStatus.State == "building")
             {
