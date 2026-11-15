@@ -151,6 +151,41 @@
       "file": "shots/115-B-results-before-after.png",
       "version": "1.2.0",
       "shows": "结果页改前/改后并排（查询 lp，两侧同为 24 条），用于字号/行距/对比度像素对照"
+    },
+    {
+      "file": "shots/116-settings-general.png",
+      "version": "1.2.0",
+      "shows": "设置 · 常规（200%，1680×1280 物理 = 840×640 DIP）：导航选中、开关行、按钮、页脚版本 1.2.0"
+    },
+    {
+      "file": "shots/117-settings-scope.png",
+      "version": "1.2.0",
+      "shows": "设置 · 搜索范围与索引（200%）：内容开关行、目录/索引文件按钮、附加索引与排除规则输入条"
+    },
+    {
+      "file": "shots/118-settings-update.png",
+      "version": "1.2.0",
+      "shows": "设置 · 更新（200%）：版本卡、已安装徽标、检查更新按钮与权限卡片"
+    },
+    {
+      "file": "shots/119-about.png",
+      "version": "1.2.0",
+      "shows": "关于（200%，760×472 物理）：产品名与副标题、版本 1.2.0、运行时、索引来源"
+    },
+    {
+      "file": "shots/120-quick-empty.png",
+      "version": "1.2.0",
+      "shows": "快速切换栏 · 无输入（200%，960×164 物理）：占位提示、Alt1–Alt3 文件夹直达"
+    },
+    {
+      "file": "shots/121-quick-typed.png",
+      "version": "1.2.0",
+      "shows": "快速切换栏 · 有输入（查询 lp，6 条，960×484 物理）：选中行、类型列右对齐；输入由 UIA ValuePattern 写入"
+    },
+    {
+      "file": "shots/122-tray-menu.png",
+      "version": "1.2.0",
+      "shows": "托盘菜单（200%，452×348 物理）：打开搜索框/设置/检查更新/关于/退出"
     }
   ]
 }
