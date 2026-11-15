@@ -1157,6 +1157,24 @@
     },
     {
       "file": "QuickSwitchWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "8",
+      "category": "Typography",
+      "severity": "error",
+      "count": 1,
+      "reason": "Alt+数字键帽徽标：17px 高、要装下 3 个字符并留内边距，等宽字体下只能取 8px；换大字号会撑破 17px 徽标"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "3, 0, 3, 0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "同上键帽徽标的左右内边距：徽标宽随内容走，3px 是 3 字符不贴边的最小值，阶梯里没有更小的档"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
       "property": "Thickness",
       "value": "7, 0, 7, 0",
       "category": "Spacing",
