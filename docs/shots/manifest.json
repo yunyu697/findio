@@ -66,6 +66,16 @@
       "file": "shots/82-settings-elevation-off.png",
       "version": "1.1.3",
       "shows": "更新页左下角版本号"
+    },
+    {
+      "file": "shots/87-uipi-control-drop.png",
+      "version": "1.1.3",
+      "shows": "对照：标准权限下真实鼠标拖放悬停在主窗，落点显示「打开」提示与真实箭头游标；由 Test-LpUipiDrop.ps1 采集"
+    },
+    {
+      "file": "shots/88-uipi-elevated-blocked.png",
+      "version": "1.1.3",
+      "shows": "提权：同一手势悬停在提权主窗，鼠标处为拒绝光标（IDC_NO），无拖拽影像；由 Test-LpUipiDrop.ps1 采集"
     }
   ]
 }
