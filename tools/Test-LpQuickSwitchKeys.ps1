@@ -165,15 +165,15 @@ function Find-LpDialog {
 }
 
 function Get-LpWindowDesc {
-    param([IntPtr]$Hwnd)
-    if ($Hwnd -eq [IntPtr]::Zero) { return '0x0' }
+    param([IntPtr]$LpHwnd)
+    if ($LpHwnd -eq [IntPtr]::Zero) { return '0x0' }
     $LpClass = New-Object System.Text.StringBuilder 256
-    [void][LpKeys.Native]::GetClassNameW($Hwnd, $LpClass, 256)
+    [void][LpKeys.Native]::GetClassNameW($LpHwnd, $LpClass, 256)
     $LpTitle = New-Object System.Text.StringBuilder 256
-    [void][LpKeys.Native]::GetWindowTextW($Hwnd, $LpTitle, 256)
+    [void][LpKeys.Native]::GetWindowTextW($LpHwnd, $LpTitle, 256)
     $LpOwnerPid = [uint32]0
-    [void][LpKeys.Native]::GetWindowThreadProcessId($Hwnd, [ref]$LpOwnerPid)
-    return ("0x{0:X} [{1}] '{2}' pid={3}" -f $Hwnd.ToInt64(), $LpClass.ToString(), $LpTitle.ToString(), $LpOwnerPid)
+    [void][LpKeys.Native]::GetWindowThreadProcessId($LpHwnd, [ref]$LpOwnerPid)
+    return ("0x{0:X} [{1}] '{2}' pid={3}" -f $LpHwnd.ToInt64(), $LpClass.ToString(), $LpTitle.ToString(), $LpOwnerPid)
 }
 
 function Read-LpLogLines {

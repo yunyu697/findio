@@ -25,7 +25,7 @@
 [CmdletBinding()]
 param(
     [ValidateSet('All', 'Control', 'Elevated')]
-    [string]$Phase = 'All'
+    [string]$LpPhase = 'All'
 )
 
 Set-StrictMode -Version Latest
@@ -293,9 +293,9 @@ public static class LpUipiDrag
 '@
 
 $LpSelfElevated = ([LpUipiToken]::Describe($PID) -like '*elevation=1*')
-if ($LpSelfElevated -and $Phase -eq 'All') {
+if ($LpSelfElevated -and $LpPhase -eq 'All') {
     Write-Host '验收进程已提权，只跑提权阶段（对照阶段要普通权限，已单独跑过）。'
-    $Phase = 'Elevated'
+    $LpPhase = 'Elevated'
 }
 
 $LpChecks = [System.Collections.Generic.List[object]]::new()
@@ -712,7 +712,7 @@ try {
     $LpConfig | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $LpConfigPath -Encoding UTF8
 
     # ---------- 对照：标准权限 ----------
-    if ($Phase -in @('All', 'Control')) {
+    if ($LpPhase -in @('All', 'Control')) {
         Start-LpStack
         $LpInfo = @(Get-LpUiProcessInfo)
         Add-LpCheck -LpName '对照实例为标准权限（Medium/Limited）' -LpPassed ($LpInfo.Count -eq 1 -and $LpInfo[0].Info -like '*elevation=0*' -and $LpInfo[0].Info -like '*integrity=S-1-16-8192*') `
@@ -779,7 +779,7 @@ try {
     }
 
     # ---------- 提权：由已提权的验收进程执行 ----------
-    if ($Phase -in @('All', 'Elevated')) {
+    if ($LpPhase -in @('All', 'Elevated')) {
         if (-not $LpSelfElevated) {
             throw '提权阶段必须由提权后的验收进程执行：Windows 不允许普通权限进程向提权前台窗口注入输入，拖拽根本起不来'
         }
@@ -923,6 +923,6 @@ finally {
 
 $LpFailed = @($LpChecks | Where-Object { -not $_.Passed }).Count
 Write-Host ''
-Write-Host ("拖放 UIPI 验收（{0}）：{1}/{2} 通过" -f $Phase, ($LpChecks.Count - $LpFailed), $LpChecks.Count)
+Write-Host ("拖放 UIPI 验收（{0}）：{1}/{2} 通过" -f $LpPhase, ($LpChecks.Count - $LpFailed), $LpChecks.Count)
 if ($LpFailed -gt 0) { exit 1 }
 exit 0
