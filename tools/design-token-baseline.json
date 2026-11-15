@@ -1,0 +1,3319 @@
+{
+  "schemaVersion": 1,
+  "note": "界面令牌基线：冻结首轮存量偏差。新增出现会失败；改完存量后请重跑 -LpUpdateBaseline。理由规则见 docs/界面设计规范.md §5。",
+  "generatedAt": "2026-11-15 10:18:36",
+  "entries": [
+    {
+      "file": "AboutWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "12",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "CornerRadius",
+      "value": "11",
+      "category": "Radius",
+      "severity": "error",
+      "count": 1,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "FontSize",
+      "value": "11.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "FontSize",
+      "value": "16",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Height",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Height",
+      "value": "40",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Padding",
+      "value": "13,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Padding",
+      "value": "16,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Padding",
+      "value": "20,16,20,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Padding",
+      "value": "20,18,20,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Padding",
+      "value": "20,18,20,18",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Spacing",
+      "value": "2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Spacing",
+      "value": "7",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "AboutWindow.xaml",
+      "property": "Width",
+      "value": "40",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "Controls\\LpSlider.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "CornerRadius",
+      "value": "2",
+      "category": "Radius",
+      "severity": "error",
+      "count": 2,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "Height",
+      "value": "12",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "Height",
+      "value": "20",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "Height",
+      "value": "3",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "MinWidth",
+      "value": "96",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSlider.xaml",
+      "property": "Width",
+      "value": "12",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSwitch.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "Controls\\LpSwitch.cs",
+      "property": "Thickness",
+      "value": "0, 0, 3, 0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "Controls\\LpSwitch.cs",
+      "property": "Thickness",
+      "value": "3, 0, 0, 0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "CornerRadius",
+      "value": "10",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "Height",
+      "value": "14",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "Height",
+      "value": "20",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "Margin",
+      "value": "3,0,0,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "Width",
+      "value": "14",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "Controls\\LpSwitch.xaml",
+      "property": "Width",
+      "value": "36",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Background",
+      "value": "#EB171A21",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Background",
+      "value": "#F20C0E12",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "BorderThickness",
+      "value": "1,1,1,2",
+      "category": "Stroke",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "12",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "0,0,8,8",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "12",
+      "category": "Radius",
+      "severity": "error",
+      "count": 1,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "4",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "5",
+      "category": "Radius",
+      "severity": "error",
+      "count": 1,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "6",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "CornerRadius",
+      "value": "8",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "12",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "13",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "14",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "15",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "16",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "19",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "20",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "FontSize",
+      "value": "9.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "11",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "20",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "22",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "42",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "44",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Height",
+      "value": "5",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Margin",
+      "value": "18,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Margin",
+      "value": "2,0,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "MaxWidth",
+      "value": "440",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "MinHeight",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "MinWidth",
+      "value": "25",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "MinWidth",
+      "value": "46",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "10,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "16,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "16,5",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "18,18,18,16",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "2,4,2,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "20,13,20,5",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "26,22",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "4,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "5,2",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Padding",
+      "value": "6,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "SelectionHighlightColor",
+      "value": "#4D3D6EF7",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "11",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "13",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "16",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "3",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "7",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Spacing",
+      "value": "8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Width",
+      "value": "11",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Width",
+      "value": "22",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Width",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Width",
+      "value": "44",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "MainWindow.xaml",
+      "property": "Width",
+      "value": "5",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "MainWindow.xaml.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 6,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "5",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "CornerRadius",
+      "value": "5",
+      "category": "Radius",
+      "severity": "error",
+      "count": 1,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "CornerRadius",
+      "value": "6",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "CornerRadius",
+      "value": "8",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "FontSize",
+      "value": "14",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "FontSize",
+      "value": "9",
+      "category": "Typography",
+      "severity": "error",
+      "count": 4,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "FontSize",
+      "value": "9.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Height",
+      "value": "16",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Height",
+      "value": "18",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Height",
+      "value": "26",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Padding",
+      "value": "12,9,12,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Padding",
+      "value": "7,1,7,1",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "RowSpacing",
+      "value": "4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "RowSpacing",
+      "value": "6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "SelectionHighlightColor",
+      "value": "#4D3D6EF7",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Spacing",
+      "value": "3",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Spacing",
+      "value": "6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Spacing",
+      "value": "8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Width",
+      "value": "16",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml",
+      "property": "Width",
+      "value": "18",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 4,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "CornerRadius",
+      "value": "4",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "9",
+      "category": "Typography",
+      "severity": "error",
+      "count": 2,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Size",
+      "value": "17",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Size",
+      "value": "18",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Size",
+      "value": "28",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Size",
+      "value": "4",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "QuickSwitchWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "7, 0, 7, 0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#131A20",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#141A17",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#17141F",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#171A21",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#1C1814",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#1E222A",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#2A303C",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#343B49",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#3563E6",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#35C7E4",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#3FBF8C",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#6E52E8",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#9FB3BD",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#A1B3A9",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#A3ADBE",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#AFA6C4",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#B9ADA0",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#DDE3ED",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#E6A24A",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#E9EDF3",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#F1F4F9",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Background",
+      "value": "#FFFFFF",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "BorderBrush",
+      "value": "#1A101828",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "BorderBrush",
+      "value": "#26FFFFFF",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Color",
+      "value": "#171A21",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Color",
+      "value": "#F1F4F9",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 9,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "12",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 11,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "16",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "10",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "2",
+      "category": "Radius",
+      "severity": "error",
+      "count": 20,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "4",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "5",
+      "category": "Radius",
+      "severity": "error",
+      "count": 11,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "6",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 7,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "CornerRadius",
+      "value": "8",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Fill",
+      "value": "#3D6EF7",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Fill",
+      "value": "#4A5160",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Fill",
+      "value": "#C9CFDA",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 21,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 27,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 15,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "11.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 13,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "12",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 27,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "12.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 18,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "13",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 7,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "14",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 7,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "15",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "16",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "20",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 8,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "9",
+      "category": "Typography",
+      "severity": "error",
+      "count": 1,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "FontSize",
+      "value": "9.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 16,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Foreground",
+      "value": "#3FAE95",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Foreground",
+      "value": "#5A9CF8",
+      "category": "Color",
+      "severity": "error",
+      "count": 2,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Foreground",
+      "value": "#9779F2",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Foreground",
+      "value": "#D7A03A",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "14",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "26",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "28",
+      "category": "Size",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "3",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "32",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "34",
+      "category": "Size",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "4",
+      "category": "Size",
+      "severity": "error",
+      "count": 5,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "40",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "42",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "44",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "5",
+      "category": "Size",
+      "severity": "error",
+      "count": 16,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "54",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "6",
+      "category": "Size",
+      "severity": "error",
+      "count": 4,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Height",
+      "value": "64",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "LineHeight",
+      "value": "17",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "LineHeight",
+      "value": "19",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,0,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,0,0,8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,0,0,9",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,10,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,10,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 12,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,10,16,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,18,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,20,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,20,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 8,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,20,0,6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 12,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,20,0,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,22,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,22,0,3",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,22,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,22,0,6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,22,0,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,24,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,26,0,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,4,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,5,0,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 7,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,6,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 8,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,7,0,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,7,0,4",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 16,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,8,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "0,8,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 16,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "10,0,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "10,1",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "16,0,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "16,0,16,14",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "16,10,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "20,14,0,5",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "6,6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "6,6,6,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 24,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "7,6",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 10,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Margin",
+      "value": "9,8,9,7",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 8,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "MinWidth",
+      "value": "34",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "10,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "10,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "10,7,10,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 12,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "10,8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "12,10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "13,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "14,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "14,12",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "16,16,16,10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "26,18,26,26",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "5,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "8,3",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Padding",
+      "value": "9,6,9,8",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 20,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "11",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 12,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "3",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 5,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 13,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "5",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "6",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 7,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Spacing",
+      "value": "9",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 7,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "104",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "110",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "14",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "198",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "20",
+      "category": "Size",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "24",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "26",
+      "category": "Size",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "28",
+      "category": "Size",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "30",
+      "category": "Size",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "34",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "38",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "42",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "5",
+      "category": "Size",
+      "severity": "error",
+      "count": 7,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "58",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "62",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml",
+      "property": "Width",
+      "value": "88",
+      "category": "Size",
+      "severity": "error",
+      "count": 4,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "CornerRadius",
+      "value": "6",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "10.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "12.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "9",
+      "category": "Typography",
+      "severity": "error",
+      "count": 1,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Size",
+      "value": "24",
+      "category": "Size",
+      "severity": "error",
+      "count": 3,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Size",
+      "value": "28",
+      "category": "Size",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "0, 3, 0, 0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "10, 4, 4, 4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 12,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "11, 8, 11, 9",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "6, 0, 6, 0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "SettingsWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "9, 5, 9, 5",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "Theme\\ThemeService.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 39,
+      "reason": "主题服务默认画刷初值，运行期被配色方案覆盖；待改为读取主题令牌"
+    },
+    {
+      "file": "TrayMenuWindow.xaml",
+      "property": "Padding",
+      "value": "5,5,5,5",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "CornerRadius",
+      "value": "5",
+      "category": "Radius",
+      "severity": "error",
+      "count": 1,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "11.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "13.5",
+      "category": "Typography",
+      "severity": "error",
+      "count": 1,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "FontSize",
+      "value": "9.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "Size",
+      "value": "18",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "10, 0, 10, 0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "TrayMenuWindow.xaml.cs",
+      "property": "Thickness",
+      "value": "6, 4, 6, 4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Background",
+      "value": "#1F3FAE95",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "10",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "7",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "8",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "ColumnSpacing",
+      "value": "9",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "10",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "11",
+      "category": "Radius",
+      "severity": "error",
+      "count": 2,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "3",
+      "category": "Radius",
+      "severity": "error",
+      "count": 2,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "4",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "5",
+      "category": "Radius",
+      "severity": "error",
+      "count": 3,
+      "reason": "圆角偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "6",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "7",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "8",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "CornerRadius",
+      "value": "999",
+      "category": "Radius",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "10",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 5,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "11",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "12",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "13",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "14",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "17",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "19",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "8.5",
+      "category": "Typography",
+      "severity": "error",
+      "count": 7,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "9",
+      "category": "Typography",
+      "severity": "error",
+      "count": 2,
+      "reason": "字号偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "FontSize",
+      "value": "9.5",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 4,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Foreground",
+      "value": "#3FAE95",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Foreground",
+      "value": "#FFFFFF",
+      "category": "Color",
+      "severity": "error",
+      "count": 1,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Height",
+      "value": "15",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Height",
+      "value": "26",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Height",
+      "value": "4",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Height",
+      "value": "40",
+      "category": "Size",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Height",
+      "value": "5",
+      "category": "Size",
+      "severity": "error",
+      "count": 2,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "LineHeight",
+      "value": "15",
+      "category": "Typography",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,0,0,2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,10,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,2,0,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,4,0,4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,5,0,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,8,0,7",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Margin",
+      "value": "0,9,0,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "MaxHeight",
+      "value": "92",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "10,9",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "11,10",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "12,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "14,0,60,0",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "16,11",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "18,0,18,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 6,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "18,16,18,0",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 3,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "5,1",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "6,2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "7,2",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Padding",
+      "value": "9,8",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "11",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "13",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "2",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "3",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 2,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "4",
+      "category": "Spacing",
+      "severity": "warn",
+      "count": 1,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "5",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "7",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 4,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Spacing",
+      "value": "9",
+      "category": "Spacing",
+      "severity": "error",
+      "count": 1,
+      "reason": "间距偏离阶梯，待归并"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Width",
+      "value": "15",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Width",
+      "value": "26",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Width",
+      "value": "4",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    },
+    {
+      "file": "UpdateWindow.xaml",
+      "property": "Width",
+      "value": "40",
+      "category": "Size",
+      "severity": "warn",
+      "count": 2,
+      "reason": "值在阶梯内但内联，待改为令牌引用"
+    },
+    {
+      "file": "UpdateWindow.xaml.cs",
+      "property": "Color",
+      "value": "Color.FromArgb",
+      "category": "Color",
+      "severity": "error",
+      "count": 3,
+      "reason": "颜色字面量，应改用 Themes.xaml 画刷"
+    },
+    {
+      "file": "UpdateWindow.xaml.cs",
+      "property": "Size",
+      "value": "148",
+      "category": "Size",
+      "severity": "error",
+      "count": 1,
+      "reason": "结构尺寸（列宽/图标/窗口/分隔线），不属控件高度令牌；新增控件高度须走 LpSize*"
+    }
+  ]
+}

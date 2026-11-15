@@ -10,24 +10,24 @@
             <Style x:Key="LpNavButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Height" Value="36" />
+                <Setter Property="Height" Value="{StaticResource LpSizeNav}" />
                 <Setter Property="Margin" Value="10,1" />
                 <Setter Property="Padding" Value="10,0" />
-                <Setter Property="CornerRadius" Value="7" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusButton}" />
                 <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
-                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextNav}" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
             </Style>
             <Style x:Key="LpSectionLabelStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextLabel}" />
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="CharacterSpacing" Value="120" />
                 <Setter Property="Foreground" Value="{ThemeResource Text3Brush}" />
             </Style>
             <Style x:Key="LpKbdStyle" TargetType="Border">
-                <Setter Property="MinWidth" Value="20" />
-                <Setter Property="Height" Value="20" />
+                <Setter Property="MinWidth" Value="{StaticResource LpSizeKbdLarge}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeKbdLarge}" />
                 <Setter Property="Padding" Value="5,0" />
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Background" Value="{ThemeResource Surface3Brush}" />
@@ -39,36 +39,36 @@
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderBrush" Value="{ThemeResource Border2Brush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="7" />
-                <Setter Property="Height" Value="30" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusButton}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeButton}" />
                 <Setter Property="Padding" Value="13,0" />
-                <Setter Property="FontSize" Value="11.5" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextButton}" />
                 <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
             </Style>
             <Style x:Key="LpPrimaryButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="{ThemeResource AccentBrush}" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="CornerRadius" Value="7" />
-                <Setter Property="Height" Value="30" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusButton}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeButton}" />
                 <Setter Property="Padding" Value="14,0" />
-                <Setter Property="FontSize" Value="11.5" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextButton}" />
                 <Setter Property="Foreground" Value="{ThemeResource AccentInkBrush}" />
             </Style>
             <Style x:Key="LpSelectButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderBrush" Value="{ThemeResource Border2Brush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="6" />
-                <Setter Property="Height" Value="26" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusControl}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeSelect}" />
                 <Setter Property="Padding" Value="10,0" />
-                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontSize" Value="{StaticResource LpTextBody}" />
                 <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
             </Style>
             <Style x:Key="LpCardStyle" TargetType="Border">
                 <Setter Property="Background" Value="{ThemeResource Surface2Brush}" />
                 <Setter Property="BorderBrush" Value="{ThemeResource Border1Brush}" />
                 <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusCard}" />
             </Style>
         </Grid.Resources>
 

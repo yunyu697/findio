@@ -11,17 +11,17 @@
             <Style x:Key="LpToolButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Width" Value="28" />
-                <Setter Property="Height" Value="28" />
+                <Setter Property="Width" Value="{StaticResource LpSizeTool}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeTool}" />
                 <Setter Property="Padding" Value="0" />
-                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusControl}" />
                 <Setter Property="Foreground" Value="{ThemeResource Text3Brush}" />
             </Style>
             <Style x:Key="LpKbdStyle" TargetType="Border">
-                <Setter Property="MinWidth" Value="17" />
-                <Setter Property="Height" Value="17" />
+                <Setter Property="MinWidth" Value="{StaticResource LpSizeKbd}" />
+                <Setter Property="Height" Value="{StaticResource LpSizeKbd}" />
                 <Setter Property="Padding" Value="4,0" />
-                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="CornerRadius" Value="{StaticResource LpRadiusKbd}" />
                 <Setter Property="Background" Value="{ThemeResource SurfaceBrush}" />
                 <Setter Property="BorderBrush" Value="{ThemeResource Border2Brush}" />
                 <Setter Property="BorderThickness" Value="1" />

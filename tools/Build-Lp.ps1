@@ -13,6 +13,8 @@ param(
 
     [switch]$LpSkipVariableCheck,
 
+    [switch]$LpSkipDesignTokenCheck,
+
     # CI 在 tag 构建时注入；留空则读取 Directory.Build.props 里的唯一来源
     [string]$LpVersion = ''
 )
@@ -49,6 +51,13 @@ Write-Host "版本号: $LpVersion" -ForegroundColor DarkGray
 
 if (-not $LpSkipVariableCheck) {
     & (Join-Path $PSScriptRoot 'Test-LpVariableNames.ps1') -LpScriptPath (Join-Path $PSScriptRoot '.')
+}
+
+if (-not $LpSkipDesignTokenCheck) {
+    & pwsh -NoProfile -File (Join-Path $PSScriptRoot 'Test-LpDesignTokens.ps1') -LpRoot $LpRepoRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "界面令牌检查未通过（见 docs/界面设计规范.md）；修复偏差或登记例外后重试。"
+    }
 }
 
 $LpProjects = @(
