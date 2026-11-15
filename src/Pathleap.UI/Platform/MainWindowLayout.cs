@@ -34,6 +34,10 @@ internal static class MainWindowLayout
         var lpWorkWidthDip = lpWorkWidth / scale;
         var lpWidthDip = Math.Min(lpWorkWidthDip, Math.Max(MinWidthDip, lpWorkWidthDip * WidthFraction));
 
+        // 取整策略（有意混用，改动前先读这段）：
+        // 宽高与 Y 用 Math.Round（默认 MidpointRounding.ToEven，银行家舍入），例如工作区高 1750 → 437.5 → 438；
+        // X 用整数除法（非负值即向下取整），保持左右留白完全对称：如屏宽 2940、窗宽 1470 时 x=735。
+        // 若把 X 也改成 Math.Round 或把 Y 改成向下取整，.5 边界会各差 1px，历史几何表就不可比了。
         var lpWidth = (int)Math.Round(lpWidthDip * scale);
         var lpHeight = (int)Math.Round(heightDip * scale);
         var lpX = workLeft + (lpWorkWidth - lpWidth) / 2;
