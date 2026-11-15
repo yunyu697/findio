@@ -20,6 +20,9 @@ internal static class LayoutProbe
 
     private static readonly double[] Scales = { 1.0, 1.25, 1.5, 2.0 };
 
+    // 主窗几何多报一档 175%：Windows 允许 125%–200% 的每档 25%，1/3 宽度的取整误差要在每档都可核对。
+    private static readonly double[] MainWindowScales = { 1.0, 1.25, 1.5, 1.75, 2.0 };
+
     private static readonly (string Name, int WidthDip, int HeightDip)[] Windows =
     {
         ("settings", 840, 640),
@@ -155,8 +158,8 @@ internal static class LayoutProbe
     }
 
     /// <summary>
-    /// 主搜索窗几何：宽度 = 工作区宽度的一半（窄屏退到下限），顶边 = 工作区高度的 1/4，
-    /// 水平居中。按各缩放档与合成三屏分别给出物理像素，供布局改动留档。
+    /// 主搜索窗几何：宽度 = 工作区宽度的 1/3（物理像素直接算，无 DIP 下限夹取），
+    /// 顶边 = 工作区高度的 1/4，水平居中。按各缩放档与合成三屏分别给出物理像素，供布局改动留档。
     /// </summary>
     private static object MainWindowCases(LogicalRect work)
     {
@@ -164,14 +167,14 @@ internal static class LayoutProbe
         {
             widthFraction = MainWindowLayout.WidthFraction,
             topFraction = MainWindowLayout.TopFraction,
-            minWidthDip = MainWindowLayout.MinWidthDip,
             heightDip = MainWindowHeightDip,
-            perScale = Scales.Select(scale => MainWindowCase($"scale-{scale:0.##}", work, scale)).ToArray(),
+            perScale = MainWindowScales.Select(scale => MainWindowCase($"scale-{scale:0.##}", work, scale)).ToArray(),
             perMonitor = MultiMonitors()
                 .Select(lpMonitor => MainWindowCase(lpMonitor.Name, ToLogical(lpMonitor.Work, lpMonitor.Scale), lpMonitor.Scale))
                 .ToArray(),
-            // 窄屏下限：1024 DIP 工作区按一半只有 512 DIP，低于 560 DIP 下限，验证退到下限后仍居中且不超出工作区。
-            narrowFloor = MainWindowCase("narrow-1024x768", new LogicalRect(0, 0, 1024, 768), 1.0)
+            // 窄屏：1024 DIP 工作区在 100% 下按 1/3 只有 341px，不再有 480/560 DIP 下限夹取，
+            // 因此窄屏上窗口会明显变窄（这是用户要求的取舍：比例优先，不默默夹到某个值）。
+            narrowScreen = MainWindowCase("narrow-1024x768", new LogicalRect(0, 0, 1024, 768), 1.0)
         };
     }
 
@@ -182,7 +185,6 @@ internal static class LayoutProbe
             lpPixelWork.Left, lpPixelWork.Top, lpPixelWork.Right, lpPixelWork.Bottom, scale, MainWindowHeightDip);
         var lpWorkWidth = lpPixelWork.Right - lpPixelWork.Left;
         var lpWorkHeight = lpPixelWork.Bottom - lpPixelWork.Top;
-        var lpExpectedWidthDip = Math.Min(work.Width, Math.Max(MainWindowLayout.MinWidthDip, work.Width * MainWindowLayout.WidthFraction));
 
         return new
         {
@@ -192,8 +194,9 @@ internal static class LayoutProbe
             frame = new { x = lpFrame.X, y = lpFrame.Y, width = lpFrame.Width, height = lpFrame.Height },
             checks = new
             {
-                widthDip = Math.Round(lpExpectedWidthDip, 2),
+                widthDip = Math.Round(lpFrame.Width / scale, 2),
                 widthRatio = Math.Round(lpFrame.Width / (double)lpWorkWidth, 4),
+                widthRatioErrorPx = Math.Round(lpFrame.Width - lpWorkWidth / 3.0, 3),
                 topRatio = Math.Round((lpFrame.Y - lpPixelWork.Top) / (double)lpWorkHeight, 4),
                 centerOffsetPx = Math.Round(lpFrame.X + lpFrame.Width / 2.0 - (lpPixelWork.Left + lpWorkWidth / 2.0), 2),
                 insideWorkArea = lpFrame.X >= lpPixelWork.Left && lpFrame.X + lpFrame.Width <= lpPixelWork.Right

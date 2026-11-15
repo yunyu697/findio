@@ -1,0 +1,1246 @@
+{
+  "probe": "quick-switch-layout",
+  "realScale": 2,
+  "realWork": {
+    "left": 0,
+    "top": 0,
+    "right": 2880,
+    "bottom": 1704,
+    "width": 2880,
+    "height": 1704
+  },
+  "logicalWork": {
+    "left": 0,
+    "top": 0,
+    "width": 1440,
+    "height": 852
+  },
+  "scales": [
+    {
+      "scale": 1,
+      "windows": [
+        {
+          "name": "settings",
+          "dip": "840x640",
+          "px": "840x640"
+        },
+        {
+          "name": "update",
+          "dip": "440x300",
+          "px": "440x300"
+        },
+        {
+          "name": "about",
+          "dip": "380x236",
+          "px": "380x236"
+        }
+      ],
+      "cases": [
+        {
+          "name": "regular",
+          "monitor": null,
+          "scale": 1,
+          "dialogFrame": {
+            "left": 360,
+            "top": 213,
+            "right": 1080,
+            "bottom": 693,
+            "width": 720,
+            "height": 480
+          },
+          "bar": {
+            "x": 540,
+            "y": 701,
+            "width": 360,
+            "height": 114,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 8,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "narrow",
+          "monitor": null,
+          "scale": 1,
+          "dialogFrame": {
+            "left": 24,
+            "top": 256,
+            "right": 304,
+            "bottom": 616,
+            "width": 280,
+            "height": 360
+          },
+          "bar": {
+            "x": 94,
+            "y": 624,
+            "width": 140,
+            "height": 146,
+            "columns": 2
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 8,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 2,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "maximized",
+          "monitor": null,
+          "scale": 1,
+          "dialogFrame": {
+            "left": 0,
+            "top": 0,
+            "right": 1440,
+            "bottom": 852,
+            "width": 1440,
+            "height": 852
+          },
+          "bar": {
+            "x": 360,
+            "y": 4,
+            "width": 720,
+            "height": 82,
+            "columns": 6
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -848,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 6,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "bottom-edge",
+          "monitor": null,
+          "scale": 1,
+          "dialogFrame": {
+            "left": 360,
+            "top": 348,
+            "right": 1080,
+            "bottom": 828,
+            "width": 720,
+            "height": 480
+          },
+          "bar": {
+            "x": 540,
+            "y": 226,
+            "width": 360,
+            "height": 114,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -8,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": true
+          }
+        },
+        {
+          "name": "two-dialogs",
+          "scale": 1,
+          "frontBar": {
+            "x": 798,
+            "y": 513,
+            "width": 300,
+            "height": 146,
+            "columns": 2
+          },
+          "backBar": {
+            "x": 438,
+            "y": 684,
+            "width": 300,
+            "height": 146,
+            "columns": 2
+          },
+          "frontBarOverlapsBackDialog": true,
+          "frontBarOverlapsOwnDialog": false,
+          "note": "\u680F\u4F4D\u4E8E\u5BF9\u8BDD\u6846\u77E9\u5F62\u4E4B\u5916\uFF0C\u6545 frontBarOverlapsOwnDialog \u5FC5\u987B\u4E3A false\uFF1BfrontBarOverlapsBackDialog \u4E3A true \u662F\u65E2\u5B9A\u53D6\u820D\uFF08\u89C1\u5FEB\u901F\u5207\u6362\u680F\u6587\u6863\u300C\u5DF2\u77E5\u9650\u5236\u300D1\uFF09\u3002"
+        }
+      ]
+    },
+    {
+      "scale": 1.25,
+      "windows": [
+        {
+          "name": "settings",
+          "dip": "840x640",
+          "px": "1050x800"
+        },
+        {
+          "name": "update",
+          "dip": "440x300",
+          "px": "550x375"
+        },
+        {
+          "name": "about",
+          "dip": "380x236",
+          "px": "475x295"
+        }
+      ],
+      "cases": [
+        {
+          "name": "regular",
+          "monitor": null,
+          "scale": 1.25,
+          "dialogFrame": {
+            "left": 450,
+            "top": 266,
+            "right": 1350,
+            "bottom": 866,
+            "width": 900,
+            "height": 600
+          },
+          "bar": {
+            "x": 675,
+            "y": 876,
+            "width": 450,
+            "height": 142,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 10,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "narrow",
+          "monitor": null,
+          "scale": 1.25,
+          "dialogFrame": {
+            "left": 30,
+            "top": 320,
+            "right": 380,
+            "bottom": 770,
+            "width": 350,
+            "height": 450
+          },
+          "bar": {
+            "x": 117,
+            "y": 780,
+            "width": 175,
+            "height": 182,
+            "columns": 2
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 10,
+            "gapMatches": true,
+            "centerOffsetPx": -0.5,
+            "centered": true,
+            "columns": 2,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "maximized",
+          "monitor": null,
+          "scale": 1.25,
+          "dialogFrame": {
+            "left": 0,
+            "top": 0,
+            "right": 1800,
+            "bottom": 1065,
+            "width": 1800,
+            "height": 1065
+          },
+          "bar": {
+            "x": 450,
+            "y": 4,
+            "width": 900,
+            "height": 102,
+            "columns": 6
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -1061,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 6,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "bottom-edge",
+          "monitor": null,
+          "scale": 1.25,
+          "dialogFrame": {
+            "left": 450,
+            "top": 435,
+            "right": 1350,
+            "bottom": 1035,
+            "width": 900,
+            "height": 600
+          },
+          "bar": {
+            "x": 675,
+            "y": 283,
+            "width": 450,
+            "height": 142,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -10,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": true
+          }
+        },
+        {
+          "name": "two-dialogs",
+          "scale": 1.25,
+          "frontBar": {
+            "x": 997,
+            "y": 641,
+            "width": 375,
+            "height": 182,
+            "columns": 2
+          },
+          "backBar": {
+            "x": 547,
+            "y": 855,
+            "width": 375,
+            "height": 182,
+            "columns": 2
+          },
+          "frontBarOverlapsBackDialog": true,
+          "frontBarOverlapsOwnDialog": false,
+          "note": "\u680F\u4F4D\u4E8E\u5BF9\u8BDD\u6846\u77E9\u5F62\u4E4B\u5916\uFF0C\u6545 frontBarOverlapsOwnDialog \u5FC5\u987B\u4E3A false\uFF1BfrontBarOverlapsBackDialog \u4E3A true \u662F\u65E2\u5B9A\u53D6\u820D\uFF08\u89C1\u5FEB\u901F\u5207\u6362\u680F\u6587\u6863\u300C\u5DF2\u77E5\u9650\u5236\u300D1\uFF09\u3002"
+        }
+      ]
+    },
+    {
+      "scale": 1.5,
+      "windows": [
+        {
+          "name": "settings",
+          "dip": "840x640",
+          "px": "1260x960"
+        },
+        {
+          "name": "update",
+          "dip": "440x300",
+          "px": "660x450"
+        },
+        {
+          "name": "about",
+          "dip": "380x236",
+          "px": "570x354"
+        }
+      ],
+      "cases": [
+        {
+          "name": "regular",
+          "monitor": null,
+          "scale": 1.5,
+          "dialogFrame": {
+            "left": 540,
+            "top": 320,
+            "right": 1620,
+            "bottom": 1040,
+            "width": 1080,
+            "height": 720
+          },
+          "bar": {
+            "x": 810,
+            "y": 1052,
+            "width": 540,
+            "height": 171,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 12,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "narrow",
+          "monitor": null,
+          "scale": 1.5,
+          "dialogFrame": {
+            "left": 36,
+            "top": 383,
+            "right": 456,
+            "bottom": 923,
+            "width": 420,
+            "height": 540
+          },
+          "bar": {
+            "x": 141,
+            "y": 935,
+            "width": 210,
+            "height": 219,
+            "columns": 2
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 12,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 2,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "maximized",
+          "monitor": null,
+          "scale": 1.5,
+          "dialogFrame": {
+            "left": 0,
+            "top": 0,
+            "right": 2160,
+            "bottom": 1278,
+            "width": 2160,
+            "height": 1278
+          },
+          "bar": {
+            "x": 540,
+            "y": 4,
+            "width": 1080,
+            "height": 123,
+            "columns": 6
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -1274,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 6,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "bottom-edge",
+          "monitor": null,
+          "scale": 1.5,
+          "dialogFrame": {
+            "left": 540,
+            "top": 522,
+            "right": 1620,
+            "bottom": 1242,
+            "width": 1080,
+            "height": 720
+          },
+          "bar": {
+            "x": 810,
+            "y": 339,
+            "width": 540,
+            "height": 171,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -12,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": true
+          }
+        },
+        {
+          "name": "two-dialogs",
+          "scale": 1.5,
+          "frontBar": {
+            "x": 1197,
+            "y": 770,
+            "width": 450,
+            "height": 219,
+            "columns": 2
+          },
+          "backBar": {
+            "x": 657,
+            "y": 1025,
+            "width": 450,
+            "height": 219,
+            "columns": 2
+          },
+          "frontBarOverlapsBackDialog": true,
+          "frontBarOverlapsOwnDialog": false,
+          "note": "\u680F\u4F4D\u4E8E\u5BF9\u8BDD\u6846\u77E9\u5F62\u4E4B\u5916\uFF0C\u6545 frontBarOverlapsOwnDialog \u5FC5\u987B\u4E3A false\uFF1BfrontBarOverlapsBackDialog \u4E3A true \u662F\u65E2\u5B9A\u53D6\u820D\uFF08\u89C1\u5FEB\u901F\u5207\u6362\u680F\u6587\u6863\u300C\u5DF2\u77E5\u9650\u5236\u300D1\uFF09\u3002"
+        }
+      ]
+    },
+    {
+      "scale": 2,
+      "windows": [
+        {
+          "name": "settings",
+          "dip": "840x640",
+          "px": "1680x1280"
+        },
+        {
+          "name": "update",
+          "dip": "440x300",
+          "px": "880x600"
+        },
+        {
+          "name": "about",
+          "dip": "380x236",
+          "px": "760x472"
+        }
+      ],
+      "cases": [
+        {
+          "name": "regular",
+          "monitor": null,
+          "scale": 2,
+          "dialogFrame": {
+            "left": 720,
+            "top": 426,
+            "right": 2160,
+            "bottom": 1386,
+            "width": 1440,
+            "height": 960
+          },
+          "bar": {
+            "x": 1080,
+            "y": 1402,
+            "width": 720,
+            "height": 228,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 16,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "narrow",
+          "monitor": null,
+          "scale": 2,
+          "dialogFrame": {
+            "left": 48,
+            "top": 511,
+            "right": 608,
+            "bottom": 1231,
+            "width": 560,
+            "height": 720
+          },
+          "bar": {
+            "x": 188,
+            "y": 1247,
+            "width": 280,
+            "height": 292,
+            "columns": 2
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 16,
+            "gapMatches": true,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 2,
+            "insideWorkArea": true,
+            "attachedAtBottom": true,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "maximized",
+          "monitor": null,
+          "scale": 2,
+          "dialogFrame": {
+            "left": 0,
+            "top": 0,
+            "right": 2880,
+            "bottom": 1704,
+            "width": 2880,
+            "height": 1704
+          },
+          "bar": {
+            "x": 720,
+            "y": 4,
+            "width": 1440,
+            "height": 164,
+            "columns": 6
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -1700,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 6,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": false
+          }
+        },
+        {
+          "name": "bottom-edge",
+          "monitor": null,
+          "scale": 2,
+          "dialogFrame": {
+            "left": 720,
+            "top": 696,
+            "right": 2160,
+            "bottom": 1656,
+            "width": 1440,
+            "height": 960
+          },
+          "bar": {
+            "x": 1080,
+            "y": 452,
+            "width": 720,
+            "height": 228,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": -16,
+            "gapMatches": false,
+            "centerOffsetPx": 0,
+            "centered": true,
+            "columns": 3,
+            "insideWorkArea": true,
+            "attachedAtBottom": false,
+            "flippedAbove": true
+          }
+        },
+        {
+          "name": "two-dialogs",
+          "scale": 2,
+          "frontBar": {
+            "x": 1596,
+            "y": 1026,
+            "width": 600,
+            "height": 292,
+            "columns": 2
+          },
+          "backBar": {
+            "x": 876,
+            "y": 1367,
+            "width": 600,
+            "height": 292,
+            "columns": 2
+          },
+          "frontBarOverlapsBackDialog": true,
+          "frontBarOverlapsOwnDialog": false,
+          "note": "\u680F\u4F4D\u4E8E\u5BF9\u8BDD\u6846\u77E9\u5F62\u4E4B\u5916\uFF0C\u6545 frontBarOverlapsOwnDialog \u5FC5\u987B\u4E3A false\uFF1BfrontBarOverlapsBackDialog \u4E3A true \u662F\u65E2\u5B9A\u53D6\u820D\uFF08\u89C1\u5FEB\u901F\u5207\u6362\u680F\u6587\u6863\u300C\u5DF2\u77E5\u9650\u5236\u300D1\uFF09\u3002"
+        }
+      ]
+    }
+  ],
+  "mainWindow": {
+    "widthFraction": 0.3333333333333333,
+    "topFraction": 0.25,
+    "heightDip": 436,
+    "perScale": [
+      {
+        "name": "scale-1",
+        "scale": 1,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 1440,
+          "bottom": 852,
+          "width": 1440,
+          "height": 852
+        },
+        "frame": {
+          "x": 480,
+          "y": 213,
+          "width": 480,
+          "height": 436
+        },
+        "checks": {
+          "widthDip": 480,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "scale-1.25",
+        "scale": 1.25,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 1800,
+          "bottom": 1065,
+          "width": 1800,
+          "height": 1065
+        },
+        "frame": {
+          "x": 600,
+          "y": 266,
+          "width": 600,
+          "height": 545
+        },
+        "checks": {
+          "widthDip": 480,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.2498,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "scale-1.5",
+        "scale": 1.5,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 2160,
+          "bottom": 1278,
+          "width": 2160,
+          "height": 1278
+        },
+        "frame": {
+          "x": 720,
+          "y": 320,
+          "width": 720,
+          "height": 654
+        },
+        "checks": {
+          "widthDip": 480,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.2504,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "scale-1.75",
+        "scale": 1.75,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 2520,
+          "bottom": 1491,
+          "width": 2520,
+          "height": 1491
+        },
+        "frame": {
+          "x": 840,
+          "y": 373,
+          "width": 840,
+          "height": 763
+        },
+        "checks": {
+          "widthDip": 480,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.2502,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "scale-2",
+        "scale": 2,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 2880,
+          "bottom": 1704,
+          "width": 2880,
+          "height": 1704
+        },
+        "frame": {
+          "x": 960,
+          "y": 426,
+          "width": 960,
+          "height": 872
+        },
+        "checks": {
+          "widthDip": 480,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      }
+    ],
+    "perMonitor": [
+      {
+        "name": "left-150",
+        "scale": 1.5,
+        "work": {
+          "left": -2880,
+          "top": -220,
+          "right": 0,
+          "bottom": 1580,
+          "width": 2880,
+          "height": 1800
+        },
+        "frame": {
+          "x": -1920,
+          "y": 230,
+          "width": 960,
+          "height": 654
+        },
+        "checks": {
+          "widthDip": 640,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "primary-125",
+        "scale": 1.25,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 2560,
+          "bottom": 1380,
+          "width": 2560,
+          "height": 1380
+        },
+        "frame": {
+          "x": 853,
+          "y": 345,
+          "width": 853,
+          "height": 545
+        },
+        "checks": {
+          "widthDip": 682.4,
+          "widthRatio": 0.3332,
+          "widthRatioErrorPx": -0.333,
+          "topRatio": 0.25,
+          "centerOffsetPx": -0.5,
+          "insideWorkArea": true
+        }
+      },
+      {
+        "name": "right-100",
+        "scale": 1,
+        "work": {
+          "left": 2560,
+          "top": 0,
+          "right": 4480,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "frame": {
+          "x": 3200,
+          "y": 270,
+          "width": 640,
+          "height": 436
+        },
+        "checks": {
+          "widthDip": 640,
+          "widthRatio": 0.3333,
+          "widthRatioErrorPx": 0,
+          "topRatio": 0.25,
+          "centerOffsetPx": 0,
+          "insideWorkArea": true
+        }
+      }
+    ],
+    "narrowScreen": {
+      "name": "narrow-1024x768",
+      "scale": 1,
+      "work": {
+        "left": 0,
+        "top": 0,
+        "right": 1024,
+        "bottom": 768,
+        "width": 1024,
+        "height": 768
+      },
+      "frame": {
+        "x": 341,
+        "y": 192,
+        "width": 341,
+        "height": 436
+      },
+      "checks": {
+        "widthDip": 341,
+        "widthRatio": 0.333,
+        "widthRatioErrorPx": -0.333,
+        "topRatio": 0.25,
+        "centerOffsetPx": -0.5,
+        "insideWorkArea": true
+      }
+    }
+  },
+  "multiMonitor": {
+    "note": "\u5408\u6210\u62D3\u6251\uFF1A\u672C\u673A\u53EA\u6709\u4E00\u5757 200% \u663E\u793A\u5668\uFF0C\u65E0\u6CD5\u5B9E\u6D4B\u7269\u7406\u8DE8\u5C4F\uFF1B\u8FD9\u91CC\u7528\u8FD0\u884C\u65F6\u540C\u4E00\u4E2A QuickSwitchLayout \u8BA1\u7B97\uFF0C\u9A8C\u8BC1\u300C\u6309\u5BF9\u8BDD\u6846\u6240\u5728\u663E\u793A\u5668\u91CD\u7B97\u7F29\u653E\u3001\u5DE5\u4F5C\u533A\u4E0E\u680F\u5C3A\u5BF8\u300D\u7684\u6570\u5B66\u5206\u652F\u3002",
+    "monitors": [
+      {
+        "name": "left-150",
+        "scale": 1.5,
+        "work": {
+          "left": -2880,
+          "top": -220,
+          "right": 0,
+          "bottom": 1580,
+          "width": 2880,
+          "height": 1800
+        }
+      },
+      {
+        "name": "primary-125",
+        "scale": 1.25,
+        "work": {
+          "left": 0,
+          "top": 0,
+          "right": 2560,
+          "bottom": 1380,
+          "width": 2560,
+          "height": 1380
+        }
+      },
+      {
+        "name": "right-100",
+        "scale": 1,
+        "work": {
+          "left": 2560,
+          "top": 0,
+          "right": 4480,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        }
+      }
+    ],
+    "perMonitor": [
+      {
+        "name": "dialog-on-left-150",
+        "monitor": "left-150",
+        "scale": 1.5,
+        "dialogFrame": {
+          "left": -1980,
+          "top": -130,
+          "right": -900,
+          "bottom": 590,
+          "width": 1080,
+          "height": 720
+        },
+        "bar": {
+          "x": -1710,
+          "y": 602,
+          "width": 540,
+          "height": 171,
+          "columns": 3
+        },
+        "checks": {
+          "halfWidth": true,
+          "gapPx": 12,
+          "gapMatches": true,
+          "centerOffsetPx": 0,
+          "centered": true,
+          "columns": 3,
+          "insideWorkArea": true,
+          "attachedAtBottom": true,
+          "flippedAbove": false
+        }
+      },
+      {
+        "name": "dialog-on-primary-125",
+        "monitor": "primary-125",
+        "scale": 1.25,
+        "dialogFrame": {
+          "left": 830,
+          "top": 75,
+          "right": 1730,
+          "bottom": 675,
+          "width": 900,
+          "height": 600
+        },
+        "bar": {
+          "x": 1055,
+          "y": 685,
+          "width": 450,
+          "height": 142,
+          "columns": 3
+        },
+        "checks": {
+          "halfWidth": true,
+          "gapPx": 10,
+          "gapMatches": true,
+          "centerOffsetPx": 0,
+          "centered": true,
+          "columns": 3,
+          "insideWorkArea": true,
+          "attachedAtBottom": true,
+          "flippedAbove": false
+        }
+      },
+      {
+        "name": "dialog-on-right-100",
+        "monitor": "right-100",
+        "scale": 1,
+        "dialogFrame": {
+          "left": 3160,
+          "top": 60,
+          "right": 3880,
+          "bottom": 540,
+          "width": 720,
+          "height": 480
+        },
+        "bar": {
+          "x": 3340,
+          "y": 548,
+          "width": 360,
+          "height": 114,
+          "columns": 3
+        },
+        "checks": {
+          "halfWidth": true,
+          "gapPx": 8,
+          "gapMatches": true,
+          "centerOffsetPx": 0,
+          "centered": true,
+          "columns": 3,
+          "insideWorkArea": true,
+          "attachedAtBottom": true,
+          "flippedAbove": false
+        }
+      }
+    ],
+    "dragAcrossScreens": {
+      "name": "drag-right-100-to-primary-125-to-left-150",
+      "steps": [
+        {
+          "monitor": "right-100",
+          "scale": 1,
+          "work": {
+            "left": 2560,
+            "top": 0,
+            "right": 4480,
+            "bottom": 1080,
+            "width": 1920,
+            "height": 1080
+          },
+          "dialogFrame": {
+            "left": 3160,
+            "top": 60,
+            "right": 3880,
+            "bottom": 540,
+            "width": 720,
+            "height": 480
+          },
+          "bar": {
+            "x": 3340,
+            "y": 548,
+            "width": 360,
+            "height": 114,
+            "columns": 3
+          },
+          "geometry": {
+            "x": 3340,
+            "y": 548,
+            "width": 360,
+            "height": 114
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 8,
+            "insideWorkArea": true,
+            "columns": 3
+          }
+        },
+        {
+          "monitor": "primary-125",
+          "scale": 1.25,
+          "work": {
+            "left": 0,
+            "top": 0,
+            "right": 2560,
+            "bottom": 1380,
+            "width": 2560,
+            "height": 1380
+          },
+          "dialogFrame": {
+            "left": 830,
+            "top": 75,
+            "right": 1730,
+            "bottom": 675,
+            "width": 900,
+            "height": 600
+          },
+          "bar": {
+            "x": 1055,
+            "y": 685,
+            "width": 450,
+            "height": 142,
+            "columns": 3
+          },
+          "geometry": {
+            "x": 1055,
+            "y": 685,
+            "width": 450,
+            "height": 142
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 10,
+            "insideWorkArea": true,
+            "columns": 3
+          }
+        },
+        {
+          "monitor": "left-150",
+          "scale": 1.5,
+          "work": {
+            "left": -2880,
+            "top": -220,
+            "right": 0,
+            "bottom": 1580,
+            "width": 2880,
+            "height": 1800
+          },
+          "dialogFrame": {
+            "left": -1980,
+            "top": -130,
+            "right": -900,
+            "bottom": 590,
+            "width": 1080,
+            "height": 720
+          },
+          "bar": {
+            "x": -1710,
+            "y": 602,
+            "width": 540,
+            "height": 171,
+            "columns": 3
+          },
+          "geometry": {
+            "x": -1710,
+            "y": 602,
+            "width": 540,
+            "height": 171
+          },
+          "checks": {
+            "halfWidth": true,
+            "gapPx": 12,
+            "insideWorkArea": true,
+            "columns": 3
+          }
+        }
+      ],
+      "checks": {
+        "widthPerStepPx": [
+          360,
+          450,
+          540
+        ],
+        "allInsideOwnWorkArea": true,
+        "recomputedEveryStep": true
+      }
+    },
+    "straddle": {
+      "name": "dialog-straddles-primary-125-and-right-100",
+      "dialogFrame": {
+        "left": 1998,
+        "top": -60,
+        "right": 3123,
+        "bottom": 690,
+        "width": 1125,
+        "height": 750
+      },
+      "variants": [
+        {
+          "chosenMonitor": "primary-125",
+          "scale": 1.25,
+          "bar": {
+            "x": 1994,
+            "y": 700,
+            "width": 562,
+            "height": 142,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "insideChosenWorkArea": true,
+            "columns": 3,
+            "clampedToChosenMonitor": true
+          }
+        },
+        {
+          "chosenMonitor": "right-100",
+          "scale": 1,
+          "bar": {
+            "x": 2564,
+            "y": 698,
+            "width": 562,
+            "height": 114,
+            "columns": 3
+          },
+          "checks": {
+            "halfWidth": true,
+            "insideChosenWorkArea": true,
+            "columns": 3,
+            "clampedToChosenMonitor": true
+          }
+        }
+      ],
+      "note": "\u5B9E\u9645\u9009\u4E2D\u54EA\u5757\u5C4F\u53D6\u51B3\u4E8E\u7CFB\u7EDF MonitorFromWindow \u89C4\u5219\uFF1B\u65E0\u8BBA\u9009\u4E2D\u54EA\u5757\uFF0C\u680F\u90FD\u5939\u5728\u8BE5\u5C4F\u5DE5\u4F5C\u533A\u5185\uFF0C\u4E0D\u4F1A\u6A2A\u8DE8\u4E24\u5C4F\uFF0C\u4E5F\u4E0D\u4F1A\u6CBF\u7528\u53E6\u4E00\u5757\u5C4F\u7684\u7F29\u653E\u3002"
+    }
+  }
+}

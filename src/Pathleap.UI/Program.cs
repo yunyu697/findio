@@ -44,7 +44,7 @@ internal sealed class StartupOptions
     /// <summary>由计划任务拉起的实例：真实参数从 pending 文件恢复，避免循环提权。</summary>
     public bool ElevatedLaunch { get; set; }
 
-    /// <summary>离屏布局核对：--layout-probe=文件路径，按 100/125/150/200% 走一遍吸附栏几何并写 JSON。</summary>
+    /// <summary>离屏布局核对：--layout-probe=文件路径，按 100/125/150/175/200% 走一遍吸附栏与主窗几何并写 JSON。</summary>
     public string LayoutProbeFile { get; set; } = string.Empty;
 
     public static StartupOptions Parse(string[] args)

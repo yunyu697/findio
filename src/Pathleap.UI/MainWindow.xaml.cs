@@ -495,10 +495,25 @@ public sealed partial class MainWindow : Window
 
             var lpScale = lpDpi / 96.0;
             var lpWork = lpInfo.Work;
-            // 宽度取工作区一半、顶边落在工作区 1/4 处；高度沿用配置值不变。
+            // 宽度取工作区 1/3、顶边落在工作区 1/4 处；高度沿用配置值不变。
+            // SetWindowPos 与 AppWindow.MoveAndResize 在 PerMonitorV2 下都按物理像素解释（AppWindow 的几何 API
+            // 用的是屏幕坐标，不随 DPI 换算），两者算出来的矩形一致；这里选 SetWindowPos 是因为能显式带
+            // SWP_NOACTIVATE/SWP_NOZORDER（不抢前台、不动层序），且返回值 + GetLastError 可判失败——
+            // AppWindow.MoveAndResize 无返回值，失败时是静默的。
             var lpFrame = MainWindowLayout.Compute(
                 lpWork.Left, lpWork.Top, lpWork.Right, lpWork.Bottom, lpScale, _lpConfig.WindowHeight);
-            AppWindow.MoveAndResize(new RectInt32(lpFrame.X, lpFrame.Y, lpFrame.Width, lpFrame.Height));
+            var lpHwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            if (!NativeMethods.SetWindowPos(
+                    lpHwnd,
+                    IntPtr.Zero,
+                    lpFrame.X,
+                    lpFrame.Y,
+                    lpFrame.Width,
+                    lpFrame.Height,
+                    NativeMethods.SwpNoZOrder | NativeMethods.SwpNoActivate))
+            {
+                AppLog.Warn($"SetWindowPos 失败（Win32={Marshal.GetLastWin32Error()}），沿用上次位置。");
+            }
         }
         catch (Exception ex)
         {

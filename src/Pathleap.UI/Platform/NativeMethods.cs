@@ -365,8 +365,17 @@ internal static class NativeMethods
     [DllImport("user32.dll")]
     public static extern IntPtr MonitorFromPoint(Point point, uint flags);
 
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    [DllImport("user32.dll", SetLastError = true)]
     public static extern bool GetMonitorInfoW(IntPtr monitor, ref MonitorInfo info);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool SetWindowPos(IntPtr hwnd, IntPtr insertAfter, int x, int y, int cx, int cy, uint flags);
+
+    public const uint SwpNoSize = 0x0001;
+    public const uint SwpNoMove = 0x0002;
+    public const uint SwpNoZOrder = 0x0004;
+    public const uint SwpNoActivate = 0x0010;
+    public const uint SwpNoOwnerZOrder = 0x0200;
 
     [DllImport("shcore.dll")]
     public static extern int GetDpiForMonitor(IntPtr monitor, int dpiType, out uint dpiX, out uint dpiY);
