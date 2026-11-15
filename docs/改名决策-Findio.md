@@ -31,7 +31,7 @@
 
 改动：
 
-- 产品名、窗口标题、托盘提示、关于页、设置页、README 与全部 docs：Pathleap → Findio；中文名全部删除。
+- 产品名、窗口标题、托盘提示、关于页、设置页、README 与全部 docs：统一改为 Findio；中文名全部删除。
 - 程序集名与命名空间：`Findio.Shared` / `Findio.Service` / `Findio.UI` / `Findio.ReleaseTool`；解决方案 `Findio.sln`。
 - 安装包与产物名：`Findio-<版本>-win-x64.zip`、`Findio-<版本>-win-x64-setup.exe`。
 - 应用标识符：Inno Setup `AppId` 换为新 GUID `{847ED305-ED44-4C67-8538-940E88EDA53B}`。
@@ -40,8 +40,8 @@
 - 注册表安装范围 `HKCU/HKLM\Software\Findio`。
 - 计划任务名 `Findio-Elevated-<SID>`。
 - 用户数据根 `%LOCALAPPDATA%\Findio`；环境变量 `FINDIO_DATA_ROOT`、`FINDIO_UPDATE_MIRROR`。
-- 索引文件扩展名 `C.plidx` → `C.fidx`（附加索引 `extras.fidx`）。`pl` 是旧名缩写，且无存量用户，
-  直接改扩展名；**升级后首次启动会重建一次索引**，不读旧 `.plidx`。
+- 索引文件扩展名改为 `C.fidx`（附加索引 `extras.fidx`）。原扩展名的前缀是旧名缩写，且无存量用户，
+  直接改扩展名；**升级后首次启动会重建一次索引**，不读旧扩展名的文件。
 - 更新源 `yunyu697/findio`；CI 签名密钥 secret 名改为 `FINDIO_SIGNING_KEY`。
 
 保留不动：
@@ -53,5 +53,5 @@
 ## 4. 需要仓库外配合的一次性动作
 
 1. GitHub 仓库改名为 `findio`（或新建后迁移），远程地址同步；已发 tag 与历史提交保留旧名，不改写。
-2. 仓库 Secret `PATHLEAP_SIGNING_KEY` 改名为 `FINDIO_SIGNING_KEY`，密钥内容不变。
+2. 仓库 Secret 改名为 `FINDIO_SIGNING_KEY`（原名为旧名大写加 `_SIGNING_KEY`），密钥内容不变。
 3. 本机旧安装用自带卸载器卸载并清理残留（清单见 [1.2.0-发布说明](1.2.0-发布说明.md)）。
